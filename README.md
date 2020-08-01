@@ -4,7 +4,7 @@
 
 ## Members
 * SAMANTA, Shreya (s3724266)
-* SURNAME, GivenName (sXXXX)
+* Leong, Jeremy (s3804383)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
