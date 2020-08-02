@@ -6,7 +6,7 @@
 * SAMANTA, Shreya (s3724266)
 * Leong, Jeremy Qing Siang  (s3804383)
 * Renata, Stephanie (s3726196)
-* SURNAME, GivenName (sXXXX)
+* THOMAS, Catherine (s3784710)
 * SURNAME, GivenName (sXXXX)
 
 ## Records
