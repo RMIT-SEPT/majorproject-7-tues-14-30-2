@@ -7,7 +7,7 @@
 * Leong, Jeremy Qing Siang  (s3804383)
 * Renata, Stephanie (s3726196)
 * THOMAS, Catherine (s3784710)
-* SURNAME, GivenName (sXXXX)
+* NGUYEN, Anthony (s3783719)
 
 ## Records
 
