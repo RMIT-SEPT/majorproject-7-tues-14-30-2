@@ -8,8 +8,9 @@ import"./NavBar.css";
 
               <div class="topnav">
                 <ul>
-                <li><a href="/">Login</a></li>
+                <li><a href ="/Business_Contact">Contact Us</a></li>
                 <li><a href="/Registration">SignUp</a></li>
+                <li><a href="/">Login</a></li>
                 </ul>
                 </div>
 
