@@ -1,0 +1,33 @@
+
+.centered {
+    position: static;
+    margin-top: -150px; 
+    margin-left: 40%;        ;
+      }
+
+
+
+input{
+    width: 350px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    background-color:#e6e6e6;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.registration_btn {
+    border-radius: 8px;
+    padding: 12px 20px;
+    padding-left:25px;
+    padding-right:25px;
+    outline:none;
+    text-decoration: none;
+    width: 392px;
+    background-color:#e6e6e6;
+    border-style: none;
+
+}
+
+
