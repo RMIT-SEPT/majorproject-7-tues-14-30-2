@@ -11,6 +11,7 @@ import"./NavBar.css";
                 <li><a href ="/Business_Contact">Contact Us</a></li>
                 <li><a href="/Registration">SignUp</a></li>
                 <li><a href="/">Login</a></li>
+                <li><a href="/Customer_Dashboard">Home</a></li>
                 </ul>
                 </div>
 
