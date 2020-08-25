@@ -40,7 +40,28 @@ public class userController {
         }
 
         User user = userService.findUser(userName);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+
+        if(user == null){
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<User>(user, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> verifyUser(@Valid @RequestBody String username, String password, BindingResult result){
+        if(result.hasErrors()){
+            return new ResponseEntity<String>("Invalid User Object", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.verifyUser(username, password);
+
+        if(user == null){
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+
     }
 
 }

@@ -14,9 +14,8 @@ public class UserService {
 
     public User saveOrUpdateUser(User user){
         //Business logic
-        if (user.getUsername().length() <= 0 || user.getPassword().length() <= 0){
-            return null;
-        } else if (user.getName().length() < 2){
+        if (user.getUsername().length() <= 0 || user.getPassword().length() <= 0 ||
+                user.getName().length() < 2){
             return null;
         }
         return userRepository.save(user);
@@ -33,5 +32,19 @@ public class UserService {
         }
 
         return foundUser;
+    }
+
+    public User verifyUser(String username, String password){
+        Iterable<User> users = userRepository.findAll();
+        User foundUser = null;
+
+        for(User user: users){
+            if(user.getUsername() == username && user.getPassword() == password){
+                foundUser = user;
+            }
+        }
+
+        return foundUser;
+
     }
 }
