@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -32,12 +31,8 @@ public class userController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping("/find")
-    public ResponseEntity<?> findUser(@Valid @RequestBody String userName, BindingResult result){
-
-        if(result.hasErrors()){
-            return new ResponseEntity<String>("Invalid User Object", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/find/{userName}")
+    public ResponseEntity<?> findUser(@Valid @PathVariable String userName){
 
         User user = userService.findUser(userName);
 
@@ -45,14 +40,11 @@ public class userController {
             return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<User>(user, HttpStatus.FOUND);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> verifyUser(@Valid @RequestBody String username, String password, BindingResult result){
-        if(result.hasErrors()){
-            return new ResponseEntity<String>("Invalid User Object", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/login/{username}/{password}")
+    public ResponseEntity<?> verifyUser(@Valid @PathVariable String username, @PathVariable String password){
 
         User user = userService.verifyUser(username, password);
 
@@ -60,7 +52,7 @@ public class userController {
             return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
 
     }
 

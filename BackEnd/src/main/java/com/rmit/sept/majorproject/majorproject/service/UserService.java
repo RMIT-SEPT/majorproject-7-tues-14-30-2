@@ -3,12 +3,15 @@ package com.rmit.sept.majorproject.majorproject.service;
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -26,7 +29,8 @@ public class UserService {
         User foundUser = null;
 
         for(User user: users){
-            if(user.getUsername() == userName){
+            System.out.print(user.getUsername() + userName);
+            if(user.getUsername().equals(userName)){
                 foundUser = user;
             }
         }
@@ -39,12 +43,18 @@ public class UserService {
         User foundUser = null;
 
         for(User user: users){
-            if(user.getUsername() == username && user.getPassword() == password){
+            if(user.getUsername().equals(username) && user.getPassword().equals(password)){
                 foundUser = user;
             }
         }
 
         return foundUser;
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        //return findUser(s);
+        return findUser(s);
     }
 }
