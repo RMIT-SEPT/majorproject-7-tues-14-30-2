@@ -28,11 +28,6 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "Hello";
-    }
-
     @GetMapping("/find/{userName}")
     public ResponseEntity<?> findUser(@Valid @PathVariable String userName){
 

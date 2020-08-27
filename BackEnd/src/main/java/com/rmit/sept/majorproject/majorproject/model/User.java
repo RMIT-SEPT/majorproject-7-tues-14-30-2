@@ -20,6 +20,12 @@ public class User implements UserDetails {
     private String password;
     @NotBlank
     private String name;
+    @NotBlank
+    private String address;
+    @NotBlank
+    private String contact;
+    @NotBlank
+    private String role;
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern ="yyyy-mm-dd")
@@ -28,10 +34,13 @@ public class User implements UserDetails {
     public User(){
     };
 
-    public User(String username, String password, String name){
+    public User(String username, String password, String name, String address, String contact, String role){
         this.username = username;
         this.password = password;
         this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.role = role;
     }
 
     @Override
@@ -97,6 +106,30 @@ public class User implements UserDetails {
 
     public void setUpdated_At(Date updated_At) {
         this.updated_At = updated_At;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @PrePersist

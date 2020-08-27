@@ -31,29 +31,29 @@ public class userController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping("/find/{userName}")
-    public ResponseEntity<?> findUser(@Valid @PathVariable String userName){
-
-        User user = userService.findUser(userName);
-
-        if(user == null){
-            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }
-
-    @GetMapping("/login/{username}/{password}")
-    public ResponseEntity<?> verifyUser(@Valid @PathVariable String username, @PathVariable String password){
-
-        User user = userService.verifyUser(username, password);
-
-        if(user == null){
-            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-
-    }
+//    @GetMapping("/find/{userName}")
+//    public ResponseEntity<?> findUser(@Valid @PathVariable String userName){
+//
+//        User user = userService.findUser(userName);
+//
+//        if(user == null){
+//            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+//        }
+//
+//        return new ResponseEntity<User>(user, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/login/{username}/{password}")
+//    public ResponseEntity<?> verifyUser(@Valid @PathVariable String username, @PathVariable String password){
+//
+//        User user = userService.verifyUser(username, password);
+//
+//        if(user == null){
+//            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+//        }
+//
+//        return new ResponseEntity<User>(user, HttpStatus.OK);
+//
+//    }
 
 }
