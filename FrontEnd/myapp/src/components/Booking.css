@@ -52,3 +52,10 @@
   .nav_bar{
     color:#e6e6e6
   }
+
+  .inputField{
+    padding: 10px 0;
+    width: 50%;
+    margin: 100px auto;
+    
+  }

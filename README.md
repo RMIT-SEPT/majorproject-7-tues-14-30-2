@@ -1,6 +1,6 @@
 # RMIT SEPT 2020 Major Project
 
-# Group 00
+# Group 02
 
 ## Members
 * SAMANTA, Shreya (s3724266)
