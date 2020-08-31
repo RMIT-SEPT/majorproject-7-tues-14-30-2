@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import"./Booking.css";
 import DateField from './DateField'
 import TimeField from './TimeField'
+import PopUp from "./PopUp";
 
 
 class Booking extends Component{
@@ -13,6 +14,11 @@ class Booking extends Component{
             date:'',
             time:''
 
+    }
+    togglePop = () => {
+        this.setState({
+            seen: !this.state.seen
+        })
     }
     }
 
@@ -29,8 +35,9 @@ return(
             <label>Time</label> <TimeField/>
         </div>
         <div className="button_bar">
-        <button type="submit" class="booking_btn"><b>Book</b></button>
+        <input type="button" onClick={this.togglePop} value="Submit" />
         </div>
+        {this.state.seen ? <PopUp toggle={this.togglePop} /> : null}
 
     </div>
      )
