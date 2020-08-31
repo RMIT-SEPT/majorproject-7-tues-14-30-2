@@ -19,6 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 //@RequestMapping("/verify")
+@CrossOrigin
 public class LoginController {
 
     @Autowired
