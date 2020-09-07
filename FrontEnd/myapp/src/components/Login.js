@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import"./Login.css";
-
+import axios from 'axios'
 
 class Login extends Component{
     constructor(props){
@@ -9,48 +9,82 @@ class Login extends Component{
     
     this.state={
             username:'',
-            password:''
-
+            password:'',
+            visible:'false'
+            
+        }
+    
+    this.OnChange=this.OnChange.bind(this);
+    this.OnSubmit=this.OnSubmit.bind(this);
     }
+
+    OnChange = (e) => {
+        this.setState({[e.target.name]: e.target.value});
+             }
+
+    OnSubmit(e){
+        e.preventDefault();
+        var  login={
+            username:this.state.username,
+        }
+        axios.post('http://localhost:8080/authenticate',{
+            username:this.state.username,
+            password:this.state.password
+            })
+        .then((res) => {
+            console.log(res)
+            localStorage.setItem("user_token",res.data.jwt);
+           var token = localStorage.getItem("user_token")
+            var username =login.username;
+          axios.get(`http://localhost:8080/find/${username}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`
+          
+        }
     }
+    )            
+            .then((respone) => {
+                console.log(respone)
+            })
+            .catch((err) =>{
+            console.log(err)
 
+         })
 
-handleUsernameChange = (event) =>{
-    this.setState({
-        username: event.target.value 
-    })
-}
-
-handlePasswordChange = (event) =>{
-    this.setState({
-        password: event.target.value 
-    })
-}
-
-
-
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }      
+             
 render(){
-    const {username,password} = this.state
 return(
-    <div class="centered">
-    <form onSubmit={this.handleSubmit}>
-    <label>Username</label><br></br>
-    <input type="text"
-     value={username}
-    onChange={this.handleUsernameChange}
-    />
-    <br/>
-    <label>Password</label><br></br>
-    <input type="password"
-    value={password}
-    onChange={this.handlePasswordChange}
-    />
+
+    
+
+    <div className="centered">
+    <form onSubmit={this.OnSubmit}>
+
+        <label>Username</label><br></br>
+        <input type='text'
+        name="username"
+         value={this.state.username}
+        onChange={this.OnChange} required
+        />
+        <br></br>
+        <label>Password</label><br></br>
+        <input type='password'
+        name="password"
+        value={this.state.password}
+        onChange={this.OnChange} required
+        />
     <br></br>
     <br></br>
-    <button type="submit" class="login_btn"><b>Login</b></button>
+    <button type="submit" className="login_btn"><b>Login</b></button>
     </form>
+    <br></br>
     </div>
-     )
+          )
     }
 }
 
