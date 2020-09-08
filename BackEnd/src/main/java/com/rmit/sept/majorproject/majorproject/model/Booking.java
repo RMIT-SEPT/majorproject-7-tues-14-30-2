@@ -12,13 +12,17 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank
+    @JsonFormat(pattern ="yyyy-mm-dd")
     private Date booking_date;
-    private String assigned_employee;
-    @ManyToOne
-    @JoinColumn(name = "customer")
-    private User customer;
+    @JsonFormat(pattern = "HH:mm:ss")
+    private Date booking_time;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "ASSIGNED_WORKER")
+    private User assigned_employee;
     private String notes;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "CUSTOMER_USERNAME")
+    private User customer;
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern ="yyyy-mm-dd")
@@ -43,12 +47,20 @@ public class Booking {
         this.booking_date = booking_date;
     }
 
-    public String getAssigned_employee() {
+    public User getAssigned_employee() {
         return assigned_employee;
     }
 
-    public void setAssigned_employee(String assigned_employee) {
+    public void setAssigned_employee(User assigned_employee) {
         this.assigned_employee = assigned_employee;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public User getCustomer() {
@@ -59,12 +71,28 @@ public class Booking {
         this.customer = customer;
     }
 
-    public String getNotes() {
-        return notes;
+    public Date getBooking_time() {
+        return booking_time;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setBooking_time(Date booking_time) {
+        this.booking_time = booking_time;
+    }
+
+    public Date getCreated_At() {
+        return created_At;
+    }
+
+    public void setCreated_At(Date created_At) {
+        this.created_At = created_At;
+    }
+
+    public Date getUpdated_At() {
+        return updated_At;
+    }
+
+    public void setUpdated_At(Date updated_At) {
+        this.updated_At = updated_At;
     }
 
     @PrePersist
