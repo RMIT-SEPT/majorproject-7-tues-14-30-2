@@ -14,14 +14,14 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: circleci-majorproject-7-tues-14-30-2-{{ checksum "pom.xml" }}
+          key: circleci-majorproject-{{ checksum "pom.xml" }}
       
       - run: mvn dependency:go-offline
       
       - save_cache:
           paths:
             - ~/.m2
-          key: circleci-majorproject-7-tues-14-30-2-{{ checksum "pom.xml" }}
+          key: circleci-majorproject-{{ checksum "pom.xml" }}
       
       - run: mvn package
       
