@@ -10,7 +10,7 @@ class Login extends Component{
     this.state={
             username:'',
             password:'',
-            
+            visible:'false' 
         }
     
     this.OnChange=this.OnChange.bind(this);
@@ -42,25 +42,29 @@ class Login extends Component{
         }
     }
     )            
-            .then((respone) => {
-                console.log(respone)
+            .then((res) => {
+                console.log(res)
+                var role =res.data.role
+                localStorage.setItem("user_role",role);
+                console.log(role)
             })
             .catch((err) =>{
             console.log(err)
+            alert("User not found");
+
 
          })
 
         })
         .catch((error) => {
             console.log(error)
+            alert("Invalid login credentials")
+
         })
     }      
              
 render(){
 return(
-
-    
-
     <div className="centered">
     <form onSubmit={this.OnSubmit}>
 
