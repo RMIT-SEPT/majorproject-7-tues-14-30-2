@@ -30,7 +30,6 @@ class Login extends Component{
             password:this.state.password
             })
         .then((res) => {
-            console.log(res)
             localStorage.setItem("user_token",res.data.jwt);
            var token = localStorage.getItem("user_token")
             var username =login.username;
@@ -42,12 +41,12 @@ class Login extends Component{
     }
     )            
             .then((res) => {
-                console.log(res)
                 var role =res.data.role
                 localStorage.setItem("user_role",role);
                 console.log(role)
             })
             .catch((err) =>{
+                // for checking error
             console.log(err)
             alert("User not found");
 
@@ -56,6 +55,7 @@ class Login extends Component{
 
         })
         .catch((error) => {
+                // for checking error
             console.log(error)
             alert("Invalid login credentials")
 
