@@ -10,7 +10,6 @@ class Login extends Component{
     this.state={
             username:'',
             password:'',
-            visible:'false' 
         }
     
     this.OnChange=this.OnChange.bind(this);
