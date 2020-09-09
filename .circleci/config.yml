@@ -29,4 +29,4 @@ jobs:
           path: target/surefire-reports
       
       - store_artifacts:
-          path: target/majorproject-7-tues-14-30-2-0.0.1-SNAPSHOT.jar
+          path: target/majorproject-0.0.1-SNAPSHOT.jar
