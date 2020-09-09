@@ -4,27 +4,25 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class User implements UserDetails {
     @Id
     private String username;
-    @NotBlank
+    @NotBlank(message = "Password Required")
     private String password;
-    @NotBlank
+    @NotBlank(message = "Name Required")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Address Required")
     private String address;
-    @NotBlank
+    @NotBlank(message = "Contact Required")
     private String contact;
-    @NotBlank
+    @NotBlank(message = "Role Required: CUSTOMER, ADMIN, WORKER")
     private String role;
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date created_At;
