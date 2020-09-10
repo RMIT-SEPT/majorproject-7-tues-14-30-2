@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/majorproject-7-tues-14-3-2/BackEnd/src/
+    working_directory: ~/BackEnd/src/
     docker:
       - image: circleci/openjdk:8-jdk-stretch
       - image: circleci/postgres:9.6.3-alpine
