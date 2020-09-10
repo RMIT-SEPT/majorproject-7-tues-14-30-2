@@ -20,7 +20,7 @@ jobs:
       
       - save_cache:
           paths:
-            - ~/.m2
+            - ~/Backend/.m2
           key: circleci-majorproject-{{ checksum "pom.xml" }}
       
       - run: mvn package
