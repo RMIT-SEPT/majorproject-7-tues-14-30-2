@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/BackEnd/src/
+    working_directory: ~/BackEnd/src
     docker:
       - image: circleci/openjdk:8-jdk-stretch
       - image: circleci/postgres:9.6.3-alpine
@@ -20,7 +20,7 @@ jobs:
       
       - save_cache:
           paths:
-            - ~/Backend/.m2
+            - ~/.m2
           key: circleci-majorproject-{{ checksum "pom.xml" }}
       
       - run: mvn package
