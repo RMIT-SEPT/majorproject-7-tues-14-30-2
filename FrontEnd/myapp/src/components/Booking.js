@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import"./Booking.css";
 import DateField from './DateField'
 import TimeField from './TimeField'
-import PopUp from "./PopUp";
+import Popup from 'reactjs-popup';
 
 
 class Booking extends Component{
@@ -15,11 +15,7 @@ class Booking extends Component{
             time:''
 
     }
-    togglePop = () => {
-        this.setState({
-            seen: !this.state.seen
-        })
-    }
+   
     }
 
 
@@ -35,12 +31,32 @@ return(
             <label>Time</label> <TimeField/>
         </div>
         <div className="button_bar">
-        <input type="button" onClick={this.togglePop} value="Submit" />
-        </div>
-        {this.state.seen ? <PopUp toggle={this.togglePop} /> : null}
+        <Popup trigger={<button className="button"> Submit </button>} 
+        modal
+        nested
+        >
+        
+        {close => (
+            <div className="modal">
+                <button className="close" onClick={close}>
+                    &times;
+                </button>
+            <div className="content"> Confirm booking? </div>
+            <div className="actions">
+                <Popup trigger={<button className="confirm"> Yes </button>}
+                position="bottom center"
+                nested
+                > <span> Your booking has been confirmed! </span>
+                </Popup>
+            <button className="cancel" onClick={close}> No </button>  
+            </div>
+            </div>
+        )}
+        </Popup>
+        </div>    
 
     </div>
-     )
+     )       
     }
 }
 

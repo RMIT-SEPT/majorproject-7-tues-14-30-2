@@ -59,3 +59,60 @@
     margin: 100px auto;
     
   }
+
+  .button {
+    font-size: 16px;
+    border-radius: 4px;
+    position: relative;
+    margin:10px 15px 10px 10px;
+    outline:none;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-text-fill-color: #ffffff;
+    width: 100px;
+    background-color: rgb(89, 183, 245);
+    border-style: none;
+
+  }
+
+  .modal {
+    border-radius: 10px;
+    width: 125%;
+    padding: 10px 2px;
+    padding-left:2px;
+    padding-right:2px;
+    margin:10px 15px 10px 10px;
+    background-color: rgb(89, 183, 245);
+  }
+
+  .modal > .content {
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    padding: 10px 5px;
+    position: relative;
+    font-weight: bold;
+    -webkit-text-fill-color: #ffffff;
+  }
+
+  .modal > .close {
+    cursor: pointer;
+    padding: 2px 5px;
+    position: absolute;
+    line-height: 25px;
+    float: left;
+    display: block;
+    right: -50px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+  }
+
+  .modal > .actions {
+    width: 50%;
+    margin: middle;
+    font-size: 14px;
+    text-align: center;
+  }
