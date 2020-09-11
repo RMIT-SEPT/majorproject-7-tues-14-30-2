@@ -29,13 +29,23 @@ public class UserService implements UserDetailsService {
         User foundUser = null;
 
         for(User user: users){
-            System.out.print(user.getUsername() + userName);
+            //System.out.print(user.getUsername() + userName);
             if(user.getUsername().equals(userName)){
                 foundUser = user;
             }
         }
 
         return foundUser;
+    }
+
+    public boolean findContact(String contact){
+        Iterable<User> users = userRepository.findAll();
+        for(User user : users){
+            if(user.getContact().equals(contact)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public User verifyUser(String username, String password){

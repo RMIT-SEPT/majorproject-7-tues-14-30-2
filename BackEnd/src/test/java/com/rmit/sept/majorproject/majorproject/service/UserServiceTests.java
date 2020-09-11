@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 public class UserServiceTests {
@@ -13,9 +14,11 @@ public class UserServiceTests {
     private User user1 = new User();
     private User user2 = new User();
     private User user3 = new User();
+    private UserService userService;
 
     @BeforeEach
     public void init(){
+        userService = mock(UserService.class);
         user1.setUsername("user1");
         user1.setPassword("Test");
         user1.setName("Test");
@@ -26,9 +29,6 @@ public class UserServiceTests {
         user3.setPassword("Test");
         user3.setName("Test");
     }
-
-    @Autowired
-    private UserService userService;
 
     @Test
     public void testAddUser_EmptyUsername_Null(){
