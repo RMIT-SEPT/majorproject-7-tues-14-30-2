@@ -1,4 +1,4 @@
-.booking_btn {
+.book_btn {
     border-radius: 8px;
     padding: 12px 2px;
     padding-left:2px;
@@ -13,7 +13,7 @@
     border-style: none;
   }
 
-  .booking_btn:hover {
+  .book_btn:hover {
       background-color: #e6e6e6;
       -webkit-text-fill-color: #000000;
       transition-duration:0.3s;
