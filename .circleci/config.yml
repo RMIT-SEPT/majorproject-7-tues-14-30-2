@@ -13,9 +13,7 @@ jobs:
 
       - checkout
       
-      - run:
-        command: |
-            ls
+      - run: ls
 
       - restore_cache:
           key: circleci-majorproject-{{ checksum "pom.xml" }}
