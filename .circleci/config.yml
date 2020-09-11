@@ -12,7 +12,7 @@ jobs:
     steps:
 
       - checkout:
-        path: ~/majorproject-7-tues-14-30-2
+            path: ~/majorproject-7-tues-14-30-2
       
       - run: pwd
       
