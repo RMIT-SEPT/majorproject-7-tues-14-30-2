@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import Login from './components/login/Login';
+import Login from './components/Login';
 import Booking from './components/Booking';
 import Registration from './components/Registration';
 import Business_Contact from './components/Business_Contact';
-import NavBar from './components/layout/NavBar';
+import NavBar from './components/NavBar';
 import Customer_Dashboard from './components/Customer_Dashboard';
 import Worker_Dashboard from './components/Worker_Dashboard';
 import Admin_Dashboard from './components/Admin_Dashboard' ;
