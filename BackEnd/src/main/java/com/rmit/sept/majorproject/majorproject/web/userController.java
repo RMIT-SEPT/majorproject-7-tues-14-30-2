@@ -32,11 +32,11 @@ public class userController {
 //        if(result.hasErrors()){
 //            return new ResponseEntity<String>("Invalid User Object", HttpStatus.BAD_REQUEST);
 //        }
-        if (userService.findUser(user.getUsername()).equals(null)){
-            return new ResponseEntity<String>("User already exists", HttpStatus.BAD_REQUEST);
-        } else if (userService.findContact(user.getContact())){
-            return new ResponseEntity<String>("Contact already exists", HttpStatus.BAD_REQUEST);
-        }
+//        if (userService.findUser(user.getUsername()).equals(null)){
+//            return new ResponseEntity<String>("User already exists", HttpStatus.BAD_REQUEST);
+//        } else if (userService.findContact(user.getContact())){
+//            return new ResponseEntity<String>("Contact already exists", HttpStatus.BAD_REQUEST);
+//        }
         User user1 = userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
