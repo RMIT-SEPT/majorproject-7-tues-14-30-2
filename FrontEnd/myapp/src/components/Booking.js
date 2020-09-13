@@ -14,13 +14,18 @@ class Booking extends Component{
             time:''
 
     }
+   
     }
 
+confirmMessage() {
+    alert('Your booking has been confirmed!');
+}
 
 render(){
     const {username,password} = this.state
 return(
-    <div>
+    <div> 
+        
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
         <div class = "inputField">
@@ -28,12 +33,10 @@ return(
             <br/>
             <label>Time</label> <TimeField/>
         </div>
-        <div className="button_bar">
-        <button type="submit" class="booking_btn"><b>Book</b></button>
-        </div>
+        <button className="book_btn" onClick={this.confirmMessage}>Book</button>   
 
     </div>
-     )
+     )       
     }
 }
 
