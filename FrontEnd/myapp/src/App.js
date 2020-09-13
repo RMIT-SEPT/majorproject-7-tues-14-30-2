@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import Login from './components/login/Login';
-import Booking from './components/booking/Booking';
-import Registration from './components/registration/Registration';
-import Business_Contact from './components/business_contact/Business_Contact';
+import Booking from './components/Booking';
+import Registration from './components/Registration';
+import Business_Contact from './components/Business_Contact';
 import NavBar from './components/layout/NavBar';
 import Customer_Dashboard from './components/Customer_Dashboard';
 import Worker_Dashboard from './components/Worker_Dashboard';
