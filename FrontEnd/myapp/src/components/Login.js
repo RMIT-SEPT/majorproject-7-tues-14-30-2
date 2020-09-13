@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import"./Login.css";
 import axios from 'axios'
 
+
 class Login extends Component{
     constructor(props){
         super(props)
-    
     
     this.state={
             username:'',
@@ -41,12 +41,25 @@ class Login extends Component{
     }
     )            
             .then((res) => {
+                console.log(res.data)
                 var role =res.data.role
+                var name =res.data.name
+                localStorage.setItem("user_name",name);
                 localStorage.setItem("user_role",role);
-                console.log(role)
+                if(role==="admin"|| role ==="Admin"||role==="ADMIN"){
+                    this.props.history.push('/Admin_Dashboard')
+                }   
+    
+                if(role==="worker"||role==="Worker" || role==="WORKER"){
+                    this.props.history.push('/Worker_Dashboard')
+    
+                }
+    
+                if(role==="customer"||role==="Customer"||role==="CUSTOMER"){
+                    this.props.history.push('/Customer_Dashboard')
+                }
             })
             .catch((err) =>{
-                // for checking error
             console.log(err)
             alert("User not found");
 
@@ -55,7 +68,6 @@ class Login extends Component{
 
         })
         .catch((error) => {
-                // for checking error
             console.log(error)
             alert("Invalid login credentials")
 
