@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/BackEnd/
+    working_directory: ~/majorproject-7-tues-14-30-2/BackEnd
     docker:
       - image: circleci/openjdk:8-jdk-stretch
       - image: circleci/postgres:9.6.3-alpine
@@ -11,17 +11,24 @@ jobs:
 
     steps:
 
-      - checkout
+      - checkout:
+            path: ~/majorproject-7-tues-14-30-2
+      
+      - run: pwd
+      
+      - run: ls
+      
+      - run: readlink -f pom.xml | xargs dirname
 
       - restore_cache:
-          key: circleci-majorproject-7-tues-14-30-2-{{ checksum "pom.xml" }}
+          key: BackEnd-{{ checksum "pom.xml" }}
       
       - run: mvn dependency:go-offline
       
       - save_cache:
           paths:
             - ~/.m2
-          key: circleci-majorproject-7-tues-14-30-2-{{ checksum "pom.xml" }}
+          key: BackEnd-{{ checksum "pom.xml" }}
       
       - run: mvn package
       
@@ -29,4 +36,4 @@ jobs:
           path: target/surefire-reports
       
       - store_artifacts:
-          path: target/majorproject-7-tues-14-30-2-0.0.1-SNAPSHOT.jar
+          path: target/majorproject-0.0.1-SNAPSHOT.jar
