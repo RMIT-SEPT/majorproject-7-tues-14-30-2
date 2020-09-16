@@ -34,4 +34,14 @@ public class BookingController {
         return new ResponseEntity<Booking>(booking, HttpStatus.CREATED);
     }
 
+    @GetMapping("/findCustBooking/{username}")
+    public ResponseEntity<?> getCustomerBookings(@PathVariable String username){
+        return new ResponseEntity<Iterable<Booking>>(bookingService.findCustBooking(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/findWorkerBooking/{username}")
+    public ResponseEntity<?> getWorkerBookings(@PathVariable String username){
+        return new ResponseEntity<Iterable<Booking>>(bookingService.findWorkerBooking(username), HttpStatus.OK);
+    }
+
 }

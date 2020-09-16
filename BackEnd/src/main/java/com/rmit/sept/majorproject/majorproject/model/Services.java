@@ -15,7 +15,7 @@ public class Services {
 
     @NotBlank
     private String service;
-    
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
