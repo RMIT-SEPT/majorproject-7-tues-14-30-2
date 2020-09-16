@@ -3,7 +3,6 @@ package com.rmit.sept.majorproject.majorproject.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -14,15 +13,20 @@ public class Booking {
     private long id;
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date booking_date;
+
     @JsonFormat(pattern = "HH:mm:ss")
     private Date booking_time;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
+
     private String notes;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_USERNAME")
     private User customer;
+    
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern ="yyyy-mm-dd")

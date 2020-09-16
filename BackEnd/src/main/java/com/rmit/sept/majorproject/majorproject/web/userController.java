@@ -29,16 +29,26 @@ public class userController {
                 return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
             }
         }
-//        if(result.hasErrors()){
-//            return new ResponseEntity<String>("Invalid User Object", HttpStatus.BAD_REQUEST);
-//        }
-        if (userService.findUser(user.getUsername()).equals(null)){
-            return new ResponseEntity<String>("User already exists", HttpStatus.BAD_REQUEST);
-        } else if (userService.findContact(user.getContact())){
-            return new ResponseEntity<String>("Contact already exists", HttpStatus.BAD_REQUEST);
-        }
+
         User user1 = userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getRole/{role}")
+    public ResponseEntity<?> getUserType(@PathVariable String role){
+
+        if(!userService.verifyRole(role)){
+            return new ResponseEntity<String>("Invalid user role", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Iterable<User>>(userService.getUserType(role), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userName}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userName){
+        userService.deleteUserByUsername(userName);
+
+        return new ResponseEntity<String>("User with username: '" + userName + "' was deleted", HttpStatus.OK);
     }
 
 }
