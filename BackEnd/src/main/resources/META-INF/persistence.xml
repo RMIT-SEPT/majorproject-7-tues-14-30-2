@@ -8,6 +8,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.rmit.sept.majorproject.majorproject.model.User</class>
         <class>com.rmit.sept.majorproject.majorproject.model.Booking</class>
+        <class>com.rmit.sept.majorproject.majorproject.model.Services</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>

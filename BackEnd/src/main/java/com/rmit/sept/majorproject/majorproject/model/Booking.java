@@ -17,6 +17,8 @@ public class Booking {
     @JsonFormat(pattern = "HH:mm:ss")
     private Date booking_time;
 
+    private int duration;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
@@ -26,6 +28,10 @@ public class Booking {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_USERNAME")
     private User customer;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "SERVICE")
+    private Services bookedService;
     
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date created_At;
@@ -97,6 +103,22 @@ public class Booking {
 
     public void setUpdated_At(Date updated_At) {
         this.updated_At = updated_At;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Services getBookedService() {
+        return bookedService;
+    }
+
+    public void setBookedService(Services bookedService) {
+        this.bookedService = bookedService;
     }
 
     @PrePersist
