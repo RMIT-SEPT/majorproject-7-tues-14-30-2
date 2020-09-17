@@ -45,7 +45,6 @@ public class BookingService {
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
-            System.out.println(booking.getAssigned_employee().getUsername());
             if(booking.getAssigned_employee().getUsername().equals(username)){
                 returnBookings.add(booking);
             }

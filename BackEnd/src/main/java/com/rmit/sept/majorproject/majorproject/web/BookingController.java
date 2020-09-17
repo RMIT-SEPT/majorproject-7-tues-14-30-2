@@ -2,6 +2,7 @@ package com.rmit.sept.majorproject.majorproject.web;
 
 import com.rmit.sept.majorproject.majorproject.model.Booking;
 import com.rmit.sept.majorproject.majorproject.service.BookingService;
+import com.rmit.sept.majorproject.majorproject.service.ServiceService;
 import com.rmit.sept.majorproject.majorproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,12 @@ public class BookingController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/{workerName}")
-    public ResponseEntity<?> createNewBooking(@Valid @RequestBody Booking booking, BindingResult result, @PathVariable String workerName){
+    @Autowired
+    private ServiceService serviceService;
+
+    @PostMapping("/{workerName}/{servicename}")
+    public ResponseEntity<?> createNewBooking(@Valid @RequestBody Booking booking, BindingResult result,
+                                              @PathVariable String workerName, @PathVariable String servicename){
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {
@@ -36,6 +41,10 @@ public class BookingController {
         }
         if(booking.getAssigned_employee() == null) {
             booking.setAssigned_employee(userService.findWorkerFromName(workerName));
+        }
+        if(booking.getBookedService() == null){
+            booking.setBookedService(serviceService.findServiceFromWorker(servicename,
+                    booking.getAssigned_employee().getUsername()));
         }
         Booking booking1 = bookingService.saveOrUpdateBooking(booking);
         return new ResponseEntity<Booking>(booking, HttpStatus.CREATED);
