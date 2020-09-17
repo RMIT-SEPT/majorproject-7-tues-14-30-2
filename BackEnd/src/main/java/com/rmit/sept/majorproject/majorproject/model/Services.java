@@ -19,10 +19,10 @@ public class Services {
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
 
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date created_At;
 
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date updated_At;
 
     public long getId() {

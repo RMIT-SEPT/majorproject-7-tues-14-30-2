@@ -24,9 +24,9 @@ public class User implements UserDetails {
     private String contact;
     @NotBlank(message = "Role Required: CUSTOMER, ADMIN, WORKER")
     private String role;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date created_At;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date updated_At;
 
     public User(){

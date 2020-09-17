@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.majorproject.service;
 
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
-import com.rmit.sept.majorproject.majorproject.exceptions.UserException;
+import com.rmit.sept.majorproject.majorproject.exceptions.UserExeption;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
     public void deleteUserByUsername(String username){
         User user = userRepository.findByUsername(username);
         if(user == null){
-            throw new UserException("Cannot delete User with username: '" + username + "'. User does not exists");
+            throw new UserExeption("Cannot delete User with username: '" + username + "'. User does not exists");
         }
 
         userRepository.delete(user);
@@ -48,28 +48,16 @@ public class UserService implements UserDetailsService {
         return foundUser;
     }
 
-    public boolean findContact(String contact){
+    public User findWorkerFromName(String name){
         Iterable<User> users = userRepository.findAll();
         for(User user : users){
-            if(user.getContact().equals(contact)){
-                return true;
+            if(user.getName().equals(name)){
+                if(user.getRole().equals("WORKER")){
+                    return user;
+                }
             }
         }
-        return false;
-    }
-
-    public User verifyUser(String username, String password){
-        Iterable<User> users = userRepository.findAll();
-        User foundUser = null;
-
-        for(User user: users){
-            if(user.getUsername().equals(username) && user.getPassword().equals(password)){
-                foundUser = user;
-            }
-        }
-
-        return foundUser;
-
+        return null;
     }
 
     public Iterable<User> getUserType(String type){
