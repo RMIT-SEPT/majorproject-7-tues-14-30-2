@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.majorproject.service;
 
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
-import com.rmit.sept.majorproject.majorproject.exceptions.UserExeption;
+import com.rmit.sept.majorproject.majorproject.exceptions.UserException;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
     public void deleteUserByUsername(String username){
         User user = userRepository.findByUsername(username);
         if(user == null){
-            throw new UserExeption("Cannot delete User with username: '" + username + "'. User does not exists");
+            throw new UserException("Cannot delete User with username: '" + username + "'. User does not exists");
         }
 
         userRepository.delete(user);

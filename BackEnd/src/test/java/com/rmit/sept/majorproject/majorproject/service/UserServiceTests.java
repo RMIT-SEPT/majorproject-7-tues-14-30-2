@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.majorproject.service;
 
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
-import com.rmit.sept.majorproject.majorproject.exceptions.UserExeption;
+import com.rmit.sept.majorproject.majorproject.exceptions.UserException;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,13 +106,13 @@ public class UserServiceTests {
 
     @Test
     public void testDeleteUser_NoUsers_Exception(){
-        assertThrows(UserExeption.class, () -> {
+        assertThrows(UserException.class, () -> {
            mockUserService.deleteUserByUsername(user1.getUsername());
         });
-        assertThrows(UserExeption.class, () -> {
+        assertThrows(UserException.class, () -> {
             mockUserService.deleteUserByUsername(user2.getUsername());
         });
-        assertThrows(UserExeption.class, () -> {
+        assertThrows(UserException.class, () -> {
             mockUserService.deleteUserByUsername(user3.getUsername());
         });
     }
