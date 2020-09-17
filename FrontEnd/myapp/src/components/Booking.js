@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import"./Booking.css";
-import DateField from './DateField'
-import TimeField from './TimeField'
 import DatePicker from 'react-date-picker';
 import TimePicker from 'react-time-picker'
 import axios from 'axios'
