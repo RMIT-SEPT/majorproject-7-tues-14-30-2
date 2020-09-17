@@ -44,7 +44,7 @@ class Login extends Component{
                 console.log(res.data)
                 var role =res.data.role
                 var name =res.data.name
-                localStorage.setItem("user_name",name);
+                localStorage.setItem("user_name",username);
                 localStorage.setItem("user_role",role);
                 if(role==="admin"|| role ==="Admin"||role==="ADMIN"){
                     this.props.history.push('/Admin_Dashboard')
