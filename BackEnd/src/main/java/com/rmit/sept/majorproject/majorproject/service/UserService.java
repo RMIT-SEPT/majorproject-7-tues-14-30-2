@@ -48,28 +48,16 @@ public class UserService implements UserDetailsService {
         return foundUser;
     }
 
-    public boolean findContact(String contact){
+    public User findWorkerFromName(String name){
         Iterable<User> users = userRepository.findAll();
         for(User user : users){
-            if(user.getContact().equals(contact)){
-                return true;
+            if(user.getName().equals(name)){
+                if(user.getRole().equals("WORKER")){
+                    return user;
+                }
             }
         }
-        return false;
-    }
-
-    public User verifyUser(String username, String password){
-        Iterable<User> users = userRepository.findAll();
-        User foundUser = null;
-
-        for(User user: users){
-            if(user.getUsername().equals(username) && user.getPassword().equals(password)){
-                foundUser = user;
-            }
-        }
-
-        return foundUser;
-
+        return null;
     }
 
     public Iterable<User> getUserType(String type){

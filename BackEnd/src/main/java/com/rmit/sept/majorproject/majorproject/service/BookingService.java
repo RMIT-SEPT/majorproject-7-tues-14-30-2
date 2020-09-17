@@ -12,16 +12,17 @@ import java.util.List;
 
 @Service
 public class BookingService {
+
     @Autowired
     private BookingRepository bookingRepository;
 
     public Booking saveOrUpdateBooking(Booking booking){
-        Date currentDate = new Date();
-
-        if (booking.getBooking_date().compareTo(currentDate) < 0 ||
-            booking.getBooking_time().compareTo(currentDate) < 0){
-            return null;
-        }
+//        Date currentDate = new Date();
+//
+//        if (booking.getBooking_date().compareTo(currentDate) < 0 ||
+//            booking.getBooking_time().compareTo(currentDate) < 0){
+//            return null;
+//        }
 
         return bookingRepository.save(booking);
     }

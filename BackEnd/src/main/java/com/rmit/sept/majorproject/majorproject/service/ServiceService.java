@@ -44,4 +44,18 @@ public class ServiceService {
         return returnUser;
     }
 
+    public Services findServiceFromWorker(String serviceName, String worker){
+        Iterable<Services> servicesIterable = serviceRepository.findAll();
+        for(Services services : servicesIterable){
+            System.out.println(services.getService());
+            if(services.getService().equals(serviceName)){
+                if(services.getAssigned_employee().getUsername().equals(worker)){
+                    return services;
+                }
+            }
+        }
+
+        return null;
+    }
+
 }
