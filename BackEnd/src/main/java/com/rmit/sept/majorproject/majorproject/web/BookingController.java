@@ -34,8 +34,9 @@ public class BookingController {
                 return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
             }
         }
-
-        booking.setAssigned_employee(userService.findWorkerFromName(workerName));
+        if(booking.getAssigned_employee() == null) {
+            booking.setAssigned_employee(userService.findWorkerFromName(workerName));
+        }
         Booking booking1 = bookingService.saveOrUpdateBooking(booking);
         return new ResponseEntity<Booking>(booking, HttpStatus.CREATED);
     }

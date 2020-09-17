@@ -12,16 +12,17 @@ import java.util.List;
 
 @Service
 public class BookingService {
+
     @Autowired
     private BookingRepository bookingRepository;
 
     public Booking saveOrUpdateBooking(Booking booking){
-        Date currentDate = new Date();
-
-        if (booking.getBooking_date().compareTo(currentDate) < 0 ||
-            booking.getBooking_time().compareTo(currentDate) < 0){
-            return null;
-        }
+//        Date currentDate = new Date();
+//
+//        if (booking.getBooking_date().compareTo(currentDate) < 0 ||
+//            booking.getBooking_time().compareTo(currentDate) < 0){
+//            return null;
+//        }
 
         return bookingRepository.save(booking);
     }
@@ -44,6 +45,7 @@ public class BookingService {
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
+            System.out.println(booking.getAssigned_employee().getUsername());
             if(booking.getAssigned_employee().getUsername().equals(username)){
                 returnBookings.add(booking);
             }

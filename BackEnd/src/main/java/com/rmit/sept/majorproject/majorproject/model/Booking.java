@@ -11,7 +11,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date booking_date;
 
     @JsonFormat(pattern = "HH:mm:ss")
@@ -19,23 +19,23 @@ public class Booking {
 
     private int duration;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
 
     private String notes;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "CUSTOMER_USERNAME")
     private User customer;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "SERVICE")
     private Services bookedService;
     
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date created_At;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date updated_At;
 
     public Booking(){
