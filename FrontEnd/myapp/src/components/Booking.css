@@ -30,6 +30,7 @@
   label{
     font-weight: bold;
     padding-right:300px;
+    font-size: 20px;
   }
   
   .form{
@@ -58,4 +59,36 @@
     width: 50%;
     margin: 100px auto;
     
+  }
+
+  #heading {
+    text-align: center;
+    font-family: arial, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  #services{
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+    position: static;
+  
+  }
+
+  #services td, #services th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #services tr:nth-child(even){background-color: #f2f2f2;}
+
+  #services th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #333;
+    color: white;
   }

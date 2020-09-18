@@ -16,6 +16,11 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
+            services: [
+                { service: 'Dental Clinic', opening: '8:00am - 4:00pm', days: 'Monday - Friday', worker: 'Anthony'  },
+                { service: 'Hair Salon', opening: '9:00am - 5:30pm', days: 'Monday - Saturday', worker: 'Stephanie' },
+                { service: 'Accounting Firm', opening: '10:00am - 4:00pm', days: 'Tuesday - Sunday', worker: 'Catherine' },
+            ]
     };
     }
 
@@ -69,6 +74,28 @@ confirmMessage = (event) =>{
 }
 
 
+renderTableData() {
+    return this.state.services.map((schedule, index) => {
+       const { service, opening, days, worker } = schedule //destructuring
+       return (
+          <tr>
+             <td>{service}</td>
+             <td>{opening}</td>
+             <td>{days}</td>
+             <td>{worker}</td>
+          </tr>
+        )
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.services[0])
+    return header.map((key, index) => {
+       return <th key={index}>{key.toUpperCase()}</th>
+    })
+}
+
+
 render(){
     const {username,password} = this.state
 return(
@@ -76,28 +103,38 @@ return(
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
+        <h2 id='heading'>Available Services</h2>
+              <table id='services'>
+                 <tbody>
+                    <tr>{this.renderTableHeader()}</tr>
+                    {this.renderTableData()}
+                 </tbody>
+              </table>
+
         <form onSubmit={this.handleSubmit}>
         <div class = "inputField">
             <label>Service</label> 
             <br/>
             <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
-                  <option name="service1">Service 1</option>
-                  <option name="service2">Service 2</option>
-                  <option name="service3">Service 3</option>
+                  <option name="service1">Dental Clinic</option>
+                  <option name="service2">Hair Salon</option>
+                  <option name="service3">Accounting Firm</option>
             </select>
             <br/>
             <br/>
             <label>Worker</label> 
             <br/>
             <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="worker1">Worker 1</option>
-                  <option name="worker2">Worker 2</option>
-                  <option name="worker3">Worker 3</option>
+                  <option name="worker1">Anthony</option>
+                  <option name="worker2">Stephanie</option>
+                  <option name="worker3">Catherine</option>
             </select>
+            <br/>
             <br/>
             <label>Duration</label>
             <br/>
             <input type ='text' name='duration' value={this.state.duration} onChange={this.handleDurationChange}/>
+            <br/>
             <br/>
             <label>Date</label> 
             <br/>
@@ -105,12 +142,14 @@ return(
             <DatePicker name = 'date' onChange={this.handleDateChange} value={this.state.date}/>
             
             <br/>
+            <br/>
             <label>Time</label> 
             <br/>
 
             <TimePicker name = 'time' onChange={this.handleTimeChange} value={this.state.time}/>
 
             
+            <br/>
             <br/>
             <label>Notes</label>
             <br/>
