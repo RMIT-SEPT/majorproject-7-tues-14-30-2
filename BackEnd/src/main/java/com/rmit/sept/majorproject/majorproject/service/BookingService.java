@@ -29,6 +29,8 @@ public class BookingService {
 
     public Iterable<Booking> findCustBooking(String username){
         Iterable<Booking> bookings = bookingRepository.findAll();
+
+
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
@@ -42,11 +44,16 @@ public class BookingService {
 
     public Iterable<Booking> findWorkerBooking(String username){
         Iterable<Booking> bookings = bookingRepository.findAll();
+
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
+
+            System.out.println("bookingsAll:"+booking);
             if(booking.getAssigned_employee().getUsername().equals(username)){
                 returnBookings.add(booking);
+
+                System.out.println("bookingsIf:"+booking);
             }
         }
 

@@ -44,15 +44,15 @@ class Worker_Dashboard extends Component{
 
       renderTableData() {
         return this.state.days.map((schedule, index) => {
-           const { monday, tuesday, wednesday, thursday, friday, saturday, sunday } = schedule //destructuring
+           const { date, time, duration, service, customer, notes, sunday } = schedule //destructuring
            return (
               <tr>
-                 <td>{monday}</td>
-                 <td>{tuesday}</td>
-                 <td>{wednesday}</td>
-                 <td>{thursday}</td>
-                 <td>{friday}</td>
-                 <td>{saturday}</td>
+                 <td>{date}</td>
+                 <td>{time}</td>
+                 <td>{duration}</td>
+                 <td>{service}</td>
+                 <td>{customer}</td>
+                 <td>{notes}</td>
                  <td>{sunday}</td>
               </tr>
            )

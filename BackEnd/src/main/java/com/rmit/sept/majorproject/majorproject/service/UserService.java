@@ -37,6 +37,8 @@ public class UserService implements UserDetailsService {
 
     public User findUser(String userName){
         Iterable<User> users = userRepository.findAll();
+
+        System.out.println("users: "+users);
         User foundUser = null;
 
         for(User user: users){
