@@ -69,7 +69,21 @@ confirmMessage = (event) =>{
     console.log("Duration: " + this.state.duration);
     console.log("Notes: " + this.state.notes);
 
-    alert('Your booking has been confirmed!');
+    if(this.state.duration == null || this.state.duration == '') {
+        alert('Please fill in the duration');
+    } 
+    else if(this.state.date == null) {
+        alert('Please select a date');
+    }
+    else if(this.state.time == null || this.state.time == '00:00') {
+        alert('Please select a time');
+    }
+    else if(this.state.notes == null || this.state.notes == '') {
+        alert('Please fill in the notes');
+    }
+    else {
+        alert('Your booking has been confirmed!');
+    }    
     
 }
 
@@ -115,7 +129,8 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
+            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>
+                  <option disabled selected value>-- Select a service --</option>   
                   <option name="service1">Dental Clinic</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
@@ -125,6 +140,7 @@ return(
             <label>Worker</label> 
             <br/>
             <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
+                  <option disabled selected value>-- Select a worker --</option>
                   <option name="worker1">Anthony</option>
                   <option name="worker2">Stephanie</option>
                   <option name="worker3">Catherine</option>
