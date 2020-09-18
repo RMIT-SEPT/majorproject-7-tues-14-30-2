@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.majorproject.service;
 
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
-import com.rmit.sept.majorproject.majorproject.exceptions.UserExeption;
+import com.rmit.sept.majorproject.majorproject.exceptions.UserException;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,14 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testAddUser_InvalidUsername_User(){
+    public void testAddUser_ValidUser_User(){
+        assertEquals(user1, mockUserService.saveOrUpdateUser(user1));
+        assertEquals(user2, mockUserService.saveOrUpdateUser(user2));
+        assertEquals(user3, mockUserService.saveOrUpdateUser(user3));
+    }
+
+    @Test
+    public void testAddUser_InvalidUsername_Null(){
         user1.setName("a");
         user2.setName("b");
         user3.setName("c");
@@ -106,14 +113,59 @@ public class UserServiceTests {
 
     @Test
     public void testDeleteUser_NoUsers_Exception(){
-        assertThrows(UserExeption.class, () -> {
+        Mockito.when(userRepository.findByUsername(user1.getUsername())).thenReturn(null);
+        Mockito.when(userRepository.findByUsername(user2.getUsername())).thenReturn(null);
+        Mockito.when(userRepository.findByUsername(user3.getUsername())).thenReturn(null);
+
+        assertThrows(UserException.class, () -> {
            mockUserService.deleteUserByUsername(user1.getUsername());
         });
-        assertThrows(UserExeption.class, () -> {
+        assertThrows(UserException.class, () -> {
             mockUserService.deleteUserByUsername(user2.getUsername());
         });
-        assertThrows(UserExeption.class, () -> {
+        assertThrows(UserException.class, () -> {
             mockUserService.deleteUserByUsername(user3.getUsername());
         });
+    }
+
+    @Test
+    public void testDeleteUser_UsersExists_Void(){
+        Mockito.when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
+        Mockito.when(userRepository.findByUsername(user2.getUsername())).thenReturn(user2);
+        Mockito.when(userRepository.findByUsername(user3.getUsername())).thenReturn(user3);
+
+        assertDoesNotThrow(() -> {
+            mockUserService.deleteUserByUsername(user1.getUsername());
+        });
+        assertDoesNotThrow(() -> {
+            mockUserService.deleteUserByUsername(user2.getUsername());
+        });
+        assertDoesNotThrow(() -> {
+            mockUserService.deleteUserByUsername(user3.getUsername());
+        });
+    }
+
+    @Test
+    public void testVerifyRole_InvalidRole_False(){
+        String invalidRole1 = "FakeRole";
+        String invalidRole2 = "Cust";
+        String invalidRole3 = "Administrator";
+        String invalidRole4 = "Employee";
+
+        assertFalse(mockUserService.verifyRole(invalidRole1));
+        assertFalse(mockUserService.verifyRole(invalidRole2));
+        assertFalse(mockUserService.verifyRole(invalidRole3));
+        assertFalse(mockUserService.verifyRole(invalidRole4));
+    }
+
+    @Test
+    public void testVerifyRole_ValidRole_True(){
+        String validRole1 = "CUSTOMER";
+        String validRole2 = "WORKER";
+        String validRole3 = "ADMIN";
+
+        assertTrue(mockUserService.verifyRole(validRole1));
+        assertTrue(mockUserService.verifyRole(validRole2));
+        assertTrue(mockUserService.verifyRole(validRole3));
     }
 }

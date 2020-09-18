@@ -47,6 +47,11 @@ public class BookingController {
                     booking.getAssigned_employee().getUsername()));
         }
         Booking booking1 = bookingService.saveOrUpdateBooking(booking);
+
+        if (booking1 == null){
+            return new ResponseEntity<String>("Invalid booking", HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<Booking>(booking, HttpStatus.CREATED);
     }
 

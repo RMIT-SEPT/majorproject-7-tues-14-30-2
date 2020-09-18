@@ -36,6 +36,26 @@ public class BookingServiceTests {
     }
 
     @Test
+    public void testCheckDate_PastDate_Minus1(){
+        /* Reason for subtracting 1900 from the year, is due to the formatting of the year when using
+         * the Date class.
+         */
+        SimpleDateFormat stformat = new SimpleDateFormat("HH:mm:ss");
+        Date date1 = new Date();
+        date1.setYear(2000 - 1900);
+        Date date2 = new Date();
+        date2.setYear(2020 - 1900);
+        date2.setMonth(1);
+        Date date3 = new Date();
+        date3.setYear(2020 - 1900);
+        date3.setMonth(9 - 1);
+        date3.setDate(1);
+        assertEquals(-1, bookingService.checkDate(date1));
+        assertEquals(-1, bookingService.checkDate(date2));
+        assertEquals(-1, bookingService.checkDate(date3));
+    }
+
+    @Test
     public void testAddBooking_InvalidDate_Null(){
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat stformat = new SimpleDateFormat("HH:mm:ss");
