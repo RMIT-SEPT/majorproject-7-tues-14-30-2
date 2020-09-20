@@ -1,18 +1,16 @@
 FROM node as frontend
-WORKDIR /frontend
-COPY frontend .
-RUN npm ci
+WORKDIR /frontend/myapp
+COPY frontend/myapp .
+RUN npm install
 RUN npm run-script build
-
-FROM maven:3.6.3-jdk-11 as backend
-WORKDIR /backend
-COPY backend .
+FROM maven:3.6.3-jdk-11 as BackEnd
+WORKDIR /BackEnd
+COPY BackEnd .
 RUN mkdir -p src/main/resources/static
-COPY --from=frontend /frontend/build src/main/resources/static
+COPY --from=frontend /frontend/myapp/build src/main/resources/static
 RUN mvn clean verify
-
 FROM openjdk:14-jdk-alpine
-COPY --from=backend /backend/target/backend-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=BackEnd /BackEnd/target/majorproject-0.0.1-SNAPSHOT.jar ./app.jar
 EXPOSE 8080
 RUN adduser -D user
 USER user
