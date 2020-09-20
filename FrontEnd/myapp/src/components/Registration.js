@@ -1,28 +1,49 @@
 import React,{Component} from 'react'
 import"./Registration.css";
+import axios from 'axios'
 
 
+class Registration extends Component{
+    constructor(props){
+        super(props)
 
-
-    class Registration extends Component{
-        constructor(props){
-            super(props)
-
-        this.state={
-            name:'',
-            address:'',
-            phone:''
+    this.state={
+        name:'',
+        username:'',
+        password:'',
+        address:'',
+        contact:'',
+        role:''
             
-        }
+    }
+    this.OnSubmit = this.OnSubmit.bind(this)
 
-         }
+
+    }
+
+    OnSubmit(e){
+        e.preventDefault();
+        const newUser = {
+            name:this.state.name,
+            username:this.state.username,
+            password:this.state.password,
+            address:this.state.address,
+            contact:this.state.contact,
+            role:"Customer"
+        }
+        console.log(newUser);
+      
+        axios.post('http://localhost:8080/api/user', newUser);
+        this.props.history.push('/Customer_Dashboard')
+              
+    };
 
 handleNameChange = (event) =>{
     this.setState({
         name: event.target.value 
     })
 }         
-        
+
 handleUsernameChange = (event) =>{
     this.setState({
         username: event.target.value 
@@ -41,48 +62,45 @@ handleAddressChange = (event) =>{
     })
 }
 
-handlePhoneChange = (event) =>{
+handleContactChange = (event) =>{
     this.setState({
-        phone: event.target.value 
+        contact: event.target.value 
     })
 }
 
     render(){
-        const {name,username,password,address,phone} = this.state
     return(
         <div class="centered">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.OnSubmit}>
 
         <div classname="form"> 
 
         <label>Name</label><br></br>
-        <input type='text'
-        value={name}
-        onChange={this.handleNameChange}
-        />
+        <input type='text' value={this.state.name} onChange={this.handleNameChange}/>
         <br></br>
+
         <label>Username</label><br></br>
         <input type='text'
-         value={username}
+         value={this.state.username}
         onChange={this.handleUsernameChange}
         />
         <br></br>
         <label>Password</label><br></br>
         <input type='password'
-        value={password}
+        value={this.state.password}
         onChange={this.handlePasswordChange}
         />
         <br></br>
         <label>Address</label><br></br>
         <input type='text'
-         value={address}
+         value={this.state.address}
         onChange={this.handleAddressChange}
         />
         <br></br>
         <label>Phone</label><br></br>
         <input type='text'
-         value={phone}
-        onChange={this.handlePhoneChange}
+         value={this.state.contact}
+        onChange={this.handleContactChange}
         />
 
         </div>
