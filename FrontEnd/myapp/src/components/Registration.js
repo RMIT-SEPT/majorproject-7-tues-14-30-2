@@ -3,6 +3,7 @@ import"./Registration.css";
 import axios from 'axios'
 
 
+
 class Registration extends Component{
     constructor(props){
         super(props)
@@ -22,6 +23,7 @@ class Registration extends Component{
     }
 
     OnSubmit(e){
+        
         e.preventDefault();
         const newUser = {
             name:this.state.name,
@@ -31,10 +33,13 @@ class Registration extends Component{
             contact:this.state.contact,
             role:"Customer"
         }
+        if(newUser.name=='' || newUser.username == '' || newUser.password =='' || newUser.address == '' || newUser.contact == ''){
+            alert('Please fill in the information');
+        }
         console.log(newUser);
       
         axios.post('http://localhost:8080/api/user', newUser);
-        this.props.history.push('/Customer_Dashboard')
+        this.props.history.push('/')
               
     };
 
@@ -63,8 +68,13 @@ handleAddressChange = (event) =>{
 }
 
 handleContactChange = (event) =>{
+    let phone = event.target.value;
+    //only accepts number
+    if(!Number(phone)){
+        return;
+    }
     this.setState({
-        contact: event.target.value 
+        contact: phone
     })
 }
 
@@ -76,32 +86,32 @@ handleContactChange = (event) =>{
         <div classname="form"> 
 
         <label>Name</label><br></br>
-        <input type='text' value={this.state.name} onChange={this.handleNameChange}/>
+        <input type='text' value={this.state.name} onChange={this.handleNameChange} required/>
         <br></br>
 
         <label>Username</label><br></br>
         <input type='text'
          value={this.state.username}
         onChange={this.handleUsernameChange}
-        />
+        required/>
         <br></br>
         <label>Password</label><br></br>
         <input type='password'
         value={this.state.password}
         onChange={this.handlePasswordChange}
-        />
+        required/>
         <br></br>
         <label>Address</label><br></br>
         <input type='text'
          value={this.state.address}
         onChange={this.handleAddressChange}
-        />
+        required/>
         <br></br>
         <label>Phone</label><br></br>
         <input type='text'
          value={this.state.contact}
         onChange={this.handleContactChange}
-        />
+        required/>
 
         </div>
         <br></br> 
