@@ -1,28 +1,56 @@
 import React,{Component} from 'react'
 import"./Registration.css";
+import axios from 'axios'
 
 
 
+class Registration extends Component{
+    constructor(props){
+        super(props)
 
-    class Registration extends Component{
-        constructor(props){
-            super(props)
-
-        this.state={
-            name:'',
-            address:'',
-            phone:''
+    this.state={
+        name:'',
+        username:'',
+        password:'',
+        address:'',
+        contact:'',
+        role:''
             
-        }
+    }
+    this.OnSubmit = this.OnSubmit.bind(this)
 
-         }
+
+    }
+
+    OnSubmit(e){
+        
+        e.preventDefault();
+        const newUser = {
+            name:this.state.name,
+            username:this.state.username,
+            password:this.state.password,
+            address:this.state.address,
+            contact:this.state.contact,
+            role:"Customer"
+        }
+        if(newUser.name=='' || newUser.username == '' || newUser.password =='' || newUser.address == '' || newUser.contact == ''){
+            alert('Please fill in the information');
+        }
+        console.log(newUser);
+      
+        axios.post('http://localhost:8080/api/user', newUser);
+        this.props.history.push('/')
+
+        alert('Account Created!');
+              
+    };
 
 handleNameChange = (event) =>{
     this.setState({
         name: event.target.value 
     })
 }         
-        
+
 handleUsernameChange = (event) =>{
     this.setState({
         username: event.target.value 
@@ -41,49 +69,51 @@ handleAddressChange = (event) =>{
     })
 }
 
-handlePhoneChange = (event) =>{
+handleContactChange = (event) =>{
+    let phone = event.target.value;
+    //only accepts number
+    if(!Number(phone)){
+        return;
+    }
     this.setState({
-        phone: event.target.value 
+        contact: phone
     })
 }
 
     render(){
-        const {name,username,password,address,phone} = this.state
     return(
         <div class="centered">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.OnSubmit}>
 
         <div classname="form"> 
 
         <label>Name</label><br></br>
-        <input type='text'
-        value={name}
-        onChange={this.handleNameChange}
-        />
+        <input type='text' value={this.state.name} onChange={this.handleNameChange} required/>
         <br></br>
+
         <label>Username</label><br></br>
         <input type='text'
-         value={username}
+         value={this.state.username}
         onChange={this.handleUsernameChange}
-        />
+        required/>
         <br></br>
         <label>Password</label><br></br>
         <input type='password'
-        value={password}
+        value={this.state.password}
         onChange={this.handlePasswordChange}
-        />
+        required/>
         <br></br>
         <label>Address</label><br></br>
         <input type='text'
-         value={address}
+         value={this.state.address}
         onChange={this.handleAddressChange}
-        />
+        required/>
         <br></br>
         <label>Phone</label><br></br>
         <input type='text'
-         value={phone}
-        onChange={this.handlePhoneChange}
-        />
+         value={this.state.contact}
+        onChange={this.handleContactChange}
+        required/>
 
         </div>
         <br></br> 

@@ -1,6 +1,7 @@
 package com.rmit.sept.majorproject.majorproject.service;
 
 import com.rmit.sept.majorproject.majorproject.Repositories.UserRepository;
+import com.rmit.sept.majorproject.majorproject.exceptions.UserException;
 import com.rmit.sept.majorproject.majorproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +26,20 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public void deleteUserByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new UserException("Cannot delete User with username: '" + username + "'. User does not exists");
+        }
+
+        userRepository.delete(user);
+    }
+
     public User findUser(String userName){
         Iterable<User> users = userRepository.findAll();
         User foundUser = null;
 
         for(User user: users){
-            //System.out.print(user.getUsername() + userName);
             if(user.getUsername().equals(userName)){
                 foundUser = user;
             }
@@ -38,28 +48,39 @@ public class UserService implements UserDetailsService {
         return foundUser;
     }
 
-    public boolean findContact(String contact){
+    public User findWorkerFromName(String name){
         Iterable<User> users = userRepository.findAll();
         for(User user : users){
-            if(user.getContact().equals(contact)){
-                return true;
+            if(user.getName().equals(name)){
+                if(user.getRole().equals("WORKER")){
+                    return user;
+                }
             }
         }
-        return false;
+        return null;
     }
 
-    public User verifyUser(String username, String password){
+    public Iterable<User> getUserType(String type){
         Iterable<User> users = userRepository.findAll();
-        User foundUser = null;
+        List<User> returnUsers = new ArrayList<>();
 
         for(User user: users){
-            if(user.getUsername().equals(username) && user.getPassword().equals(password)){
-                foundUser = user;
+            if(user.getRole().equals(type)){
+                returnUsers.add(user);
             }
         }
 
-        return foundUser;
+        return returnUsers;
+    }
 
+    public boolean verifyRole(String role){
+        if (role.toUpperCase().equals("CUSTOMER") ||
+                role.toUpperCase().equals("ADMIN") ||
+                role.toUpperCase().equals("WORKER")){
+            return true;
+        }
+
+        return false;
     }
 
     @Override

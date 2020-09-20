@@ -3,7 +3,6 @@ package com.rmit.sept.majorproject.majorproject.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -12,20 +11,31 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date booking_date;
+
     @JsonFormat(pattern = "HH:mm:ss")
     private Date booking_time;
-    @ManyToOne(fetch=FetchType.LAZY)
+
+    private int duration;
+
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
+
     private String notes;
-    @ManyToOne(fetch=FetchType.LAZY)
+
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "CUSTOMER_USERNAME")
     private User customer;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "SERVICE")
+    private Services bookedService;
+    
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date created_At;
-    @JsonFormat(pattern ="yyyy-mm-dd")
+    @JsonFormat(pattern ="yyyy-MM-dd")
     private Date updated_At;
 
     public Booking(){
@@ -93,6 +103,22 @@ public class Booking {
 
     public void setUpdated_At(Date updated_At) {
         this.updated_At = updated_At;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Services getBookedService() {
+        return bookedService;
+    }
+
+    public void setBookedService(Services bookedService) {
+        this.bookedService = bookedService;
     }
 
     @PrePersist
