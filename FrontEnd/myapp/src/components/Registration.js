@@ -40,6 +40,8 @@ class Registration extends Component{
       
         axios.post('http://localhost:8080/api/user', newUser);
         this.props.history.push('/')
+
+        alert('Account Created!');
               
     };
 
