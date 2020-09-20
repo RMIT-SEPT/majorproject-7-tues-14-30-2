@@ -24,8 +24,10 @@ public class ServiceService {
         List<Services> returnServices = new ArrayList<>();
 
         for(Services service : servicesIterable){
-            if(service.getAssigned_employee().getUsername().equals(username)){
-                returnServices.add(service);
+            if(service.getAssigned_employee() != null) {
+                if (service.getAssigned_employee().getUsername().equals(username)) {
+                    returnServices.add(service);
+                }
             }
         }
 

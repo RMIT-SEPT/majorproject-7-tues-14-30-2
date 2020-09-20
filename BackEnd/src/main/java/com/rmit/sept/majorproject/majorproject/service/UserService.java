@@ -74,7 +74,9 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean verifyRole(String role){
-        if (role.equals("CUSTOMER") || role.equals("ADMIN") || role.equals("WORKER")){
+        if (role.toUpperCase().equals("CUSTOMER") ||
+                role.toUpperCase().equals("ADMIN") ||
+                role.toUpperCase().equals("WORKER")){
             return true;
         }
 
