@@ -24,8 +24,10 @@ public class ServiceService {
         List<Services> returnServices = new ArrayList<>();
 
         for(Services service : servicesIterable){
-            if(service.getAssigned_employee().getUsername().equals(username)){
-                returnServices.add(service);
+            if(service.getAssigned_employee() != null) {
+                if (service.getAssigned_employee().getUsername().equals(username)) {
+                    returnServices.add(service);
+                }
             }
         }
 
@@ -47,7 +49,6 @@ public class ServiceService {
     public Services findServiceFromWorker(String serviceName, String worker){
         Iterable<Services> servicesIterable = serviceRepository.findAll();
         for(Services services : servicesIterable){
-            System.out.println(services.getService());
             if(services.getService().equals(serviceName)){
                 if(services.getAssigned_employee().getUsername().equals(worker)){
                     return services;
