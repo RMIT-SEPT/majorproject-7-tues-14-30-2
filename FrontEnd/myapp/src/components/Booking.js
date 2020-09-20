@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import"./Booking.css";
-import DateField from './DateField'
-import TimeField from './TimeField'
+import DatePicker from 'react-date-picker';
+import TimePicker from 'react-time-picker'
+import axios from 'axios'
 
 
 class Booking extends Component{
@@ -9,17 +10,14 @@ class Booking extends Component{
         super(props)
     
     this.state={
-            date:'',
-            time:'',
+            date: new Date(),
+            time:'00:00',
             worker:'',
             service:'',
-            notes:''
+            duration:'',
+            notes:'',
+    };
     }
-}
-
-confirmMessage() {
-    alert('Your booking has been confirmed!');
-}
 
 handleNotesChange = (event) =>{
     this.setState({
@@ -38,6 +36,38 @@ handleWorkerChange = (event) =>{
         worker: event.target.value 
     })
 }
+
+handleDurationChange = (event) =>{
+    this.setState({
+        duration: event.target.value,
+    })
+}
+
+handleDateChange = (date) => {
+    this.setState({
+      date: date
+    })
+  }
+
+handleTimeChange = (time) => {
+    this.setState({
+      time: time
+    })
+  }
+
+confirmMessage = (event) =>{
+    event.preventDefault()
+    console.log("Date: " + this.state.date);
+    console.log("Time: " + this.state.time);
+    console.log("Worker: " + this.state.worker);
+    console.log("Service: " + this.state.service);
+    console.log("Duration: " + this.state.duration);
+    console.log("Notes: " + this.state.notes);
+
+    alert('Your booking has been confirmed!');
+    
+}
+
 
 render(){
     const {username,password} = this.state
@@ -65,14 +95,22 @@ return(
                   <option name="worker3">Worker 3</option>
             </select>
             <br/>
+            <label>Duration</label>
+            <br/>
+            <input type ='text' name='duration' value={this.state.duration} onChange={this.handleDurationChange}/>
             <br/>
             <label>Date</label> 
             <br/>
-            <DateField/>
+
+            <DatePicker name = 'date' onChange={this.handleDateChange} value={this.state.date}/>
+            
             <br/>
             <label>Time</label> 
             <br/>
-            <TimeField/>
+
+            <TimePicker name = 'time' onChange={this.handleTimeChange} value={this.state.time}/>
+
+            
             <br/>
             <label>Notes</label>
             <br/>
@@ -81,7 +119,7 @@ return(
             
        
         </div>
-        <button className="book_btn" onClick={this.confirmMessage}>Book</button>   
+        <button type = 'submit' className="book_btn" onClick={this.confirmMessage}>Book</button>   
 
         </form>
 
