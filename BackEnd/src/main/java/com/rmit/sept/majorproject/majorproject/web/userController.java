@@ -26,10 +26,10 @@ public class userController {
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {
-                return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<FieldError>(error, HttpStatus.BAD_REQUEST);
             }
         }
-
+      
         User user1 = userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
