@@ -19,10 +19,14 @@ class Login extends Component{
      var check_refresh=localStorage.getItem("check_refresh")
   if(check_refresh==='refreshed'){
     localStorage.setItem("check_refresh", "");
+    localStorage.setItem("user_role",'');
+
   }
   else{
     localStorage.setItem("check_refresh", "refreshed");
+    localStorage.setItem("user_role",'');
     window.location.reload(false);
+
       }
  }
     

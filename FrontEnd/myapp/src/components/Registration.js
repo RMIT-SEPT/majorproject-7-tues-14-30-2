@@ -33,7 +33,7 @@ class Registration extends Component{
             contact:this.state.contact,
             role:"Customer"
         }
-        if(newUser.name=='' || newUser.username == '' || newUser.password =='' || newUser.address == '' || newUser.contact == ''){
+        if(newUser.name==='' || newUser.username === '' || newUser.password ==='' || newUser.address === '' || newUser.contact === ''){
             alert('Please fill in the information');
         }
         console.log(newUser);
