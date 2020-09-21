@@ -10,7 +10,7 @@ services:
       - "8080:8080"
   frontend:
     build:
-      context: './frontend/myapp'
+      context: './FrontEnd/myapp'
       dockerfile: Dockerfile
     container_name: frontend
     ports:
