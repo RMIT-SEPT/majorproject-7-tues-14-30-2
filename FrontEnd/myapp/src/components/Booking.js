@@ -59,6 +59,7 @@ handleDateChange = (date) => {
       })
   }
 
+
 handleTimeChange = (time) => {
     this.setState({
       time: time
@@ -112,7 +113,6 @@ handleTimeChange = (time) => {
     
 }
 
-
 renderTableData() {
     return this.state.services.map((schedule, index) => {
        const { service, opening, days, worker } = schedule //destructuring
@@ -149,7 +149,7 @@ return(
                  </tbody>
               </table>
 
-        <form onSubmit={this.onSubmit}>
+         <form onSubmit={this.onSubmit}>
         <div class = "inputField">
             <label>Service</label> 
             <br/>
@@ -199,5 +199,4 @@ return(
      )       
     }
 }
-
 export default Booking
