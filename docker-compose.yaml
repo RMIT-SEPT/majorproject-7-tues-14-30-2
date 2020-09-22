@@ -10,11 +10,13 @@ services:
       - "8080:8080"
   frontend:
     build:
-      context: './frontend/myapp'
+      context: './FrontEnd/myapp'
       dockerfile: Dockerfile
     container_name: frontend
     ports:
       - "3000:3000"
+    links:
+      - "backend"
     tty: true
     stdin_open: true
     
