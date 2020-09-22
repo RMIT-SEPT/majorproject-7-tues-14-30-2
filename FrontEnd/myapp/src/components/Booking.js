@@ -125,7 +125,6 @@ handleTimeChange = (time) => {
         else {
             alert('Your booking has been confirmed!');
         }        
- 
 }
 
 renderTableData() {
@@ -168,9 +167,8 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>
-                  <option disabled selected value>-- Select a service --</option>   
-                  <option name="service1">Dental Clinic</option>
+            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
+                  <option name="service1">Service1</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
             </select>
@@ -179,8 +177,7 @@ return(
             <label>Worker</label> 
             <br/>
             <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option disabled selected value>-- Select a worker --</option>
-                  <option name="worker1">Anthony</option>
+                  <option name="worker1">Worker1</option>
                   <option name="worker2">Stephanie</option>
                   <option name="worker3">Catherine</option>
                   </select>

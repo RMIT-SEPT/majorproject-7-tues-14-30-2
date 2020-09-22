@@ -43,8 +43,10 @@ public class BookingController {
             booking.setAssigned_employee(userService.findWorkerFromName(workerName));
         }
         if(booking.getBookedService() == null){
-            booking.setBookedService(serviceService.findServiceFromWorker(servicename,
-                    booking.getAssigned_employee().getUsername()));
+            if(booking.getAssigned_employee() != null) {
+                booking.setBookedService(serviceService.findServiceFromWorker(servicename,
+                        booking.getAssigned_employee().getUsername()));
+            }
         }
         Booking booking1 = bookingService.saveOrUpdateBooking(booking);
 
