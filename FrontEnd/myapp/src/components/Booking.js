@@ -83,7 +83,7 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
-    axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
+    axios.post(`http://ec2-100-26-250-176.compute-1.amazonaws.com:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
         notes: this.state.notes,

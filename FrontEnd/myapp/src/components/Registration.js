@@ -38,7 +38,7 @@ class Registration extends Component{
         }
         console.log(newUser);
       
-        axios.post('http://localhost:8080/api/user', newUser);
+        axios.post('http://ec2-100-26-250-176.compute-1.amazonaws.com:8080/api/user', newUser);
         this.props.history.push('/')
 
         alert('Account Created!');
