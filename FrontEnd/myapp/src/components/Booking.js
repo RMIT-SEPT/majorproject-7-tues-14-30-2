@@ -110,6 +110,7 @@ handleTimeChange = (time) => {
             console.log(error)
         })
 
+
     
 }
 
@@ -153,8 +154,7 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
-                  <option name="service1">Service1</option>
+
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
             </select>
@@ -163,7 +163,7 @@ return(
             <label>Worker</label> 
             <br/>
             <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="worker1">Worker1</option>
+
                   <option name="worker2">Stephanie</option>
                   <option name="worker3">Catherine</option>
                   </select>
