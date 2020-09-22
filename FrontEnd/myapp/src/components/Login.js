@@ -18,11 +18,7 @@ class Login extends Component{
  UNSAFE_componentWillMount(){
      var check_refresh=localStorage.getItem("check_refresh")
   if(check_refresh==='refreshed'){
-    localStorage.setItem("check_refresh", "");
-  }
-  else{
-    localStorage.setItem("check_refresh", "refreshed");
-    window.location.reload(false);
+
       }
  }
     

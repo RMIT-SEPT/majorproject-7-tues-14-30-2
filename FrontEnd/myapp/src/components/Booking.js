@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import"./Booking.css";
-import DatePicker from 'react-date-picker';
-import TimePicker from 'react-time-picker'
-import axios from 'axios'
+import axios from 'axios';
+import DatePicker from "react-datepicker";
+import moment from 'moment';
+import TimePicker from 'rc-time-picker';
+import "react-datepicker/dist/react-datepicker.css";
+import 'rc-time-picker/assets/index.css';
 
 
 class Booking extends Component{
@@ -11,7 +14,7 @@ class Booking extends Component{
     
     this.state={
             date: new Date(),
-            time:'00:00',
+            time:'',
             worker:'',
             service:'',
             duration:'',
@@ -50,9 +53,12 @@ handleDurationChange = (event) =>{
 
 handleDateChange = (date) => {
     this.setState({
-      date: date
-    })
+        //convert to year-month-day
+      date :moment(date).format('YYYY-MM-DD')
+
+      })
   }
+
 
 handleTimeChange = (time) => {
     this.setState({
@@ -60,19 +66,66 @@ handleTimeChange = (time) => {
     })
   }
 
-confirmMessage = (event) =>{
-    event.preventDefault()
-    console.log("Date: " + this.state.date);
-    console.log("Time: " + this.state.time);
-    console.log("Worker: " + this.state.worker);
-    console.log("Service: " + this.state.service);
-    console.log("Duration: " + this.state.duration);
-    console.log("Notes: " + this.state.notes);
-
-    alert('Your booking has been confirmed!');
+  onSubmit = (event) =>{
+    event.preventDefault() 
+    var info={
+        workername:this.state.worker,
+        servicename:this.state.service
+    }
+    var workername = info.workername;
+    var servicename = info.servicename;
     
-}
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("user_password");
+    var name = localStorage.getItem("user_name");
+    var address = localStorage.getItem("user_address");
+    var contact = localStorage.getItem("user_contact");
+    var role = localStorage.getItem("user_role");
+    //convert timestamp to hh-mm-ss
+    var time =moment(this.state.time).format('HH:mm:ss');
+    axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
+        booking_date: this.state.date,
+        booking_time:time,
+        notes: this.state.notes,
+        customer : 
+            {
+                username:username,
+                password: password,
+                name: name,
+                address: address,
+                contact: contact,
+                role: role
+            },
+        booked_service:servicename,
+        duration: this.state.duration
+    })
 
+        .then((res)=>{
+            console.log(res)
+                alert('Your booking has been confirmed!');
+
+        })
+        
+        .catch((error)=>{
+            console.log(error)
+        })
+
+        if(this.state.date == null) {
+            alert('Please select a date');
+        } 
+        else if(this.state.time == null || this.state.time == '') {
+            alert('Please select a time');
+        }
+        else if(this.state.duration == null || this.state.duration == '') {
+            alert('Please fill in the duration');
+        }
+        else if(this.state.notes == null || this.state.notes == '') {
+            alert('Please fill in the notes');
+        }
+        else {
+            alert('Your booking has been confirmed!');
+        }        
+}
 
 renderTableData() {
     return this.state.services.map((schedule, index) => {
@@ -97,7 +150,6 @@ renderTableHeader() {
 
 
 render(){
-    const {username,password} = this.state
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
@@ -111,12 +163,12 @@ return(
                  </tbody>
               </table>
 
-        <form onSubmit={this.handleSubmit}>
+         <form onSubmit={this.onSubmit}>
         <div class = "inputField">
             <label>Service</label> 
             <br/>
             <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
-                  <option name="service1">Dental Clinic</option>
+                  <option name="service1">Service1</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
             </select>
@@ -125,32 +177,27 @@ return(
             <label>Worker</label> 
             <br/>
             <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="worker1">Anthony</option>
+                  <option name="worker1">Worker1</option>
                   <option name="worker2">Stephanie</option>
                   <option name="worker3">Catherine</option>
-            </select>
-            <br/>
-            <br/>
-            <label>Duration</label>
-            <br/>
-            <input type ='text' name='duration' value={this.state.duration} onChange={this.handleDurationChange}/>
+                  </select>
             <br/>
             <br/>
             <label>Date</label> 
             <br/>
-
-            <DatePicker name = 'date' onChange={this.handleDateChange} value={this.state.date}/>
-            
-            <br/>
+            <DatePicker value={this.state.date} onChange={this.handleDateChange} minDate={new Date()}/>
             <br/>
             <label>Time</label> 
             <br/>
+            <TimePicker value={this.state.time} onChange={this.handleTimeChange} />
 
-            <TimePicker name = 'time' onChange={this.handleTimeChange} value={this.state.time}/>
-
-            
+              <br/>
             <br/>
+            <label>Duration(mins)</label>
             <br/>
+            <input type='number' min="1" name='duration' value={this.state.duration} onChange={this.handleDurationChange}/>
+            <br/>
+           
             <label>Notes</label>
             <br/>
             <input type = 'text' name = 'notes' value={this.state.notes} onChange={this.handleNotesChange}/>
@@ -158,7 +205,7 @@ return(
             
        
         </div>
-        <button type = 'submit' className="book_btn" onClick={this.confirmMessage}>Book</button>   
+        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>   
 
         </form>
 
@@ -166,5 +213,4 @@ return(
      )       
     }
 }
-
 export default Booking
