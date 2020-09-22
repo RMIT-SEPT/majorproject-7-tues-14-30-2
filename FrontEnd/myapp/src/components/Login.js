@@ -17,10 +17,20 @@ class Login extends Component{
  } 
  UNSAFE_componentWillMount(){
      var check_refresh=localStorage.getItem("check_refresh")
-  if(check_refresh==='refreshed'){
-
+     if(check_refresh==='refreshed'){
+         localStorage.clear();
+        localStorage.setItem("check_refresh", "");
+        localStorage.setItem("user_role",'');
+    
       }
- }
+      else{
+        localStorage.clear();
+        localStorage.setItem("check_refresh", "refreshed");
+        localStorage.setItem("user_role",'');
+        window.location.reload(false);
+    
+          }
+        }
     
    
     OnChange = (e) => {
