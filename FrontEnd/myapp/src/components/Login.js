@@ -47,7 +47,7 @@ class Login extends Component{
         localStorage.setItem("username",username);
         var password=login.password;
         localStorage.setItem("user_password",password);
-        axios.post('http://ec2-100-26-250-176.compute-1.amazonaws.com:8080/authenticate',{
+        axios.post('http://ec2-54-208-156-197.compute-1.amazonaws.com:8080/authenticate',{
             username:this.state.username,
             password:this.state.password
             })
@@ -55,7 +55,7 @@ class Login extends Component{
             localStorage.setItem("user_token",res.data.jwt);
            var token = localStorage.getItem("user_token")
             var username =login.username;
-          axios.get(`http://ec2-100-26-250-176.compute-1.amazonaws.com:8080/find/${username}`,{
+          axios.get(`http://ec2-54-208-156-197.compute-1.amazonaws.com:8080/find/${username}`,{
           headers: {
             'Authorization': `Bearer ${token}`
           
