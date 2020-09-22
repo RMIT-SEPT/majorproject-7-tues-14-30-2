@@ -154,7 +154,7 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-
+            <select>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
             </select>
