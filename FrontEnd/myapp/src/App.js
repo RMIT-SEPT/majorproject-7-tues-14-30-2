@@ -7,7 +7,7 @@ import NavBar from './components/NavBar';
 import Customer_Dashboard from './components/Customer_Dashboard';
 import Worker_Dashboard from './components/Worker_Dashboard';
 import Admin_Dashboard from './components/Admin_Dashboard' ;
-
+import Add_Availability from './components/Add_Availability';
 
         
 import{BrowserRouter,Route,Switch} from 'react-router-dom'
@@ -26,6 +26,7 @@ class App extends Component {
       <Route path='/Booking' component={Booking}/>
       <Route path='/Business_Contact' component={Business_Contact}/>
       <Route path='/Registration' component={Registration}/>
+      <Route path = '/Add_Availability' component={Add_Availability}/>
        <Route path='/' component={Login} exact/>
       </Switch>
       </div>
