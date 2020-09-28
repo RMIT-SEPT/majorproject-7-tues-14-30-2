@@ -122,9 +122,7 @@ handleTimeChange = (time) => {
         else if(this.state.notes == null || this.state.notes == '') {
             alert('Please fill in the notes');
         }
-        else {
-            alert('Your booking has been confirmed!');
-        }        
+ 
 }
 
 renderTableData() {
