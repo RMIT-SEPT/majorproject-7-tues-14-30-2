@@ -10,6 +10,7 @@
 .brand-title {
   font-size: 1.5rem;
   margin: .5rem;
+  
 }
 
 .navbar-links {
@@ -37,6 +38,12 @@
   background-color: #555;
 }
 
+a:-webkit-any-link {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+
+}
 
 
 
