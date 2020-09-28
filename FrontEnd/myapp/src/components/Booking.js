@@ -112,7 +112,10 @@ handleTimeChange = (time) => {
         booked_service:servicename,
         duration: this.state.duration
     })
-
+        .then((res)=>{
+            console.log(res);
+            alert("Your booking has been confirmed");
+        })
         
         .catch((error)=>{
             console.log(error)
