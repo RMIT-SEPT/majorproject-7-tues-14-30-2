@@ -119,6 +119,7 @@ handleTimeChange = (time) => {
         }
         else {
             alert('Your booking has been confirmed!');
+            window.location.reload(false);
         }   
  
 }
