@@ -41,8 +41,6 @@ import{Link} from "react-router-dom"
           <Link to="Admin_Dashboard"><div className="brand-title">SEPT Project</div></Link>
           <div className="navbar-links">
             <ul>
-            <li>
-              <Link to="/Add_Worker">Create Worker</Link></li>
                <li><Link to="/" onClick={this.logout}>Logout</Link></li>
             </ul>
           </div>
