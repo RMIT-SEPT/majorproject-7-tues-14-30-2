@@ -24,6 +24,7 @@ class Add_Worker extends Component{
              }
 
     OnSubmit(e){
+        e.preventDefault();
         axios.post(`http://localhost:8080/api/user`,{
             username: this.state.username,
             password: this.state.password,
@@ -35,6 +36,7 @@ class Add_Worker extends Component{
         .then((res) => {
             console.log(res)
             alert("A worker account has been created");
+            window.location.reload(false);
         })
         .catch((err) =>{
             alert("A worker account has not been created");
