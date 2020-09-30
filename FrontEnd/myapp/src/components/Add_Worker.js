@@ -24,7 +24,6 @@ class Add_Worker extends Component{
              }
 
     OnSubmit(e){
-        e.preventDefault();
         axios.post(`http://localhost:8080/api/user`,{
             username: this.state.username,
             password: this.state.password,
