@@ -90,6 +90,14 @@ handleCheckboxChange = (event) =>{
     if(this.state.saturday===true){
         input_days.push('7');
     }
+    var available_days = '';
+    var i;
+    for (i = 0; i <input_days.length; i++) { 
+        available_days += input_days[i];
+        if(i<input_days.length-1){
+            available_days += ',';
+        }
+    }
 
     var time =moment(this.state.time).format('HH:mm:ss');
     const newAvailability = {
@@ -104,9 +112,11 @@ handleCheckboxChange = (event) =>{
         service: this.state.service,
         start_time: moment(this.state.start_time).format('HH:mm'),
         end_time: moment(this.state.end_time).format('HH:mm'),
-        available_days: ''
+        available_days: available_days
         
     }
+    console.log(newAvailability)
+    axios.post('http://localhost:8080/api/services', newAvailability);
 
     if(this.state.service === null || this.state.service ===''){
         alert('Please fill in the service');
