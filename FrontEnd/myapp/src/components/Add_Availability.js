@@ -57,62 +57,79 @@ handleCheckboxChange = (event) =>{
     
 }
 
-  onSubmit = (event) =>{
+  OnSubmit = (event) =>{
     event.preventDefault() 
     console.log(this.state.service)
-    // var username = localStorage.getItem("username");
-    // var password = localStorage.getItem("user_password");
-    // var name = localStorage.getItem("user_name");
-    // var address = localStorage.getItem("user_address");
-    // var contact = localStorage.getItem("user_contact");
-    // var role = localStorage.getItem("user_role");
-    // var time =moment(this.state.time).format('HH:mm:ss');
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("user_password");
+    var name = localStorage.getItem("user_name");
+    var address = localStorage.getItem("user_address");
+    var contact = localStorage.getItem("user_contact");
+    var role = localStorage.getItem("user_role");
+    var time =moment(this.state.time).format('HH:mm:ss');
+    let input_days = [];
 
-    // var available_days = '';
+    if(this.state.sunday===true){
+        input_days.push('1');
+    }
+    if(this.state.monday===true){
+        input_days.push('2');
+    }
+    if(this.state.tuesday===true){
+        input_days.push('3');
+    }
+    if(this.state.wednesday===true){
+        input_days.push('4');
+    }
+    if(this.state.thursday===true){
+        input_days.push('5');
+    }
+    if(this.state.friday===true){
+        input_days.push('6');
+    }
+    if(this.state.saturday===true){
+        input_days.push('7');
+    }
 
-    // if(this.state.sunday === true){
-    //     if(available_days==''){
-    //         available_days += '1'
-    //     }
-    //     else{
-    //         available_days += '1,'
-    //     }
-    // }
-    // if(this.state.monday === true){
-    //     available_days += '2'
-    // }
-    // if(this.state.tuesday === true){
-    //     available_days += '3'
-    // }
-    // if(this.state.wednesday === true){
-    //     available_days += '4'
-    // }
-    // if(this.state.thursday === true){
-    //     available_days += '4'
-    // }
-    // if(this.state.friday === true){
-    //     available_days += '5'
-    // }
-    // if(this.state.saturday === true){
-    //     available_days += '6'
-    // }
+    var time =moment(this.state.time).format('HH:mm:ss');
+    const newAvailability = {
+        assigned_employee : {
+            username:username,
+            password: password,
+            name: name,
+            address: address,
+            contact: contact,
+            role: role
+        },
+        service: this.state.service,
+        start_time: moment(this.state.start_time).format('HH:mm'),
+        end_time: moment(this.state.end_time).format('HH:mm'),
+        available_days: ''
+        
+    }
 
-    // console.log('Available Days: ', available_days);
-
-        if(this.state.start_time === null || this.state.start_time === '') {
-            alert('Please select a time');
+    if(this.state.service === null || this.state.service ===''){
+        alert('Please fill in the service');
+    }
+    else if(this.state.start_time === null || this.state.start_time ==='') {
+        alert('Please select a time');        
+    }
+    else if(this.state.end_time === null || this.state.end_time === '') {
+        alert('Please select a time');
+    }
+    else if(this.state.sunday===false && this.state.monday===false && 
+        this.state.tuesday === false && this.state.wednesday === false &&
+        this.state.thursday === false && this.state.friday === false && this.state.saturday === false){
+            alert('Please select a day');
         }
-        else if(this.state.end_time === null || this.state.end_time === '') {
-            alert('Please select a time');
-        }
-        else if(this.state.service === null || this.state.service === '') {
-            alert('Please fill in the service');
-        }
-        console.log(this.state.service)
+    else if(this.state.available_days === null || this.state.available_days ===''){
+        alert('Please select a day');
+    }
+    
+    else{ 
         alert('New Working Time Added!');
-          
-
-
+    }
+    
 }
 
 
@@ -128,14 +145,14 @@ return(
             <br/>
             <label>Start Time</label> 
             <br/>
-            <TimePicker value={this.state.start_time} onChange={this.handleStartTimeChange} required/>
+            <TimePicker format="HH:mm" value={this.state.start_time} onChange={this.handleStartTimeChange} required/>
             <br/>
             <br/>
 
             <br/>
             <label>End Time</label> 
             <br/>
-            <TimePicker value={this.state.end_time} onChange={this.handleEndTimeChange} required/>
+            <TimePicker format="HH:mm" value={this.state.end_time} onChange={this.handleEndTimeChange} required/>
             <br/>
             <br/>
             
