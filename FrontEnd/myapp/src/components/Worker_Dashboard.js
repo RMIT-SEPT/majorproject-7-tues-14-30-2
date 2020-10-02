@@ -4,8 +4,16 @@ import axios from 'axios'
 
 
 class Worker_Dashboard extends Component{
-    state = {
-        bookings: []
+    
+    constructor(props){
+      super(props)  
+      this.state = { //state is by default an object
+          user: localStorage.getItem("user_name"),
+          bookings: [
+            {id: '', booking_date: '', booking_time: '', duration: '', notes: ''}
+          ],
+      }
+      
     }
 
     componentDidMount() {
@@ -28,33 +36,18 @@ class Worker_Dashboard extends Component{
             console.log('This is your data', res.data)});
     }
 
-    constructor(props){
-        super(props)  
-        this.state = { //state is by default an object
-            user: localStorage.getItem("user_name"),
-
-
-            days: [
-               { monday: '08:30-09:00', tuesday: '08:30-09:00', wednesday: '08:30-09:00', thursday: '08:30-09:00', friday: '08:30-09:00', saturday: 'off', sunday: 'off' },
-               { monday: '10:00-12:30', tuesday: '10:00-12:30', wednesday: '10:00-12:30', thursday: '10:00-12:30', friday: '10:00-12:30', saturday: 'off', sunday: 'off'  },
-               { monday: '13:30-14:00', tuesday: '13:30-14:00', wednesday: '13:30-14:00', thursday: '13:30-14:00', friday: '13:30-14:00', saturday: 'off', sunday: 'off' },
-               { monday: '16:00-18:00', tuesday: '16:00-18:00', wednesday: '16:00-18:00', thursday: '16:00-18:00', friday: '16:00-18:00', saturday: 'off', sunday: 'off' }
-            ]
-        }
-      }
 
       renderTableData() {
-        return this.state.days.map((schedule, index) => {
-           const { date, time, duration, service, customer, notes, sunday } = schedule //destructuring
+        return this.state.bookings.map((schedule, index) => {
+           const { id, booking_date, booking_time, service, duration, notes } = schedule //destructuring
            return (
               <tr>
-                 <td>{date}</td>
-                 <td>{time}</td>
+                 <td>{id}</td>
+                 <td>{booking_date}</td>
+                 <td>{booking_time}</td>
                  <td>{duration}</td>
                  <td>{service}</td>
-                 <td>{customer}</td>
                  <td>{notes}</td>
-                 <td>{sunday}</td>
               </tr>
            )
         })
@@ -62,7 +55,7 @@ class Worker_Dashboard extends Component{
 
 
      renderTableHeader() {
-        let header = Object.keys(this.state.days[0])
+        let header = Object.keys(this.state.bookings[0])
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
@@ -73,7 +66,7 @@ class Worker_Dashboard extends Component{
            <div>
               <h1 id='title'>Welcome, {this.state.user}!</h1>
               <h2 id='title'>Weekly Schedule</h2>
-              <table id='days'>
+              <table id='bookings'>
                  <tbody>
                     <tr>{this.renderTableHeader()}</tr>
                     {this.renderTableData()}
