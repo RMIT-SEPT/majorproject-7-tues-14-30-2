@@ -10,15 +10,16 @@ class Worker_Dashboard extends Component{
 
     componentDidMount() {
         var token = localStorage.getItem("user_token");
-        console.log(token);
+        console.log("token", localStorage.getItem("user_token"))
         const options = {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
                 
         };
-        const username = localStorage.getItem("user_name")
-        console.log(username);
+        const username = localStorage.getItem("username")
+        console.log("username", username);
+        console.log("name", localStorage.getItem("user_name"))
         const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
         axios.get(apiUrl, options)
           .then(res => {
