@@ -1,3 +1,4 @@
+<<<<<<< HEAD:BackEnd/src/main/java/com/rmit/sept/majorproject/majorproject/exceptions/UserException.java
 package com.rmit.sept.majorproject.majorproject.exceptions;
 
 import org.springframework.http.HttpStatus;
@@ -10,3 +11,17 @@ public class UserException extends RuntimeException{
         super(message);
     }
 }
+=======
+package com.rmit.sept.majorproject.majorproject.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class UserException extends RuntimeException{
+
+    public UserException(String message){
+        super(message);
+    }
+}
+>>>>>>> development:BackEnd/src/main/java/com/rmit/sept/majorproject/majorproject/exceptions/UserExeption.java

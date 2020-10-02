@@ -6,17 +6,10 @@
   outline:none;
   text-decoration: none;
   width: 390px;
-  -webkit-text-fill-color: #ffffff;
-  background-color: rgb(89, 183, 245);
+  background-color:#e6e6e6;
   border-style: none;
 
 
-}
-
-.login_btn:hover {
-  background-color: #e6e6e6;
-  -webkit-text-fill-color: #000000;
-  transition-duration:0.3s;
 }
 
 .centered {
@@ -38,7 +31,7 @@ label{
 
 }
 
-input{
+.input{
   width: 350px;
 padding: 12px 20px;
 margin: 8px 0;

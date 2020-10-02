@@ -25,8 +25,7 @@ input{
     outline:none;
     text-decoration: none;
     width: 392px;
-    -webkit-text-fill-color: #ffffff;
-    background-color: rgb(89, 183, 245);
+    background-color:#e6e6e6;
     border-style: none;
 
 }
