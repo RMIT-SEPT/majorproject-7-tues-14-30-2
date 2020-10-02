@@ -4,6 +4,9 @@ import axios from 'axios'
 
 
 class Worker_Dashboard extends Component{
+    state = {
+        bookings: []
+    }
 
     componentDidMount() {
         var token = localStorage.getItem("user_token");
@@ -18,20 +21,17 @@ class Worker_Dashboard extends Component{
         console.log(username);
         const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
         axios.get(apiUrl, options)
-          .then((data) => console.log('This is your data', data));
+          .then(res => {
+            const bookings = res.data;
+            this.setState({bookings});
+            console.log('This is your data', res.data)});
     }
 
     constructor(props){
         super(props)  
         this.state = { //state is by default an object
             user: localStorage.getItem("user_name"),
-            // date: "",
-            // time: "",
-            // duration: "",
-            // service: "",
-            // customer: "",
-            // notes: "",
-            // currentUser: { username: "" },
+
 
             days: [
                { monday: '08:30-09:00', tuesday: '08:30-09:00', wednesday: '08:30-09:00', thursday: '08:30-09:00', friday: '08:30-09:00', saturday: 'off', sunday: 'off' },
