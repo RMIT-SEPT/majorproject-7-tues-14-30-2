@@ -31,6 +31,10 @@ public class userController {
         }
       
         User user1 = userService.saveOrUpdateUser(user);
+
+        if (user1 == null){
+            return new ResponseEntity<String>("Invalid User", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
