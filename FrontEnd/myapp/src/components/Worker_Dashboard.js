@@ -3,15 +3,16 @@ import"./Worker_Dashboard.css";
 import axios from 'axios'
 
 
+
 class Worker_Dashboard extends Component{
     
     constructor(props){
       super(props)  
       this.state = { //state is by default an object
           user: localStorage.getItem("user_name"),
-          bookings: [
-            {id: '', booking_date: '', booking_time: '', duration: '', notes: ''}
-          ],
+          customer: "",
+          bookings: [{}],
+          headings: [{service: '', date: '', time: '', duration: '', customer: '', notes: ''}]
       }
       
     }
@@ -33,29 +34,33 @@ class Worker_Dashboard extends Component{
           .then(res => {
             const bookings = res.data;
             this.setState({bookings});
-            console.log('This is your data', res.data)});
+            console.log('This is your data', res.data)
+            console.log('service', res.data[0].bookedService.service)});
     }
 
 
       renderTableData() {
-        return this.state.bookings.map((schedule, index) => {
-           const { id, booking_date, booking_time, service, duration, notes } = schedule //destructuring
+        // console.log("bookings", this.state.bookings.bookedService)
+        return this.state.bookings.map((schedule) => {
+           const { booking_date, booking_time, duration, notes, customer_username } = schedule //destructuring
+          //  console.log(JSON.stringify(schedule.bookedService))
            return (
               <tr>
-                 <td>{id}</td>
+                 <td>{}</td>
                  <td>{booking_date}</td>
                  <td>{booking_time}</td>
                  <td>{duration}</td>
-                 <td>{service}</td>
+                 <td>{customer_username}</td>
                  <td>{notes}</td>
               </tr>
            )
         })
      }
 
-
      renderTableHeader() {
-        let header = Object.keys(this.state.bookings[0])
+        // let headerCells =["time", "date"]
+        let header = Object.keys(this.state.headings[0])
+        // return headerCells
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
