@@ -10,47 +10,46 @@ class Worker_Dashboard extends Component{
       super(props)  
       this.state = { //state is by default an object
           user: localStorage.getItem("user_name"),
-          customer: "",
+          isDataFetched: false, //boolean to make sure render isn't called before data is fetched
           bookings: [{}],
           headings: [{service: '', date: '', time: '', duration: '', customer: '', notes: ''}]
-      }
-      
+      }      
     }
 
     componentDidMount() {
         var token = localStorage.getItem("user_token");
-        console.log("token", localStorage.getItem("user_token"))
+        // console.log("token", localStorage.getItem("user_token"))
         const options = {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
-                
         };
         const username = localStorage.getItem("username")
-        console.log("username", username);
-        console.log("name", localStorage.getItem("user_name"))
+        // console.log("name", localStorage.getItem("user_name"))
         const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
-        axios.get(apiUrl, options)
+        axios.get(apiUrl, options) //fetching data 
           .then(res => {
             const bookings = res.data;
-            this.setState({bookings});
-            console.log('This is your data', res.data)
-            console.log('service', res.data[0].bookedService.service)});
+            this.setState({bookings}); //assign fetched data to bookings
+            this.setState({isDataFetched : true}) //data has now been fetched and can be rendered
+            // console.log('This is your data', bookings)
+            });
     }
 
 
       renderTableData() {
-        // console.log("bookings", this.state.bookings.bookedService)
         return this.state.bookings.map((schedule) => {
-           const { booking_date, booking_time, duration, notes, customer_username } = schedule //destructuring
-          //  console.log(JSON.stringify(schedule.bookedService))
+           const { booking_date, booking_time, duration, notes } = schedule //destructuring
+           let service = schedule.bookedService.service
+           let customerName = schedule.customer.name
+
            return (
               <tr>
-                 <td>{}</td>
+                 <td>{service}</td>
                  <td>{booking_date}</td>
                  <td>{booking_time}</td>
                  <td>{duration}</td>
-                 <td>{customer_username}</td>
+                 <td>{customerName}</td>
                  <td>{notes}</td>
               </tr>
            )
@@ -58,15 +57,14 @@ class Worker_Dashboard extends Component{
      }
 
      renderTableHeader() {
-        // let headerCells =["time", "date"]
         let header = Object.keys(this.state.headings[0])
-        // return headerCells
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
      }
   
      render() {
+        if(!this.state.isDataFetched) return null;
         return (
            <div>
               <h1 id='title'>Welcome, {this.state.user}!</h1>
