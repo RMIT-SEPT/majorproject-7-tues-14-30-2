@@ -40,8 +40,8 @@ class Worker_Dashboard extends Component{
       renderTableData() {
         return this.state.bookings.map((schedule) => {
            const { booking_date, booking_time, duration, notes } = schedule //destructuring
-           let service = schedule.bookedService.service
-           let customerName = schedule.customer.name
+           let service = schedule.bookedService.service //set service so it can be accessed
+           let customerName = schedule.customer.name //set name so it can be accessed 
 
            return (
               <tr>
@@ -57,14 +57,14 @@ class Worker_Dashboard extends Component{
      }
 
      renderTableHeader() {
-        let header = Object.keys(this.state.headings[0])
+        let header = Object.keys(this.state.headings[0]) //headings contains only the values we want to display
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
      }
   
      render() {
-        if(!this.state.isDataFetched) return null;
+        if(!this.state.isDataFetched) return null; //ensures render won't run until data is fetched
         return (
            <div>
               <h1 id='title'>Welcome, {this.state.user}!</h1>
