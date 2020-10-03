@@ -35,6 +35,14 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user);
     }
 
+    public boolean findDuplicate(String username){
+        if(findUser(username) != null){
+            return true;
+        }
+
+        return false;
+    }
+
     public User findUser(String userName){
         Iterable<User> users = userRepository.findAll();
         User foundUser = null;
