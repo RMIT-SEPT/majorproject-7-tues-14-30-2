@@ -116,7 +116,7 @@ handleCheckboxChange = (event) =>{
         
     }
     console.log(newAvailability)
-    axios.post('http://localhost:8080/api/services', newAvailability);
+    
 
     if(this.state.service === null || this.state.service ===''){
         alert('Please fill in the service');
@@ -138,6 +138,8 @@ handleCheckboxChange = (event) =>{
     
     else{ 
         alert('New Working Time Added!');
+        axios.post('http://localhost:8080/api/services', newAvailability);
+        this.props.history.push('/Worker_Dashboard')
     }
     
 }
