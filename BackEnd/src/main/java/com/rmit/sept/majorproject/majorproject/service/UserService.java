@@ -24,6 +24,8 @@ public class UserService implements UserDetailsService {
             return null;
         } else if (findDuplicate(user.getUsername())){
             return null;
+        } else if (!verifyRole(user)){
+            return null;
         }
         return userRepository.save(user);
     }
@@ -90,6 +92,15 @@ public class UserService implements UserDetailsService {
             return true;
         }
 
+        return false;
+    }
+
+    public boolean verifyRole(User user){
+        if (user.getRole().equals("CUSTOMER") ||
+            user.getRole().equals("ADMIN") ||
+            user.getRole().equals("WORKER")){
+            return true;
+        }
         return false;
     }
 
