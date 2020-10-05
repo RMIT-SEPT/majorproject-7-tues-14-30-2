@@ -62,12 +62,19 @@ class Worker_Dashboard extends Component{
            return <th key={index}>{key.toUpperCase()}</th>
         })
      }
+
+     redirectToTarget = () => {
+      this.props.history.push(`/Add_Availability`)
+     }
   
      render() {
         if(!this.state.isDataFetched) return null; //ensures render won't run until data is fetched
         return (
            <div>
               <h1 id='title'>Welcome, {this.state.user}!</h1>
+              <div className = 'buttonBar'>
+               <button className="worker_button" onClick={this.redirectToTarget}>Add Availability</button>
+              </div>
               <h2 id='title'>Weekly Schedule</h2>
               <table id='bookings'>
                  <tbody>

@@ -29,3 +29,28 @@
     color: white;
   }
 
+  .worker_button {
+    border-radius: 8px;
+    padding: 12px 2px;
+    padding-left:2px;
+    padding-right:2px;
+    margin:10px 15px 10px 10px;
+    outline:none;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-text-fill-color: #ffffff;
+    background-color: rgb(89, 183, 245);
+    border-style: none;
+    width: 200px;
+  }
+
+  .worker_button:hover {
+      background-color: #e6e6e6;
+      -webkit-text-fill-color: #000000;
+      transition-duration:0.3s;
+  }
+
+  .buttonBar {
+    align-content:center;
+    text-align:center;
+}
