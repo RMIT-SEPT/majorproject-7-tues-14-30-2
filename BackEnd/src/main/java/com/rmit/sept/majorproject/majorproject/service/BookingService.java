@@ -25,6 +25,8 @@ public class BookingService {
             return null;
         } else if(!verifyBookingTime(booking)){
             return null;
+        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
+            return null;
         }
 
         return bookingRepository.save(booking);
