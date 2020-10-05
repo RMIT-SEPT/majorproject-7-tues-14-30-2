@@ -1,44 +1,63 @@
 import React, { Component } from 'react'
 import"./Worker_Dashboard.css";
+import axios from 'axios'
+
 
 
 class Worker_Dashboard extends Component{
+    
     constructor(props){
-        super(props)
-    
-    
-        this.state = { //state is by default an object
-            days: [
-               { monday: '08:30-09:00', tuesday: '08:30-09:00', wednesday: '08:30-09:00', thursday: '08:30-09:00', friday: '08:30-09:00', saturday: 'off', sunday: 'off' },
-               { monday: '10:00-12:30', tuesday: '10:00-12:30', wednesday: '10:00-12:30', thursday: '10:00-12:30', friday: '10:00-12:30', saturday: 'off', sunday: 'off'  },
-               { monday: '13:30-14:00', tuesday: '13:30-14:00', wednesday: '13:30-14:00', thursday: '13:30-14:00', friday: '13:30-14:00', saturday: 'off', sunday: 'off' },
-               { monday: '16:00-18:00', tuesday: '16:00-18:00', wednesday: '16:00-18:00', thursday: '16:00-18:00', friday: '16:00-18:00', saturday: 'off', sunday: 'off' }
-            ]
-         }
-      }
+      super(props)  
+      this.state = { //state is by default an object
+          user: localStorage.getItem("user_name"),
+          isDataFetched: false, //boolean to make sure render isn't called before data is fetched
+          bookings: [{}],
+          headings: [{service: '', date: '', time: '', duration: '', customer: '', notes: ''}]
+      }      
+    }
 
-      
+    componentDidMount() {
+        var token = localStorage.getItem("user_token");
+        // console.log("token", localStorage.getItem("user_token"))
+        const options = {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+        };
+        const username = localStorage.getItem("username")
+        // console.log("name", localStorage.getItem("user_name"))
+        const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
+        axios.get(apiUrl, options) //fetching data 
+          .then(res => {
+            const bookings = res.data;
+            this.setState({bookings}); //assign fetched data to bookings
+            this.setState({isDataFetched : true}) //data has now been fetched and can be rendered
+            // console.log('This is your data', bookings)
+            });
+    }
+
 
       renderTableData() {
-        return this.state.days.map((schedule, index) => {
-           const { monday, tuesday, wednesday, thursday, friday, saturday, sunday } = schedule //destructuring
+        return this.state.bookings.map((schedule) => {
+           const { booking_date, booking_time, duration, notes } = schedule //destructuring
+           let service = schedule.bookedService.service //set service so it can be accessed
+           let customerName = schedule.customer.name //set name so it can be accessed 
+
            return (
               <tr>
-                 <td>{monday}</td>
-                 <td>{tuesday}</td>
-                 <td>{wednesday}</td>
-                 <td>{thursday}</td>
-                 <td>{friday}</td>
-                 <td>{saturday}</td>
-                 <td>{sunday}</td>
+                 <td>{service}</td>
+                 <td>{booking_date}</td>
+                 <td>{booking_time}</td>
+                 <td>{duration}</td>
+                 <td>{customerName}</td>
+                 <td>{notes}</td>
               </tr>
            )
         })
      }
 
-
      renderTableHeader() {
-        let header = Object.keys(this.state.days[0])
+        let header = Object.keys(this.state.headings[0]) //headings contains only the values we want to display
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
@@ -49,14 +68,15 @@ class Worker_Dashboard extends Component{
      }
   
      render() {
+        if(!this.state.isDataFetched) return null; //ensures render won't run until data is fetched
         return (
            <div>
-              <h1 id='title'>Welcome!</h1>
+              <h1 id='title'>Welcome, {this.state.user}!</h1>
               <div className = 'buttonBar'>
                <button className="worker_button" onClick={this.redirectToTarget}>Add Availability</button>
               </div>
               <h2 id='title'>Weekly Schedule</h2>
-              <table id='days'>
+              <table id='bookings'>
                  <tbody>
                     <tr>{this.renderTableHeader()}</tr>
                     {this.renderTableData()}
