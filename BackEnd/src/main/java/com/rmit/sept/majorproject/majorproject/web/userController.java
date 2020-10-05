@@ -31,6 +31,16 @@ public class userController {
         }
       
         User user1 = userService.saveOrUpdateUser(user);
+
+        if (user1 == null){
+            if(userService.findDuplicate(user.getUsername())){
+                return new ResponseEntity<String>("Invalid User: Duplicate Username", HttpStatus.BAD_REQUEST);
+            } else if(!userService.verifyRole(user)){
+                return new ResponseEntity<String>("Invalid User: Invalid Role", HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<String>("Invalid User", HttpStatus.BAD_REQUEST);
+            }
+        }
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 

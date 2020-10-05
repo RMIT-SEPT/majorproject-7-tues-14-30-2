@@ -22,6 +22,10 @@ public class UserService implements UserDetailsService {
         if (user.getUsername().length() <= 0 || user.getPassword().length() <= 0 ||
                 user.getName().length() < 2){
             return null;
+        } else if (findDuplicate(user.getUsername())){
+            return null;
+        } else if (!verifyRole(user)){
+            return null;
         }
         return userRepository.save(user);
     }
@@ -33,6 +37,14 @@ public class UserService implements UserDetailsService {
         }
 
         userRepository.delete(user);
+    }
+
+    public boolean findDuplicate(String username){
+        if(findUser(username) != null){
+            return true;
+        }
+
+        return false;
     }
 
     public User findUser(String userName){
@@ -80,6 +92,15 @@ public class UserService implements UserDetailsService {
             return true;
         }
 
+        return false;
+    }
+
+    public boolean verifyRole(User user){
+        if (user.getRole().equals("CUSTOMER") ||
+            user.getRole().equals("ADMIN") ||
+            user.getRole().equals("WORKER")){
+            return true;
+        }
         return false;
     }
 
