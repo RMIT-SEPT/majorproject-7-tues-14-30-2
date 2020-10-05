@@ -88,13 +88,13 @@ handleTimeChange = (time) => {
     if(this.state.date == null) {
         alert('Please select a date');
     } 
-    else if(this.state.time == null || this.state.time == '') {
+    else if(this.state.time == null || this.state.time === '') {
         alert('Please select a time');
     }
-    else if(this.state.duration == null || this.state.duration == '') {
+    else if(this.state.duration == null || this.state.duration === '') {
         alert('Please fill in the duration');
     }
-    else if(this.state.notes == null || this.state.notes == '') {
+    else if(this.state.notes == null || this.state.notes === '') {
         alert('Please fill in the notes');
     }
     else {        
