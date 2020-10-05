@@ -18,7 +18,6 @@ public class Booking {
     @JsonFormat(pattern = "HH:mm:ss")
     private Date booking_time;
 
-    @NotBlank
     private int duration;
 
     @ManyToOne(fetch=FetchType.EAGER)
