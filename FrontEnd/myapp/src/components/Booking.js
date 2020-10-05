@@ -19,13 +19,30 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: [
-                { service: 'Dental Clinic', opening: '8:00am - 4:00pm', days: 'Monday - Friday', worker: 'Anthony'  },
-                { service: 'Hair Salon', opening: '9:00am - 5:30pm', days: 'Monday - Saturday', worker: 'Stephanie' },
-                { service: 'Accounting Firm', opening: '10:00am - 4:00pm', days: 'Tuesday - Sunday', worker: 'Catherine' },
-            ]
+            services: []   
     };
     }
+
+    componentDidMount() {   
+        const role = 'WORKER'; 
+        axios.get(`http://localhost:8080/api/user/getRole/${role}`) 
+            .then((response) => {
+                const employee = response.data.map(({username}) => username);
+                var i;  
+               let urlArray = [];
+               for(i=0; i < employee.length; i++) {
+                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`;
+               }
+               let promiseArray = urlArray.map(url => axios.get(url)); 
+                axios.all(promiseArray) 
+                .then(results => {
+                    this.setState({services : results.map(r => r.data[0])});
+                })
+                     
+        })
+                        
+    }
+
 
 handleNotesChange = (event) =>{
     this.setState({
@@ -124,28 +141,8 @@ handleTimeChange = (time) => {
         }
         else {
             alert('Your booking has been confirmed!');
-        }        
-}
-
-renderTableData() {
-    return this.state.services.map((schedule, index) => {
-       const { service, opening, days, worker } = schedule //destructuring
-       return (
-          <tr>
-             <td>{service}</td>
-             <td>{opening}</td>
-             <td>{days}</td>
-             <td>{worker}</td>
-          </tr>
-        )
-    })
-}
-
-renderTableHeader() {
-    let header = Object.keys(this.state.services[0])
-    return header.map((key, index) => {
-       return <th key={index}>{key.toUpperCase()}</th>
-    })
+            window.location.reload(false)
+        }      
 }
 
 
@@ -154,15 +151,35 @@ return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
-
         <h2 id='heading'>Available Services</h2>
               <table id='services'>
+                 <thead>
+                     <th>ID</th>
+                     <th>Service</th>
+                     <th>Worker</th>
+                     <th>Date</th>
+                     <th>Time</th>
+                 </thead> 
                  <tbody>
-                    <tr>{this.renderTableHeader()}</tr>
-                    {this.renderTableData()}
+                  {
+                      this.state.services.length === 0 ?
+                      <tr align="center">
+                          <td colspan="5">0 Services Available.</td>
+                      </tr> :
+                      this.state.services.map((service) => (
+                          <tr key={service.id}>
+                              <td>{service.id}</td>
+                              <td>{service.service}</td>
+                              <td>{service.assigned_employee.username}</td> 
+                              <td>{service.created_At}</td>
+                              <td>{service.updated_At}</td>
+                          </tr>
+                      ))
+                  }   
+                    <tr></tr>
+                    
                  </tbody>
               </table>
-
          <form onSubmit={this.onSubmit}>
         <div class = "inputField">
             <label>Service</label> 
@@ -210,7 +227,7 @@ return(
         </form>
 
     </div>
-     )       
+    )       
     }
 }
 export default Booking
