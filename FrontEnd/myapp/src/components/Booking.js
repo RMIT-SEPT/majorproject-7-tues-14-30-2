@@ -171,9 +171,9 @@ return(
                           <tr key={service.id}>
                               <td>{service.id}</td>
                               <td>{service.service}</td>
-                              <td>{service.assigned_employee.username}</td> 
-                              <td>{service.created_At}</td>
-                              <td>{service.updated_At}</td>
+                              <td>{service.assigned_employee.name}</td> 
+                              <td>{service.available_days}</td>
+                              <td>{service.start_time}</td>
                           </tr>
                       ))
                   }   
@@ -184,7 +184,7 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
+            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>   
                   <option name="service1">Service1</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>

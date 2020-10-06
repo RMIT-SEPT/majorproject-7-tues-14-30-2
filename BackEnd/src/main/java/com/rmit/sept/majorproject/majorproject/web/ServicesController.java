@@ -31,8 +31,12 @@ public class ServicesController {
                 return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
             }
         }
-        //service.setService(service.getService().toUpperCase());
         Services services = serviceService.saveOrUpdateServices(service);
+
+        if(services == null){
+            return new ResponseEntity<String>("Invalid service", HttpStatus.BAD_REQUEST);
+        }
+        
         return new ResponseEntity<Services>(services, HttpStatus.CREATED);
     }
 
