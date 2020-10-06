@@ -20,14 +20,17 @@ public class BookingService {
     public Booking saveOrUpdateBooking(Booking booking){
 
         if (checkDate(booking.getBooking_date()) < 0){
+            System.out.println(1);
             return null;
         } else if (checkDate(booking.getBooking_date()) == 0 && !checkTime(booking.getBooking_time())){
+            System.out.println(2);
             return null;
-        } else if(!verifyBookingTime(booking)){
-            return null;
-        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
-            return null;
-        }
+        } //else if(!verifyBookingTime(booking)){
+//            System.out.println(3);
+//            return null;
+//        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
+//            return null;
+//        }
 
         return bookingRepository.save(booking);
     }
