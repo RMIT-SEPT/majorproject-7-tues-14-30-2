@@ -24,7 +24,7 @@ import{Link} from "react-router-dom"
               <div className="brand-title">SEPT Project</div>
               <div className="navbar-links">
                 <ul>
-                   <li><Link to="/" >Login</Link></li>
+                   <li><Link to="/Login" >Login</Link></li>
                    <li><Link to="/Registration">Signup</Link></li>
                    <li><Link to="/Business_Contact">Contact Us</Link></li>
                 </ul>
