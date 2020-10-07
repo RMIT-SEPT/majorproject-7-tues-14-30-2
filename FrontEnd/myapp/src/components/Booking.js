@@ -30,20 +30,25 @@ class Booking extends Component{
         axios.get(`http://localhost:8080/api/user/getRole/${role}`) 
             .then((response) => {
                 const employee = response.data.map(({username}) => username);
-                console.log(employee);
                 var i;  
                let urlArray = [];
                for(i=0; i < employee.length; i++) {
                    urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`;
                }
-               console.log(urlArray);
                let promiseArray = urlArray.map(url => axios.get(url)); 
-               console.log(promiseArray);
                 axios.all(promiseArray) 
                 .then(results => {
                     this.setState({services : results.map(r => r.data[0])});
                     this.setState({isDataFetched : true})
-                    console.log(results);
+                })
+                .catch(err => {
+                    if (err.response) {
+                        console.log(err)
+                    } else if (err.request) {
+                        console.log(err)
+                    } else {
+                        console.log(err)
+                    }
                 })
                 
                      
@@ -155,28 +160,18 @@ handleTimeChange = (time) => {
 
 renderTableData() {
     return this.state.services.map((schedule) => {
-        const { id, service, assigned_employee, available_days, start_time } = schedule
-        /*
-        let id = schedule.id
-        let service = schedule.service
-        let assigned_employee = schedule.assigned_employee
-        let available_days = schedule.available_days
-        let start_time = schedule.start_time
-        */
-
+        const { id, service, available_days, start_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+    
         return (
-            this.state.services.length === 0 ?
-            <tr align="center">
-                <td colspan="5">0 Services Available.</td>
-            </tr> :
-            <tr>
+            <tr key={id}>
                 <td>{id}</td>
                 <td>{service}</td>
                 <td>{assigned_employee}</td>
                 <td>{available_days}</td>
                 <td>{start_time}</td>
             </tr>
-        )
+        )    
     })
 }
 
@@ -188,7 +183,7 @@ renderTableHeader() {
 }
 
 render(){
-// if(!this.state.isDataFetched) return null;    
+if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
