@@ -38,7 +38,7 @@ import{Link} from "react-router-dom"
         if(role==="admin"||role ==="Admin"||role==="ADMIN"){
           return (
           <div className="navbar">
-          <div className="brand-title">SEPT Project</div>
+          <Link to="Admin_Dashboard"><div className="brand-title">SEPT Project</div></Link>
           <div className="navbar-links">
             <ul>
                <li><Link to="/" onClick={this.logout}>Logout</Link></li>
@@ -50,7 +50,7 @@ import{Link} from "react-router-dom"
       else if (role==="worker"||role==="Worker" || role==="WORKER"){
           return (
              <div className="navbar">
-             <div className="brand-title">SEPT Project</div>
+          <Link to="/Worker_Dashboard"><div className="brand-title">SEPT Project</div></Link>
              <div className="navbar-links">
                <ul>
                   <li><Link to="/"onClick={this.logout} >Logout</Link></li>
@@ -64,7 +64,7 @@ import{Link} from "react-router-dom"
       else if (role==="customer"||role==="Customer"||role==="CUSTOMER"){
         return (
           <div className="navbar">
-          <div className="brand-title">SEPT Project</div>
+          <Link to="/Customer_Dashboard"><div className="brand-title">SEPT Project</div></Link>
           <div className="navbar-links">
             <ul>
                <li><Link to="/"onClick={this.logout} >Logout</Link></li>

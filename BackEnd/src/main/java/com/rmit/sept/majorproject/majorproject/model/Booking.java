@@ -3,6 +3,7 @@ package com.rmit.sept.majorproject.majorproject.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -23,6 +24,7 @@ public class Booking {
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
 
+    @NotBlank
     private String notes;
 
     @ManyToOne(fetch=FetchType.EAGER)

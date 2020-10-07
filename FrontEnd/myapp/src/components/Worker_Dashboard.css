@@ -4,7 +4,7 @@
     font-family: arial, sans-serif;
   }
   
-  #days {
+  #bookings {
     text-align: center;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -12,20 +12,45 @@
     width: 100%;
   }
   
-  #days td, #days th {
+  #bookings td, #days th {
     border: 1px solid #ddd;
     padding: 8px;
   }
   
-  #days tr:nth-child(even){background-color: #f2f2f2;}
+  #bookings tr:nth-child(even){background-color: #f2f2f2;}
   
-  #days tr:hover {background-color: #ddd;}
+  #bookings tr:hover {background-color: #ddd;}
   
-  #days th {
+  #bookings th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color: #333;
+    background-color: rgb(89, 183, 245);
     color: white;
   }
 
+  .worker_button {
+    border-radius: 8px;
+    padding: 12px 2px;
+    padding-left:2px;
+    padding-right:2px;
+    margin:10px 15px 10px 10px;
+    outline:none;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-text-fill-color: #ffffff;
+    background-color: rgb(89, 183, 245);
+    border-style: none;
+    width: 200px;
+  }
+
+  .worker_button:hover {
+      background-color: #e6e6e6;
+      -webkit-text-fill-color: #000000;
+      transition-duration:0.3s;
+  }
+
+  .buttonBar {
+    align-content:center;
+    text-align:center;
+}
