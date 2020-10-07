@@ -19,8 +19,10 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: []   
-    };
+            isDataFetched: false,
+            services: [{}],
+            headings: [{id: '', service: '', worker: '', days: '', time: ''}]   
+    }
     }
 
     componentDidMount() {   
@@ -28,16 +30,22 @@ class Booking extends Component{
         axios.get(`http://localhost:8080/api/user/getRole/${role}`) 
             .then((response) => {
                 const employee = response.data.map(({username}) => username);
+                console.log(employee);
                 var i;  
                let urlArray = [];
                for(i=0; i < employee.length; i++) {
                    urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`;
                }
+               console.log(urlArray);
                let promiseArray = urlArray.map(url => axios.get(url)); 
+               console.log(promiseArray);
                 axios.all(promiseArray) 
                 .then(results => {
                     this.setState({services : results.map(r => r.data[0])});
+                    this.setState({isDataFetched : true})
+                    console.log(results);
                 })
+                
                      
         })
                         
@@ -146,37 +154,52 @@ handleTimeChange = (time) => {
           
 }
 
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, assigned_employee, available_days, start_time } = schedule
+        /*
+        let id = schedule.id
+        let service = schedule.service
+        let assigned_employee = schedule.assigned_employee
+        let available_days = schedule.available_days
+        let start_time = schedule.start_time
+        */
+
+        return (
+            this.state.services.length === 0 ?
+            <tr align="center">
+                <td colspan="5">0 Services Available.</td>
+            </tr> :
+            <tr>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{available_days}</td>
+                <td>{start_time}</td>
+            </tr>
+        )
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase()}</th>
+    })
+}
+
 render(){
+// if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
         <h2 id='heading'>Available Services</h2>
-              <table id='services'>
-                 <thead>
-                     <th>ID</th>
-                     <th>Service</th>
-                     <th>Worker</th>
-                     <th>Date</th>
-                     <th>Time</th>
-                 </thead> 
+              <table id='services'> 
                  <tbody>
-                  {
-                      this.state.services.length === 0 ?
-                      <tr align="center">
-                          <td colspan="5">0 Services Available.</td>
-                      </tr> :
-                      this.state.services.map((service) => (
-                          <tr key={service.id}>
-                              <td>{service.id}</td>
-                              <td>{service.service}</td>
-                              <td>{service.assigned_employee.name}</td> 
-                              <td>{service.available_days}</td>
-                              <td>{service.start_time}</td>
-                          </tr>
-                      ))
-                  }   
+                  <tr>{this.renderTableHeader()}</tr>   
+                  {this.renderTableData()}
                  </tbody>
               </table>
               
