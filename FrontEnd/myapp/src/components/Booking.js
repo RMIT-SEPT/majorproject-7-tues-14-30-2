@@ -24,21 +24,21 @@ class Booking extends Component{
             headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}]   
     };
     }
-
+    
     componentDidMount() {   
         const role = 'WORKER'; 
-        axios.get(`http://localhost:8080/api/user/getRole/${role}`) 
+        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
-                const employee = response.data.map(({username}) => username);
+                const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
                 var i;  
                let urlArray = [];
                for(i=0; i < employee.length; i++) {
-                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`;
+                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
                }
                let promiseArray = urlArray.map(url => axios.get(url)); 
-                axios.all(promiseArray) 
+                axios.all(promiseArray) // performs the GET request(s)
                 .then(results => {
-                    this.setState({services : results.map(r => r.data[0])});
+                    this.setState({services : results.map(r => r.data[0])}); // adds results into services array
                     this.setState({isDataFetched : true})
                 })
                 .catch(err => {
@@ -157,6 +157,9 @@ handleTimeChange = (time) => {
           
 }
 
+/* 
+*  method to return available days as string
+*/
 getAvailableDays(available_days) {
     switch (available_days){
     case "1":
