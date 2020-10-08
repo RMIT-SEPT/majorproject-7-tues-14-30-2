@@ -203,9 +203,8 @@ return(
             <input type = 'text' name = 'notes' value={this.state.notes} onChange={this.handleNotesChange}/>
             <br/>
             
-       
+        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>          
         </div>
-        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>   
 
         </form>
 
