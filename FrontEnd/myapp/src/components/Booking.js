@@ -21,7 +21,7 @@ class Booking extends Component{
             notes:'',
             isDataFetched: false,
             services: [{}],
-            headings: [{id: '', service: '', worker: '', days: '', time: ''}]   
+            headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}]   
     };
     }
 
@@ -222,7 +222,7 @@ getAvailableDays(available_days) {
 
 renderTableData() {
     return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time } = schedule
+        const { id, service, available_days, start_time, end_time } = schedule
         let assigned_employee = schedule.assigned_employee.name
         let avail_days = this.getAvailableDays(available_days)
     
@@ -233,6 +233,7 @@ renderTableData() {
                 <td>{assigned_employee}</td>
                 <td>{avail_days}</td>
                 <td>{start_time}</td>
+                <td>{end_time}</td>
             </tr>
         )    
     })
@@ -241,7 +242,7 @@ renderTableData() {
 renderTableHeader() {
     let header = Object.keys(this.state.headings[0])
     return header.map((key, index) => {
-        return <th key={index}>{key.toUpperCase()}</th>
+        return <th key={index}>{key.toUpperCase().replace("_", " ")}</th>
     })
 }
 
