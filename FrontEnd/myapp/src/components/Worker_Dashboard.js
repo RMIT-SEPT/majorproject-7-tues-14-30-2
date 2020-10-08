@@ -25,14 +25,17 @@ class Worker_Dashboard extends Component{
                 }
         };
         const username = localStorage.getItem("username")
-        // console.log("name", localStorage.getItem("user_name"))
+        console.log("username", localStorage.getItem("username"))
         const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
         axios.get(apiUrl, options) //fetching data 
           .then(res => {
             const bookings = res.data;
             this.setState({bookings}); //assign fetched data to bookings
             this.setState({isDataFetched : true}) //data has now been fetched and can be rendered
-            // console.log('This is your data', bookings)
+            console.log('This is your data', bookings)
+            })
+            .catch(error => {
+                console.error("whoops", error.message);
             });
     }
 
@@ -68,7 +71,9 @@ class Worker_Dashboard extends Component{
      }
   
      render() {
-        if(!this.state.isDataFetched) return null; //ensures render won't run until data is fetched
+        console.log("data fetched?", this.state.isDataFetched)
+        // if(!this.state.isDataFetched) return null; //ensures render won't run until data is fetched
+        // {this.renderTableData()}
         return (
            <div>
               <h1 id='title'>Welcome, {this.state.user}!</h1>
@@ -79,7 +84,7 @@ class Worker_Dashboard extends Component{
               <table id='bookings'>
                  <tbody>
                     <tr>{this.renderTableHeader()}</tr>
-                    {this.renderTableData()}
+                    
                  </tbody>
               </table>
            </div>
