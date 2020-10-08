@@ -19,7 +19,9 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: []   
+            isDataFetched: false,
+            services: [{}],
+            headings: [{id: '', service: '', worker: '', days: '', time: ''}]   
     };
     }
 
@@ -37,8 +39,17 @@ class Booking extends Component{
                 axios.all(promiseArray) 
                 .then(results => {
                     this.setState({services : results.map(r => r.data[0])});
+                    this.setState({isDataFetched : true})
                 })
-                     
+                .catch(err => {
+                    if (err.response) {
+                        console.log(err)
+                    } else if (err.request) {
+                        console.log(err)
+                    } else {
+                        console.log(err)
+                    }
+                })    
         })
                         
     }
@@ -146,7 +157,96 @@ handleTimeChange = (time) => {
           
 }
 
+getAvailableDays(available_days) {
+    switch (available_days){
+    case "1":
+        return "Sunday";    
+    case "1,2":
+        return "Sunday - Monday";
+    case "1,3":
+        return "Sunday - Tuesday";
+    case "1,4":
+        return "Sunday - Wednesday";
+    case "1,5":
+        return "Sunday - Thursday";
+    case "1,6":
+        return "Sunday - Friday";
+    case "1,7":
+        return "Sunday - Saturday"; 
+    case "2":
+        return "Monday";  
+    case "2,3":
+        return "Monday - Tuesday";
+    case "2,4":
+        return "Monday - Wednesday";
+    case "2,5":
+        return "Monday - Thursday";
+    case "2,6":
+        return "Monday - Friday";
+    case "2,7":
+        return "Monday - Saturday";   
+    case "3":
+        return "Tuesday";  
+    case "3,4":
+        return "Tueday - Wednesday";
+    case "3,5":
+        return "Tuesday - Thursday";
+    case "3,6":
+        return "Tuesday - Friday";
+    case "3,7":
+        return "Tuesday - Saturday";   
+    case "4":
+        return "Wednesday";
+    case "4,5":
+        return "Wednesday - Thursday";
+    case "4,6":
+        return "Wednesday - Friday";
+    case "4,7":
+        return "Wednesday - Saturday"; 
+    case "5":
+        return "Thursday";
+    case "5,6":
+        return "Thursday - Friday";
+    case "5,7":
+        return "Thursday - Saturday";
+    case "6":
+        return "Friday";
+    case "6,7":
+        return "Friday - Saturday";
+    case "7":
+        return "Saturday";                    
+    default:
+        return "";                     
+    }       
+}
+
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+        let avail_days = this.getAvailableDays(available_days)
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{avail_days}</td>
+                <td>{start_time}</td>
+            </tr>
+        )    
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase()}</th>
+    })
+}
+
 render(){
+    if(!this.state.isDataFetched) return null;      
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
@@ -154,29 +254,9 @@ return(
 
         <h2 id='heading'>Available Services</h2>
               <table id='services'>
-                 <thead>
-                     <th>ID</th>
-                     <th>Service</th>
-                     <th>Worker</th>
-                     <th>Date</th>
-                     <th>Time</th>
-                 </thead> 
                  <tbody>
-                  {
-                      this.state.services.length === 0 ?
-                      <tr align="center">
-                          <td colspan="5">0 Services Available.</td>
-                      </tr> :
-                      this.state.services.map((service) => (
-                          <tr key={service.id}>
-                              <td>{service.id}</td>
-                              <td>{service.service}</td>
-                              <td>{service.assigned_employee.username}</td> 
-                              <td>{service.created_At}</td>
-                              <td>{service.updated_At}</td>
-                          </tr>
-                      ))
-                  }   
+                  <tr>{this.renderTableHeader()}</tr>   
+                  {this.renderTableData()}
                  </tbody>
               </table>
               
