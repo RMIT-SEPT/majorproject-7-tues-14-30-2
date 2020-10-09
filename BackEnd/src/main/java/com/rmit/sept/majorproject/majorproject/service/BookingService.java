@@ -89,8 +89,10 @@ public class BookingService {
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
-            if(booking.getAssigned_employee().getUsername().equals(username)){
-                returnBookings.add(booking);
+            if(booking.getAssigned_employee() != null) {
+                if(booking.getAssigned_employee().getUsername().equals(username)){
+                    returnBookings.add(booking);
+                }
             }
         }
 
