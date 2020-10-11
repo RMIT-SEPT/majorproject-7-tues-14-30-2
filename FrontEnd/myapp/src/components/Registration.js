@@ -31,7 +31,7 @@ class Registration extends Component{
             password:this.state.password,
             address:this.state.address,
             contact:this.state.contact,
-            role:"Customer"
+            role:"CUSTOMER"
         }
         if(newUser.name==='' || newUser.username === '' || newUser.password ==='' || newUser.address === '' || newUser.contact === ''){
             alert('Please fill in the information');

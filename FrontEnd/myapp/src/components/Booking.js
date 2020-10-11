@@ -111,8 +111,8 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
-    
-    
+
+
     if(this.state.date == null) {
         alert('Please select a date');
     } 
@@ -125,7 +125,7 @@ handleTimeChange = (time) => {
     else if(this.state.notes == null || this.state.notes == '') {
         alert('Please fill in the notes');
     }
-    else {
+    else {        
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
@@ -142,19 +142,42 @@ handleTimeChange = (time) => {
         booked_service:servicename,
         duration: this.state.duration
     })
-        .then((res)=>{
-            console.log(res)
-                alert('Your booking has been confirmed!');
-                window.location.reload(false);
-        })
+          .then((res)=>{
+            console.log(res);
+            alert('Your booking has been confirmed!');
+            window.location.reload(false);
+         })
+
         
 
         .catch((error)=>{
             console.log(error)
-        })
-
+        })   
     }
-          
+  }    
+
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{available_days}</td>
+                <td>{start_time}</td>
+            </tr>
+        )    
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase()}</th>
+    })
 }
 
 /* 
@@ -242,14 +265,14 @@ renderTableHeader() {
 }
 
 render(){
-    if(!this.state.isDataFetched) return null;      
+if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
         <h2 id='heading'>Available Services</h2>
-              <table id='services'>
+              <table id='services'> 
                  <tbody>
                   <tr>{this.renderTableHeader()}</tr>   
                   {this.renderTableData()}
@@ -260,7 +283,7 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
+            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>   
                   <option name="service1">Service1</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
@@ -305,5 +328,6 @@ return(
     </div>
     )       
     }
-}
+  }
+
 export default Booking
