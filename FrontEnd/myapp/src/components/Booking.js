@@ -160,67 +160,59 @@ handleTimeChange = (time) => {
 /* 
 *  method to return available days as string
 */
-getAvailableDays(available_days) {
-    switch (available_days){
-    case "1":
-        return "Sunday";    
-    case "1,2":
-        return "Sunday - Monday";
-    case "1,3":
-        return "Sunday - Tuesday";
-    case "1,4":
-        return "Sunday - Wednesday";
-    case "1,5":
-        return "Sunday - Thursday";
-    case "1,6":
-        return "Sunday - Friday";
-    case "1,7":
-        return "Sunday - Saturday"; 
-    case "2":
-        return "Monday";  
-    case "2,3":
-        return "Monday - Tuesday";
-    case "2,4":
-        return "Monday - Wednesday";
-    case "2,5":
-        return "Monday - Thursday";
-    case "2,6":
-        return "Monday - Friday";
-    case "2,7":
-        return "Monday - Saturday";   
-    case "3":
-        return "Tuesday";  
-    case "3,4":
-        return "Tueday - Wednesday";
-    case "3,5":
-        return "Tuesday - Thursday";
-    case "3,6":
-        return "Tuesday - Friday";
-    case "3,7":
-        return "Tuesday - Saturday";   
-    case "4":
-        return "Wednesday";
-    case "4,5":
-        return "Wednesday - Thursday";
-    case "4,6":
-        return "Wednesday - Friday";
-    case "4,7":
-        return "Wednesday - Saturday"; 
-    case "5":
-        return "Thursday";
-    case "5,6":
-        return "Thursday - Friday";
-    case "5,7":
-        return "Thursday - Saturday";
-    case "6":
-        return "Friday";
-    case "6,7":
-        return "Friday - Saturday";
-    case "7":
-        return "Saturday";                    
-    default:
-        return "";                     
-    }       
+getAvailableDays(available_days) { 
+    var days;
+    var i;
+    for(i = 0; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days = "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days = "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days = "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days = "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days = "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days = "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days = "Saturday";
+            break;
+        }
+    }
+    days+=", ";
+    for(i = 2; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days += "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days += "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days += "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days += "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days += "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days += "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days += "Saturday";
+            break;
+        }
+    }
+    return days;      
 }
 
 renderTableData() {
