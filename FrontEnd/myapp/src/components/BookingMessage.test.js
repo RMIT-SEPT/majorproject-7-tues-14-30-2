@@ -16,19 +16,19 @@ describe("Book Button", () => {
 
 
 describe("Book Button", () => {
-    test("should call confirmMessage on click", () => {
+    test("should call onSubmit on click", () => {
         window.alert = jest.fn();
-        const button = shallow(<Booking />);
-        button.find('button').simulate('click');
-        expect(window.alert.mock.calls.length).toBe(1);
+        const book_btn = shallow(<book_btn />);
+        book_btn.find('book_btn').simulate('click');
+        expect(window.alert.mock.calls.length).toBe(0);
     });
 });
 
 
 describe("Confirm Message", () => {
-    test("test confirmMessage exists", () => {
+    test("test onSubmit exists", () => {
         const wrapper = shallow(<Booking />);
-        expect(wrapper.find('confirmMessage()'));
+        expect(wrapper.find('onSubmit()'));
     });
 });
 
@@ -37,7 +37,7 @@ describe("Confirm Message", () => {
     test("should display confirmation message", () => {
         var message = false;
         const wrapper = shallow(<Booking />);
-        message = expect(wrapper.find('confirmMessage()')).alert;
+        message = expect(wrapper.find('onSubmit()')).alert;
         message = true;
     });
 });

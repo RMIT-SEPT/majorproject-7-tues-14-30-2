@@ -19,26 +19,39 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: []   
+            isDataFetched: false,
+            services: [{}],
+            headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}],
+            selectedService:'',
+            selectedWorker:''   
     };
     }
-
+    
     componentDidMount() {   
         const role = 'WORKER'; 
-        axios.get(`http://localhost:8080/api/user/getRole/${role}`) 
+        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
-                const employee = response.data.map(({username}) => username);
+                const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
                 var i;  
                let urlArray = [];
                for(i=0; i < employee.length; i++) {
-                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`;
+                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
                }
                let promiseArray = urlArray.map(url => axios.get(url)); 
-                axios.all(promiseArray) 
+                axios.all(promiseArray) // performs the GET request(s)
                 .then(results => {
-                    this.setState({services : results.map(r => r.data[0])});
+                    this.setState({services : results.map(r => r.data[0])}); // adds results into services array
+                    this.setState({isDataFetched : true})
                 })
-                     
+                .catch(err => {
+                    if (err.response) {
+                        console.log(err)
+                    } else if (err.request) {
+                        console.log(err)
+                    } else {
+                        console.log(err)
+                    }
+                })    
         })
                         
     }
@@ -52,13 +65,13 @@ handleNotesChange = (event) =>{
 
 handleServiceChange = (event) =>{
     this.setState({
-        service: event.target.value 
+        selectedService: event.target.value 
     })
 }
 
 handleWorkerChange = (event) =>{
     this.setState({
-        worker: event.target.value 
+        selectedWorker: event.target.value 
     })
 }
 
@@ -86,8 +99,8 @@ handleTimeChange = (time) => {
   onSubmit = (event) =>{
     event.preventDefault() 
     var info={
-        workername:this.state.worker,
-        servicename:this.state.service
+        workername:this.state.selectedWorker,
+        servicename:this.state.selectedService
     }
     var workername = info.workername;
     var servicename = info.servicename;
@@ -105,10 +118,10 @@ handleTimeChange = (time) => {
     if(this.state.services.length === 0) {
         alert('Sorry no available services!');
     }
-    else if(this.state.service === null || this.state.service === '' || this.state.service === 'default') {
+    else if(this.state.selectedService === null || this.state.selectedService === '' || this.state.selectedService === 'default') {
         alert('Please select a service');
     }
-    else if(this.state.worker === null || this.state.worker === '' || this.state.worker === 'default') {
+    else if(this.state.selectedWorker === null || this.state.selectedWorker === '' || this.state.selectedWorker === 'default') {
         alert('Please select a worker');
     }
     else if(this.state.date === null) {
@@ -123,9 +136,7 @@ handleTimeChange = (time) => {
     else if(this.state.notes === null || this.state.notes === '') {
         alert('Please fill in the notes');
     }
-    
-    
-    else {
+    else {        
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
@@ -142,52 +153,140 @@ handleTimeChange = (time) => {
         booked_service:servicename,
         duration: this.state.duration
     })
-        .then((res)=>{
-            console.log(res)
-                alert('Your booking has been confirmed!');
-                window.location.reload(false);
-        })
+          .then((res)=>{
+            console.log(res);
+            alert('Your booking has been confirmed!');
+            window.location.reload(false);
+         })
+
         
 
         .catch((error)=>{
             console.log(error)
-        })
-
+        })   
     }
-          
+  }    
+
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{available_days}</td>
+                <td>{start_time}</td>
+            </tr>
+        )    
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase()}</th>
+    })
+}
+
+/* 
+*  method to return available days as string
+*/
+getAvailableDays(available_days) { 
+    var days;
+    var i;
+    for(i = 0; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days = "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days = "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days = "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days = "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days = "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days = "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days = "Saturday";
+            break;
+        }
+    }
+    days+=", ";
+    for(i = 2; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days += "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days += "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days += "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days += "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days += "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days += "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days += "Saturday";
+            break;
+        }
+    }
+    return days;      
+}
+
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time, end_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+        let avail_days = this.getAvailableDays(available_days)
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{avail_days}</td>
+                <td>{start_time}</td>
+                <td>{end_time}</td>
+            </tr>
+        )    
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase().replace("_", " ")}</th>
+    })
 }
 
 render(){
+if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
         <h2 id='heading'>Available Services</h2>
-              <table id='services'>
-                 <thead>
-                     <th>ID</th>
-                     <th>Service</th>
-                     <th>Worker</th>
-                     <th>Days</th>
-                     <th>Time</th>
-                 </thead> 
+              <table id='services'> 
                  <tbody>
-                  {
-                      this.state.services.length === 0 ?
-                      <tr align="center">
-                          <td colspan="5">0 Services Available.</td>
-                      </tr> :
-                      this.state.services.map((service) => (
-                          <tr key={service.id}>
-                              <td>{service.id}</td>
-                              <td>{service.service}</td>
-                              <td>{service.assigned_employee.username}</td> 
-                              <td>{service.created_At}</td>
-                              <td>{service.updated_At}</td>
-                          </tr>
-                      ))
-                  }   
+                  <tr>{this.renderTableHeader()}</tr>   
+                  {this.renderTableData()}
                  </tbody>
               </table>
               
@@ -195,21 +294,17 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
-                    <option name="default" value="default">-- Select a service --</option>
-                    <option name="service1">Service 1</option>
-                    <option name="service2">Service 2</option>
-                    <option name="service3">Service 3</option>
+            <select name = 'service' value={this.state.selectedService} onChange={this.handleServiceChange}>
+                <option value="default">-- Select a service --</option>
+                {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.service}</option>)}   
             </select>
             <br/>
             <br/>
             <label>Worker</label> 
             <br/>
-            <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="default" value="default">-- Select a worker --</option>
-                  <option name="worker1">Worker 1</option>
-                  <option name="worker2">Worker 2</option>
-                  <option name="worker3">Worker 3</option>
+            <select name = 'worker' value={this.state.selectedWorker} onChange={this.handleWorkerChange}> 
+                <option value="default">-- Select a worker --</option>
+                {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.assigned_employee.name}</option>)} 
             </select>
             <br/>
             <br/>
@@ -242,5 +337,6 @@ return(
     </div>
     )       
     }
-}
+  }
+
 export default Booking

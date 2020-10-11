@@ -33,6 +33,14 @@ public class BookingController {
     @PostMapping("/{workerName}/{servicename}")
     public ResponseEntity<?> createNewBooking(@Valid @RequestBody Booking booking, BindingResult result,
                                               @PathVariable String workerName, @PathVariable String servicename){
+        if(!(booking.getDuration() > 0)){
+            return new ResponseEntity<String>("Invalid booking duration", HttpStatus.BAD_REQUEST);
+        }
+
+        if(booking.getNotes() == null){
+            return new ResponseEntity<String>("Invalid booking notes", HttpStatus.BAD_REQUEST);
+        }
+
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {
@@ -48,6 +56,7 @@ public class BookingController {
                         booking.getAssigned_employee().getUsername()));
             }
         }
+
         Booking booking1 = bookingService.saveOrUpdateBooking(booking);
 
         if (booking1 == null){
