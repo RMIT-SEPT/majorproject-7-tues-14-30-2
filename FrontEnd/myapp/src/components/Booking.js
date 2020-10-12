@@ -83,6 +83,21 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
+
+
+    if(this.state.date == null) {
+        alert('Please select a date');
+    } 
+    else if(this.state.time == null || this.state.time == '') {
+        alert('Please select a time');
+    }
+    else if(this.state.duration == null || this.state.duration == '') {
+        alert('Please fill in the duration');
+    }
+    else if(this.state.notes == null || this.state.notes == '') {
+        alert('Please fill in the notes');
+    }
+    else {        
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
@@ -99,29 +114,18 @@ handleTimeChange = (time) => {
         booked_service:servicename,
         duration: this.state.duration
     })
+          .then((res)=>{
+            console.log(res);
+            alert('Your booking has been confirmed!');
+            window.location.reload(false);
+         })
 
         
         .catch((error)=>{
             console.log(error)
-        })
-
-        if(this.state.date == null) {
-            alert('Please select a date');
-        } 
-        else if(this.state.time == null || this.state.time == '') {
-            alert('Please select a time');
-        }
-        else if(this.state.duration == null || this.state.duration == '') {
-            alert('Please fill in the duration');
-        }
-        else if(this.state.notes == null || this.state.notes == '') {
-            alert('Please fill in the notes');
-        }
-        else {
-            alert('Your booking has been confirmed!');
-        }   
- 
-}
+        })   
+    }
+  }    
 
 renderTableData() {
     return this.state.services.map((schedule, index) => {
@@ -208,5 +212,6 @@ return(
     </div>
      )       
     }
-}
+  }
+
 export default Booking
