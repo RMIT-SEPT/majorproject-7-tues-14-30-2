@@ -156,30 +156,6 @@ handleTimeChange = (time) => {
     }
   }    
 
-renderTableData() {
-    return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time } = schedule
-        let assigned_employee = schedule.assigned_employee.name
-    
-        return (
-            <tr key={id}>
-                <td>{id}</td>
-                <td>{service}</td>
-                <td>{assigned_employee}</td>
-                <td>{available_days}</td>
-                <td>{start_time}</td>
-            </tr>
-        )    
-    })
-}
-
-renderTableHeader() {
-    let header = Object.keys(this.state.headings[0])
-    return header.map((key, index) => {
-        return <th key={index}>{key.toUpperCase()}</th>
-    })
-}
-
 /* 
 *  method to return available days as string
 */
@@ -265,7 +241,7 @@ renderTableHeader() {
 }
 
 render(){
-if(!this.state.isDataFetched) return null;    
+if(!this.state.isDataFetched) return null;      
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
