@@ -71,13 +71,12 @@ handleAddressChange = (event) =>{
 
 handleContactChange = (event) =>{
     let phone = event.target.value;
-    //only accepts number
-    if(!Number(phone)){
-        return;
+
+    if(event.target.value.match("^[0-9]*$") != null){
+        this.setState(
+            {contact:phone}
+        );
     }
-    this.setState({
-        contact: phone
-    })
 }
 
     render(){
