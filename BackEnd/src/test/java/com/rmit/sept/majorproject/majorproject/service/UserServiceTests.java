@@ -35,12 +35,15 @@ public class UserServiceTests {
         user1.setPassword("Test");
         user1.setName("Test");
         user1.setContact("Test");
+        user1.setRole("CUSTOMER");
         user2.setUsername("user2");
         user2.setPassword("Test");
         user2.setName("Test");
+        user2.setRole("CUSTOMER");
         user3.setUsername("user3");
         user3.setPassword("Test");
         user3.setName("Test");
+        user3.setRole("CUSTOMER");
         Mockito.when(userRepository.save(user1)).thenReturn(user1);
         Mockito.when(userRepository.save(user2)).thenReturn(user2);
         Mockito.when(userRepository.save(user3)).thenReturn(user3);
