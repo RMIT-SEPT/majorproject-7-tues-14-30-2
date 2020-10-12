@@ -21,7 +21,7 @@ class Booking extends Component{
             notes:'',
             isDataFetched: false,
             services: [{}],
-            headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}],
+            headings: [{service: '', worker: '', days: '', start_time: '', end_time: ''}],
             selectedService:'',
             selectedWorker:''   
     };
@@ -63,9 +63,13 @@ handleNotesChange = (event) =>{
     })
 }
 
-handleServiceChange = (event) =>{
+handleServiceChange = (event, {value}) =>{
     this.setState({
         selectedService: event.target.value 
+    })
+    axios.get(`http://localhost:8080/api/user/findEmployees/${value}`)
+    .then((response) => {
+        this.setState({selectedWorker: response})
     })
 }
 
@@ -94,7 +98,7 @@ handleTimeChange = (time) => {
     this.setState({
       time: time
     })
-  }
+  } 
 
   onSubmit = (event) =>{
     event.preventDefault() 
@@ -167,29 +171,6 @@ handleTimeChange = (time) => {
     }
   }    
 
-renderTableData() {
-    return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time } = schedule
-        let assigned_employee = schedule.assigned_employee.name
-    
-        return (
-            <tr key={id}>
-                <td>{id}</td>
-                <td>{service}</td>
-                <td>{assigned_employee}</td>
-                <td>{available_days}</td>
-                <td>{start_time}</td>
-            </tr>
-        )    
-    })
-}
-
-renderTableHeader() {
-    let header = Object.keys(this.state.headings[0])
-    return header.map((key, index) => {
-        return <th key={index}>{key.toUpperCase()}</th>
-    })
-}
 
 /* 
 *  method to return available days as string
@@ -221,28 +202,28 @@ getAvailableDays(available_days) {
             break;
         }
     }
-    days+=", ";
+    
     for(i = 2; i < available_days.length;) {
         if(available_days[i] === "1") {
-            days += "Sunday";
+            days += ", Sunday";
             break;
         } else if(available_days[i] === "2") {
-            days += "Monday";
+            days += ", Monday";
             break;
         } else if(available_days[i] === "3") {
-            days += "Tuesday";
+            days += ", Tuesday";
             break;
         } else if(available_days[i] === "4") {
-            days += "Wednesday";
+            days += ", Wednesday";
             break;
         } else if(available_days[i] === "5") {
-            days += "Thursday";
+            days += ", Thursday";
             break;
         } else if(available_days[i] === "6") {
-            days += "Friday";
+            days += ", Friday";
             break;
         } else if(available_days[i] === "7") {
-            days += "Saturday";
+            days += ", Saturday";
             break;
         }
     }
@@ -251,13 +232,13 @@ getAvailableDays(available_days) {
 
 renderTableData() {
     return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time, end_time } = schedule
+        const { service, available_days, start_time, end_time } = schedule
+        let id = schedule.id
         let assigned_employee = schedule.assigned_employee.name
         let avail_days = this.getAvailableDays(available_days)
     
         return (
             <tr key={id}>
-                <td>{id}</td>
                 <td>{service}</td>
                 <td>{assigned_employee}</td>
                 <td>{avail_days}</td>
