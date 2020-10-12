@@ -67,14 +67,16 @@ handleTimeChange = (time) => {
   }
 
   onSubmit = (event) =>{
+//prevent page to refresh 
     event.preventDefault() 
     var info={
         workername:this.state.worker,
         servicename:this.state.service
     }
+    //assign user selected workername and service into variable
     var workername = info.workername;
     var servicename = info.servicename;
-    
+    //retrieve customer information from localstorage
     var username = localStorage.getItem("username");
     var password = localStorage.getItem("user_password");
     var name = localStorage.getItem("user_name");
@@ -84,7 +86,7 @@ handleTimeChange = (time) => {
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
 
-
+    //booking validation
     if(this.state.date == null) {
         alert('Please select a date');
     } 
@@ -98,6 +100,7 @@ handleTimeChange = (time) => {
         alert('Please fill in the notes');
     }
     else {        
+    //pass workername and servicename to api 
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
@@ -117,11 +120,13 @@ handleTimeChange = (time) => {
           .then((res)=>{
             console.log(res);
             alert('Your booking has been confirmed!');
+            //page refresh after worker has been created
             window.location.reload(false);
          })
 
         
         .catch((error)=>{
+            //display error for debug
             console.log(error)
         })   
     }
@@ -203,9 +208,8 @@ return(
             <input type = 'text' name = 'notes' value={this.state.notes} onChange={this.handleNotesChange}/>
             <br/>
             
-       
+        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>        
         </div>
-        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>   
 
         </form>
 
