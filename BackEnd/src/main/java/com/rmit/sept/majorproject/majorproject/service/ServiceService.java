@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,6 +18,13 @@ public class ServiceService {
     private ServiceRepository serviceRepository;
 
     public Services saveOrUpdateServices(Services services){
+
+        Services fixedService = fixTimes(services);
+
+        if(!validateAvailableTimes(fixedService) || !validateDays(services)){
+            return null;
+        }
+
         return serviceRepository.save(services);
     }
 
@@ -57,6 +66,40 @@ public class ServiceService {
         }
 
         return null;
+    }
+
+    public boolean validateDays(Services service){
+        List<Integer> days = service.getAvailable_Days_AsList();
+
+        for(int val: days){
+            if(val <= 0 || val > 7){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean validateAvailableTimes(Services service){
+
+        if(service.getStart_time().compareTo(service.getEnd_time()) >= 0){
+           return false;
+        }
+
+        return true;
+    }
+
+    public Services fixTimes(Services service){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(service.getStart_time());
+        calendar.add(Calendar.HOUR, -10);
+        service.setStart_time(calendar.getTime());
+        calendar.setTime(service.getEnd_time());
+        calendar.add(Calendar.HOUR, -10);
+        service.setEnd_time(calendar.getTime());
+
+        return service;
     }
 
 }

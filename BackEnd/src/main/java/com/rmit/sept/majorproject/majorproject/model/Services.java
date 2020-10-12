@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Services {
@@ -18,6 +20,14 @@ public class Services {
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "ASSIGNED_WORKER")
     private User assigned_employee;
+
+    @JsonFormat(pattern ="HH:mm")
+    private Date start_time;
+
+    @JsonFormat(pattern ="HH:mm")
+    private Date end_time;
+
+    private String available_days;
 
     @JsonFormat(pattern ="yyyy-MM-dd")
     private Date created_At;
@@ -63,6 +73,53 @@ public class Services {
 
     public void setAssigned_employee(User assigned_employee) {
         this.assigned_employee = assigned_employee;
+    }
+
+    public Date getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(Date start_time) {
+        this.start_time = start_time;
+    }
+
+    public Date getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(Date end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getAvailable_days() {
+        return available_days;
+    }
+
+    public void setAvailable_days(String available_days) {
+        this.available_days = available_days;
+    }
+
+    public List<Integer> getAvailable_Days_AsList(){
+        List<Integer> returnDays = new ArrayList<>();
+
+        for(String number: this.available_days.split(",")){
+            returnDays.add(Integer.parseInt(number));
+        }
+
+        return returnDays;
+    }
+
+    public void setAvailable_Days_FromList(List<Integer> days){
+        String setDays = "";
+
+        for(int val: days){
+            setDays = setDays.concat(String.valueOf(val));
+            setDays = setDays.concat(",");
+        }
+
+        setDays = setDays.substring(0,setDays.length()-1);
+        this.available_days = setDays;
+
     }
 
     @PrePersist
