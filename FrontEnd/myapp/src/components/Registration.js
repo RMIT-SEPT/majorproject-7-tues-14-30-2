@@ -38,7 +38,7 @@ class Registration extends Component{
         if(newUser.name==='' || newUser.username === '' || newUser.password ==='' || newUser.address === '' || newUser.contact === ''){
             alert('Please fill in the information');
         }
-        else if(newUser.contact.length < 10){
+        else if(newUser.contact.length != 10){
             alert('Phone length must be 10')
         }
         else{
@@ -48,10 +48,6 @@ class Registration extends Component{
         }
    
         console.log(newUser);
-        
-
-        
-              
     };
 
 handleNameChange = (event) =>{
