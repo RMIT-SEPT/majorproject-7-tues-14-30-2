@@ -63,13 +63,9 @@ handleNotesChange = (event) =>{
     })
 }
 
-handleServiceChange = (event, {value}) =>{
+handleServiceChange = (event) =>{
     this.setState({
         selectedService: event.target.value 
-    })
-    axios.get(`http://localhost:8080/api/user/findEmployees/${value}`)
-    .then((response) => {
-        this.setState({selectedWorker: response})
     })
 }
 
@@ -103,7 +99,7 @@ handleTimeChange = (time) => {
   onSubmit = (event) =>{
     event.preventDefault() 
     var info={
-        workername:this.state.selectedWorker,
+        workername:this.state.worker,
         servicename:this.state.selectedService
     }
     var workername = info.workername;
@@ -124,9 +120,6 @@ handleTimeChange = (time) => {
     }
     else if(this.state.selectedService === null || this.state.selectedService === '' || this.state.selectedService === 'default') {
         alert('Please select a service');
-    }
-    else if(this.state.selectedWorker === null || this.state.selectedWorker === '' || this.state.selectedWorker === 'default') {
-        alert('Please select a worker');
     }
     else if(this.state.date === null) {
         alert('Please select a date');
@@ -278,14 +271,6 @@ return(
             <select name = 'service' value={this.state.selectedService} onChange={this.handleServiceChange}>
                 <option value="default">-- Select a service --</option>
                 {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.service}</option>)}   
-            </select>
-            <br/>
-            <br/>
-            <label>Worker</label> 
-            <br/>
-            <select name = 'worker' value={this.state.selectedWorker} onChange={this.handleWorkerChange}> 
-                <option value="default">-- Select a worker --</option>
-                {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.assigned_employee.name}</option>)} 
             </select>
             <br/>
             <br/>
