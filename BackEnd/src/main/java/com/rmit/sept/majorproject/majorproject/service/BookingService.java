@@ -20,10 +20,17 @@ public class BookingService {
     public Booking saveOrUpdateBooking(Booking booking){
 
         if (checkDate(booking.getBooking_date()) < 0){
+            System.out.println(1);
             return null;
         } else if (checkDate(booking.getBooking_date()) == 0 && !checkTime(booking.getBooking_time())){
+            System.out.println(2);
             return null;
-        }
+        } //else if(!verifyBookingTime(booking)){
+//            System.out.println(3);
+//            return null;
+//        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
+//            return null;
+//        }
 
         return bookingRepository.save(booking);
     }
@@ -88,5 +95,48 @@ public class BookingService {
         }
 
         return returnBookings;
+    }
+
+    public boolean verifyBookingTime(Booking booking) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(booking.getBooking_date());
+
+        if(booking.getAssigned_employee() == null || booking.getBookedService() == null){
+            return false;
+        }
+
+        List<Integer> days = booking.getBookedService().getAvailable_Days_AsList();
+        boolean found = false;
+        for(int i : days){
+            if(i == cal.get(Calendar.DAY_OF_WEEK)){
+                found = true;
+                break;
+            }
+        }
+
+        if(!found){
+            return false;
+        }
+
+        Date bookingTime = booking.getBooking_time();
+        bookingTime.setHours(bookingTime.getHours() - 10);
+        bookingTime.setYear(2020);
+        bookingTime.setMonth(1);
+        bookingTime.setDate(1);
+        Date serviceStart = booking.getBookedService().getStart_time();
+        serviceStart.setYear(2020);
+        serviceStart.setMonth(1);
+        serviceStart.setDate(1);
+        Date serviceEnd = booking.getBookedService().getEnd_time();
+        serviceEnd.setYear(2020);
+        serviceEnd.setMonth(1);
+        serviceEnd.setDate(1);
+
+        if(bookingTime.compareTo(serviceStart) < 0 ||
+            bookingTime.compareTo(serviceEnd) > 0){
+            return false;
+        }
+
+        return true;
     }
 }
