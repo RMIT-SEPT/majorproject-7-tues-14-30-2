@@ -30,15 +30,25 @@ class Booking extends Component{
         axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
                 const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
-                var i;  
+                var i;
+                var j =0;  
                let urlArray = [];
+               
                for(i=0; i < employee.length; i++) {
-                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
-               }
+                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                }
+                 
                let promiseArray = urlArray.map(url => axios.get(url)); 
                 axios.all(promiseArray) // performs the GET request(s)
                 .then(results => {
-                    this.setState({services : results.map(r => r.data[0])}); // adds results into services array
+                    let newResults = [];
+                    for(i=0; i < results.length; i++) {
+                        if(results[i].data[0] !== undefined) {
+                            newResults[j] = results[i];
+                            j++;
+                        }
+                    }
+                    this.setState({services : newResults.map(r => r.data[0])}); // adds results into services array
                     this.setState({isDataFetched : true})
                 })
                 .catch(err => {
@@ -113,16 +123,16 @@ handleTimeChange = (time) => {
     var time =moment(this.state.time).format('HH:mm:ss');
 
 
-    if(this.state.date == null) {
+    if(this.state.date === null) {
         alert('Please select a date');
     } 
-    else if(this.state.time == null || this.state.time == '') {
+    else if(this.state.time === null || this.state.time === '') {
         alert('Please select a time');
     }
-    else if(this.state.duration == null || this.state.duration == '') {
+    else if(this.state.duration === null || this.state.duration === '') {
         alert('Please fill in the duration');
     }
-    else if(this.state.notes == null || this.state.notes == '') {
+    else if(this.state.notes === null || this.state.notes === '') {
         alert('Please fill in the notes');
     }
     else {        
@@ -228,7 +238,7 @@ renderTableData() {
                 <td>{avail_days}</td>
                 <td>{start_time}</td>
                 <td>{end_time}</td>
-            </tr>
+            </tr> 
         )    
     })
 }
@@ -240,7 +250,7 @@ renderTableHeader() {
     })
 }
 
-render(){
+render(){  
 if(!this.state.isDataFetched) return null;      
 return(
     <div> 
