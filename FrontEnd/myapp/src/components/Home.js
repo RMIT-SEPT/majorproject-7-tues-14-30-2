@@ -38,18 +38,27 @@ class Home extends Component{
         axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
                 const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
-                var i;  
-                let urlArray = [];
-                for(i=0; i < employee.length; i++) {
-                    urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                var i;
+                var j =0;  
+               let urlArray = [];
+               
+               for(i=0; i < employee.length; i++) {
+                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
                 }
-                let promiseArray = urlArray.map(url => axios.get(url)); 
+                 
+               let promiseArray = urlArray.map(url => axios.get(url)); 
                 axios.all(promiseArray) // performs the GET request(s)
                 .then(results => {
-                    console.log("data", results.data)
-                    this.setState({currServices : results.map(r => r.data)[0]}); // adds results into services array
+                    let newResults = [];
+                    for(i=0; i < results.length; i++) {
+                        if(results[i].data[0] !== undefined) {
+                            newResults[j] = results[i];
+                            j++;
+                        }
+                    }
+                    this.setState({currServices : newResults.map(r => r.data)[0]}); // adds results into services array
                     // console.log("services", this.state.currServices)
-                    this.setState({isDataFetched : true}) // Page can now render as data has been fetched
+                    this.setState({isDataFetched : true})
                 })
                 .catch(err => {
                     if (err.response) {
@@ -63,6 +72,7 @@ class Home extends Component{
         })
                         
     }
+
     
     // maps the data from the request into a table
     renderTableData() {
