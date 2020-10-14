@@ -19,7 +19,7 @@ import{Link} from "react-router-dom"
        role =()=>{
          //get user role from localstorage
         var role = localStorage.getItem("user_role");
-
+      //if role is equal null display default navabr
         if(role===''){
             return(
               <div className="navbar">
