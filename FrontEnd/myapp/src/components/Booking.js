@@ -132,10 +132,10 @@ handleTimeChange = (time) => {
 
     var service_index = this.state.selectedService - 1;
 
-    var start_time = this.state.services[service_index].start_time
-    var end_time = this.state.services[service_index].end_time
+    var start_time = this.state.services[service_index].start_time || '00:00'
+    var end_time = this.state.services[service_index].end_time || '00:00'
     
-    var available_day = this.state.services[0].available_days
+    var available_day = this.state.services[service_index].available_days
     //booking validation
     if(this.state.services.length === 0) {
         alert('Sorry no available services!');
@@ -163,7 +163,7 @@ handleTimeChange = (time) => {
     else if(available_day.includes(day_index) === false){
         alert('Please select date within the available day range')
     }
-    else {        
+    else {       
     //pass workername and servicename to api 
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
