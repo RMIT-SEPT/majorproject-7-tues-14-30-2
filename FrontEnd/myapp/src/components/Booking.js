@@ -50,7 +50,7 @@ class Booking extends Component{
                             j++;
                         }
                     }
-                    this.setState({services : newResults.map(r => r.data[0])}); // adds results into services array
+                    this.setState({services : newResults.map(r => r.data)[0]}); // adds results into services array
                     this.setState({isDataFetched : true})
                 })
                 .catch(err => {
