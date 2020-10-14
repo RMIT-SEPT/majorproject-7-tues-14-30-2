@@ -125,7 +125,17 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
+    //get the day from the date(Sunday = 0, Saturday = 6)
+    var selectedDate = moment(this.state.date); 
+    //add the day index by 1 to match with backend
+    var day_index = selectedDate.day() + 1;
+
+    var service_index = this.state.selectedService - 1;
+
+    var start_time = this.state.services[service_index].start_time
+    var end_time = this.state.services[service_index].end_time
     
+    var available_day = this.state.services[0].available_days
     //booking validation
     if(this.state.services.length === 0) {
         alert('Sorry no available services!');
@@ -144,6 +154,14 @@ handleTimeChange = (time) => {
     }
     else if(this.state.notes === null || this.state.notes === '') {
         alert('Please fill in the notes');
+    }
+    //time range validation
+    else if(time < start_time || time >end_time){
+        alert('select time in range' + start_time + '-' + end_time)
+    }
+    //day validation
+    else if(available_day.includes(day_index) === false){
+        alert('Please select date within the available day range')
     }
     else {        
     //pass workername and servicename to api 
