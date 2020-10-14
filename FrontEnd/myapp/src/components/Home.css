@@ -10,3 +10,26 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+
+  #currServices {
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+  }
+  
+  #currServices td, #days th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #currServices tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #currServices th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: rgb(89, 183, 245) !important;
+    color: white;
+  }
