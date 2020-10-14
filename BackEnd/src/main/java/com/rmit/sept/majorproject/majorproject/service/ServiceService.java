@@ -19,9 +19,9 @@ public class ServiceService {
 
     public Services saveOrUpdateServices(Services services){
 
-        Services fixedService = fixTimes(services);
+        //Services fixedService = fixTimes(services);
 
-        if(!validateAvailableTimes(fixedService) || !validateDays(services)){
+        if(!validateAvailableTimes(services) || !validateDays(services)){
             return null;
         }
 
