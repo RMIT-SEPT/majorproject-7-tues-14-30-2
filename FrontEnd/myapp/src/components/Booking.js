@@ -22,7 +22,9 @@ class Booking extends Component{
             notes:'',
             isDataFetched: false,
             services: [{}],
-            headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}]   
+            headings: [{service: '', worker: '', days: '', start_time: '', end_time: ''}],
+            selectedService:'',
+            selectedWorker:''   
     };
     }
     
@@ -31,15 +33,25 @@ class Booking extends Component{
         axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
                 const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
-                var i;  
+                var i;
+                var j =0;  
                let urlArray = [];
+               
                for(i=0; i < employee.length; i++) {
-                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
-               }
+                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                }
+                 
                let promiseArray = urlArray.map(url => axios.get(url)); 
                 axios.all(promiseArray) // performs the GET request(s)
                 .then(results => {
-                    this.setState({services : results.map(r => r.data[0])}); // adds results into services array
+                    let newResults = [];
+                    for(i=0; i < results.length; i++) {
+                        if(results[i].data[0] !== undefined) {
+                            newResults[j] = results[i];
+                            j++;
+                        }
+                    }
+                    this.setState({services : newResults.map(r => r.data)[0]}); // adds results into services array
                     this.setState({isDataFetched : true})
                 })
                 .catch(err => {
@@ -64,13 +76,13 @@ handleNotesChange = (event) =>{
 
 handleServiceChange = (event) =>{
     this.setState({
-        service: event.target.value 
+        selectedService: event.target.value 
     })
 }
 
 handleWorkerChange = (event) =>{
     this.setState({
-        worker: event.target.value 
+        selectedWorker: event.target.value 
     })
 }
 
@@ -93,14 +105,14 @@ handleTimeChange = (time) => {
     this.setState({
       time: time
     })
-  }
+  } 
 
   onSubmit = (event) =>{
 //prevent page to refresh 
     event.preventDefault() 
     var info={
         workername:this.state.worker,
-        servicename:this.state.service
+        servicename:this.state.selectedService
     }
     //assign user selected workername and service into variable
     var workername = info.workername;
@@ -114,18 +126,24 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
-
+    
     //booking validation
-    if(this.state.date == null) {
+    if(this.state.services.length === 0) {
+        alert('Sorry no available services!');
+    }
+    else if(this.state.selectedService === null || this.state.selectedService === '' || this.state.selectedService === 'default') {
+        alert('Please select a service');
+    }
+    else if(this.state.date === null) {
         alert('Please select a date');
     } 
-    else if(this.state.time == null || this.state.time == '') {
+    else if(this.state.time === null || this.state.time === '') {
         alert('Please select a time');
     }
-    else if(this.state.duration == null || this.state.duration == '') {
+    else if(this.state.duration === null || this.state.duration === '') {
         alert('Please fill in the duration');
     }
-    else if(this.state.notes == null || this.state.notes == '') {
+    else if(this.state.notes === null || this.state.notes === '') {
         alert('Please fill in the notes');
     }
     else {        
@@ -162,29 +180,6 @@ handleTimeChange = (time) => {
     }
   }    
 
-renderTableData() {
-    return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time } = schedule
-        let assigned_employee = schedule.assigned_employee.name
-    
-        return (
-            <tr key={id}>
-                <td>{id}</td>
-                <td>{service}</td>
-                <td>{assigned_employee}</td>
-                <td>{available_days}</td>
-                <td>{start_time}</td>
-            </tr>
-        )    
-    })
-}
-
-renderTableHeader() {
-    let header = Object.keys(this.state.headings[0])
-    return header.map((key, index) => {
-        return <th key={index}>{key.toUpperCase()}</th>
-    })
-}
 
 /* 
 *  method to return available days as string
@@ -216,28 +211,28 @@ getAvailableDays(available_days) {
             break;
         }
     }
-    days+=", ";
+    
     for(i = 2; i < available_days.length;) {
         if(available_days[i] === "1") {
-            days += "Sunday";
+            days += ", Sunday";
             break;
         } else if(available_days[i] === "2") {
-            days += "Monday";
+            days += ", Monday";
             break;
         } else if(available_days[i] === "3") {
-            days += "Tuesday";
+            days += ", Tuesday";
             break;
         } else if(available_days[i] === "4") {
-            days += "Wednesday";
+            days += ", Wednesday";
             break;
         } else if(available_days[i] === "5") {
-            days += "Thursday";
+            days += ", Thursday";
             break;
         } else if(available_days[i] === "6") {
-            days += "Friday";
+            days += ", Friday";
             break;
         } else if(available_days[i] === "7") {
-            days += "Saturday";
+            days += ", Saturday";
             break;
         }
     }
@@ -246,13 +241,13 @@ getAvailableDays(available_days) {
 
 renderTableData() {
     return this.state.services.map((schedule) => {
-        const { id, service, available_days, start_time, end_time } = schedule
+        const { service, available_days, start_time, end_time } = schedule
+        let id = schedule.id
         let assigned_employee = schedule.assigned_employee.name
         let avail_days = this.getAvailableDays(available_days)
     
         return (
             <tr key={id}>
-                <td>{id}</td>
                 <td>{service}</td>
                 <td>{assigned_employee}</td>
                 <td>{avail_days}</td>
@@ -289,20 +284,10 @@ return(
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>   
-                  <option name="service1">Service1</option>
-                  <option name="service2">Hair Salon</option>
-                  <option name="service3">Accounting Firm</option>
+            <select name = 'service' value={this.state.selectedService} onChange={this.handleServiceChange}>
+                <option value="default">-- Select a service --</option>
+                {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.service}</option>)}   
             </select>
-            <br/>
-            <br/>
-            <label>Worker</label> 
-            <br/>
-            <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="worker1">Worker1</option>
-                  <option name="worker2">Stephanie</option>
-                  <option name="worker3">Catherine</option>
-                  </select>
             <br/>
             <br/>
             <label>Date</label> 
