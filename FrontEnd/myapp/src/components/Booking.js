@@ -156,7 +156,7 @@ handleTimeChange = (time) => {
         alert('Please fill in the notes');
     }
     //time range validation
-    else if(time < start_time || time >end_time){
+    else if(Number(time.substring(0,1)) < Number(start_time.substring(0,1)) || Number(time.substring(0,1)) > Number(end_time.substring(0,1))){
         alert('select time in range' + start_time + '-' + end_time)
     }
     //day validation
