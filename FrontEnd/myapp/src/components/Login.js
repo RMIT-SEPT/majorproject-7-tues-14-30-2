@@ -5,7 +5,7 @@ import axios from 'axios'
 class Login extends Component{
     constructor(props){
         super(props)
-    
+    //set all props as default null
     this.state={
             username:'',
             password:''
@@ -39,7 +39,7 @@ class Login extends Component{
     OnChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
              }
-
+             //this function will get call once login button has been click
     OnSubmit(e){
         e.preventDefault();
         var  login={

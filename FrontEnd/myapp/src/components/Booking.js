@@ -12,6 +12,7 @@ class Booking extends Component{
     constructor(props){
         super(props)
     
+        //set props to it assign value
     this.state={
             date: new Date(),
             time:'',
