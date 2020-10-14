@@ -20,13 +20,41 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: [
-                { service: 'Dental Clinic', opening: '8:00am - 4:00pm', days: 'Monday - Friday', worker: 'Anthony'  },
-                { service: 'Hair Salon', opening: '9:00am - 5:30pm', days: 'Monday - Saturday', worker: 'Stephanie' },
-                { service: 'Accounting Firm', opening: '10:00am - 4:00pm', days: 'Tuesday - Sunday', worker: 'Catherine' },
-            ]
+            isDataFetched: false,
+            services: [{}],
+            headings: [{id: '', service: '', worker: '', days: '', start_time: '', end_time: ''}]   
     };
     }
+    
+    componentDidMount() {   
+        const role = 'WORKER'; 
+        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
+            .then((response) => {
+                const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
+                var i;  
+               let urlArray = [];
+               for(i=0; i < employee.length; i++) {
+                   urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+               }
+               let promiseArray = urlArray.map(url => axios.get(url)); 
+                axios.all(promiseArray) // performs the GET request(s)
+                .then(results => {
+                    this.setState({services : results.map(r => r.data[0])}); // adds results into services array
+                    this.setState({isDataFetched : true})
+                })
+                .catch(err => {
+                    if (err.response) {
+                        console.log(err)
+                    } else if (err.request) {
+                        console.log(err)
+                    } else {
+                        console.log(err)
+                    }
+                })    
+        })
+                        
+    }
+
 
 handleNotesChange = (event) =>{
     this.setState({
@@ -126,6 +154,7 @@ handleTimeChange = (time) => {
          })
 
         
+
         .catch((error)=>{
             //display error for debug
             console.log(error)
@@ -134,46 +163,133 @@ handleTimeChange = (time) => {
   }    
 
 renderTableData() {
-    return this.state.services.map((schedule, index) => {
-       const { service, opening, days, worker } = schedule //destructuring
-       return (
-          <tr>
-             <td>{service}</td>
-             <td>{opening}</td>
-             <td>{days}</td>
-             <td>{worker}</td>
-          </tr>
-        )
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{available_days}</td>
+                <td>{start_time}</td>
+            </tr>
+        )    
     })
 }
 
 renderTableHeader() {
-    let header = Object.keys(this.state.services[0])
+    let header = Object.keys(this.state.headings[0])
     return header.map((key, index) => {
-       return <th key={index}>{key.toUpperCase()}</th>
+        return <th key={index}>{key.toUpperCase()}</th>
     })
 }
 
+/* 
+*  method to return available days as string
+*/
+getAvailableDays(available_days) { 
+    var days;
+    var i;
+    for(i = 0; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days = "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days = "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days = "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days = "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days = "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days = "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days = "Saturday";
+            break;
+        }
+    }
+    days+=", ";
+    for(i = 2; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days += "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days += "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days += "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days += "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days += "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days += "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days += "Saturday";
+            break;
+        }
+    }
+    return days;      
+}
+
+renderTableData() {
+    return this.state.services.map((schedule) => {
+        const { id, service, available_days, start_time, end_time } = schedule
+        let assigned_employee = schedule.assigned_employee.name
+        let avail_days = this.getAvailableDays(available_days)
+    
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{avail_days}</td>
+                <td>{start_time}</td>
+                <td>{end_time}</td>
+            </tr>
+        )    
+    })
+}
+
+renderTableHeader() {
+    let header = Object.keys(this.state.headings[0])
+    return header.map((key, index) => {
+        return <th key={index}>{key.toUpperCase().replace("_", " ")}</th>
+    })
+}
 
 render(){
+if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
         <h2 id='heading'>Available Services</h2>
-              <table id='services'>
+              <table id='services'> 
                  <tbody>
-                    <tr>{this.renderTableHeader()}</tr>
-                    {this.renderTableData()}
+                  <tr>{this.renderTableHeader()}</tr>   
+                  {this.renderTableData()}
                  </tbody>
               </table>
-
+              
          <form onSubmit={this.onSubmit}>
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
+            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}>   
                   <option name="service1">Service1</option>
                   <option name="service2">Hair Salon</option>
                   <option name="service3">Accounting Firm</option>
@@ -215,7 +331,7 @@ return(
         </form>
 
     </div>
-     )       
+    )       
     }
   }
 
