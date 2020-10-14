@@ -3,13 +3,13 @@
     padding: 12px 2px;
     padding-left:2px;
     padding-right:2px;
-    margin:10px 15px 10px 10px;
+    margin-top:25px;
     outline:none;
     text-decoration: none;
     font-weight: bold;
-    -webkit-text-fill-color: #ffffff;
+    -webkit-text-fill-color: black;
     width: 200px;
-    background-color: rgb(89, 183, 245);
+    background-color: #e6e6e6;
     border-style: none;
   }
 

@@ -6,7 +6,7 @@ class Customer_Dashboard extends Component{
     constructor(props){
         super(props)
     
-    
+        //dummy data for table, feature not properly implemented 
         this.state = { //state is by default an object
             appointments: [
                { day: 'Monday',    time: '08:30-09:00', service: 'Denist checkup', worker: 'Anthony' },
@@ -17,7 +17,7 @@ class Customer_Dashboard extends Component{
       }
 
       
-
+      // renders cells in table
       renderTableData() {
         return this.state.appointments.map((schedule, index) => {
            const { day, time, service, worker } = schedule //destructuring
@@ -32,17 +32,20 @@ class Customer_Dashboard extends Component{
         })
      }
 
+    //  renders the table header values 
      renderTableHeader() {
         let header = Object.keys(this.state.appointments[0])
         return header.map((key, index) => {
            return <th key={index}>{key.toUpperCase()}</th>
         })
      }
-
+     
+    //  function to redirect to booking page
      redirectToTarget = () => {
       this.props.history.push(`/Booking`)
      }
 
+    //  dummy function to show that the buttons are not yet implememted
      sayHello() {
         alert('Go to page');
       }
