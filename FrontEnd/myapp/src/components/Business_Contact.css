@@ -1,4 +1,4 @@
-.submit_btn {
+  .submit_btn {
     border-radius: 8px;
     padding: 12px 20px;
     padding-left:25px;
@@ -6,12 +6,18 @@
     outline:none;
     text-decoration: none;
     width: 390px;
-    background-color:#e6e6e6;
+    -webkit-text-fill-color: white;
+    background-color: rgb(89, 183, 245);
     border-style: none;
   
   
   }
-  
+
+  .submit_btn:hover {
+    background-color: #333;
+    transition-duration:0.3s;
+  }
+
   .centered {
     position: static;
     margin-top: -150px; 
