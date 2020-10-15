@@ -17,17 +17,22 @@ public class ServiceService {
     @Autowired
     private ServiceRepository serviceRepository;
 
+    // Saves or Updates a service
     public Services saveOrUpdateServices(Services services){
 
-        //Services fixedService = fixTimes(services);
+        Services fixedService = fixTimes(services);
 
-        if(!validateAvailableTimes(services) || !validateDays(services)){
+        if(!validateAvailableTimes(fixedService) || !validateDays(services)){
             return null;
         }
 
         return serviceRepository.save(services);
     }
 
+    /*
+     * Returns a list of Services belonging to a worker with the specified
+     * username
+     */
     public Iterable<Services> findEmployeeServices(String username){
         Iterable<Services> servicesIterable = serviceRepository.findAll();
         List<Services> returnServices = new ArrayList<>();
@@ -43,6 +48,10 @@ public class ServiceService {
         return returnServices;
     }
 
+    /*
+     * Returns a list of employees that service a service
+     * with the name corresponding to the argument parsed.
+     */
     public Iterable<User> findServicesEmployee(String service){
         Iterable<Services> servicesIterable = serviceRepository.findAll();
         List<User> returnUser = new ArrayList<>();
@@ -55,6 +64,10 @@ public class ServiceService {
         return returnUser;
     }
 
+    /*
+     * Returns a service that corresponds to the parsed service name,
+     * and has an assigned worker with the corresponding username
+     */
     public Services findServiceFromWorker(String serviceName, String worker){
         Iterable<Services> servicesIterable = serviceRepository.findAll();
         for(Services services : servicesIterable){
@@ -68,6 +81,7 @@ public class ServiceService {
         return null;
     }
 
+    // Validates the available days of a service, returning false if the day is invalid
     public boolean validateDays(Services service){
         List<Integer> days = service.getAvailable_Days_AsList();
 
@@ -80,6 +94,7 @@ public class ServiceService {
         return true;
     }
 
+    // Validates that the start time is before the end time for a service
     public boolean validateAvailableTimes(Services service){
 
         if(service.getStart_time().compareTo(service.getEnd_time()) >= 0){
@@ -89,6 +104,7 @@ public class ServiceService {
         return true;
     }
 
+    // Corrects the starting and ending time, as there is an issue where the times are incorrect
     public Services fixTimes(Services service){
 
         Calendar calendar = Calendar.getInstance();
