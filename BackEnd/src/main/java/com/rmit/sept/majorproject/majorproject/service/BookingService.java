@@ -30,9 +30,9 @@ public class BookingService {
             System.out.println(2);
             return null;
         //}
-        } else if(!verifyBookingTime(booking)){
-            System.out.println(3);
-            return null;
+//        } else if(!verifyBookingTime(booking)){
+//            System.out.println(3);
+//            return null;
         } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
             return null;
         }
@@ -141,6 +141,7 @@ public class BookingService {
 
         Date bookingTime = booking.getBooking_time();
         bookingTime.setHours(bookingTime.getHours() - 10);
+        //System.out.println(bookingTime);
         bookingTime.setYear(2020);
         bookingTime.setMonth(1);
         bookingTime.setDate(1);
