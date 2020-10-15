@@ -108,15 +108,16 @@ handleTimeChange = (time) => {
   } 
 
   onSubmit = (event) =>{
+    event.preventDefault()
       axios.get(`http://localhost:8080/api/services/findEmployees/${this.state.selectedService}`)
       .then(response => {
           const worker = response.data.map(({name}) => name)[0];
           this.setState({selectedWorker : worker})
 //          console.log(this.state.selectedWorker);
-      })
+//      })
       
 //prevent page to refresh 
-    event.preventDefault() 
+//    event.preventDefault() 
     var info={
         workername:this.state.selectedWorker,
         servicename:this.state.selectedService
@@ -203,6 +204,7 @@ handleTimeChange = (time) => {
             console.log(error)
         })   
     }
+    })
   }    
 
 
