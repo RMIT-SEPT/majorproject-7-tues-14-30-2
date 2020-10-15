@@ -29,6 +29,7 @@ public class BookingService {
         } else if (checkDate(booking.getBooking_date()) == 0 && !checkTime(booking.getBooking_time())) {
             System.out.println(2);
             return null;
+        //}
         } else if(!verifyBookingTime(booking)){
             System.out.println(3);
             return null;

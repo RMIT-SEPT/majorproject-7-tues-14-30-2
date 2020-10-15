@@ -40,7 +40,14 @@ public class ServiceService {
         for(Services service : servicesIterable){
             if(service.getAssigned_employee() != null) {
                 if (service.getAssigned_employee().getUsername().equals(username)) {
-                    returnServices.add(service);
+                    Services editedService = service;
+                    Date editedStart = editedService.getStart_time();
+                    editedStart.setHours(editedService.getStart_time().getHours() - 14);
+                    editedService.setStart_time(editedStart);
+                    Date editedEnd = editedService.getEnd_time();
+                    editedEnd.setHours(editedService.getEnd_time().getHours() - 14);
+                    editedService.setEnd_time(editedEnd);
+                    returnServices.add(editedService);
                 }
             }
         }

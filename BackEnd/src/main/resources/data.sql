@@ -4,7 +4,7 @@ INSERT INTO USER (USERNAME, ADDRESS, CONTACT, NAME, PASSWORD, ROLE, CREATED_AT, 
 ('w0rk3r', '50 Work Street', '0567894321', 'Peter Rabbit', 'password', 'WORKER', current_date(), current_date()),
 ('poshduck', '100 Boss Street', '09435261798', 'Cygnet Swan', 'password', 'ADMIN', current_date(), current_date());
 
-INSERT INTO SERVICES (AVAILABLE_DAYS, CREATED_AT, UPDATED_AT, END_TIME, SERVICE, START_TIME, ASSIGNED_WORKER) VALUES
+INSERT INTO SERVICES (AVAILABLE_DAYS, CREATED_AT, UPDATED_AT, START_TIME, SERVICE, END_TIME, ASSIGNED_WORKER) VALUES
 ('2,3,4,5,6', current_date(), current_date(), PARSEDATETIME('08:30:00', 'HH:mm:ss'), 'Gardening', PARSEDATETIME('12:30:00', 'HH:mm:ss'), 'w0rk3r'),
 ('1,2,5,6,7', current_date(), current_date(), PARSEDATETIME('012:30:00', 'HH:mm:ss'), 'Cleaning', PARSEDATETIME('21:30:00', 'HH:mm:ss'), 'w0rk3r');
 
