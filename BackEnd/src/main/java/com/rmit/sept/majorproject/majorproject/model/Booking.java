@@ -43,6 +43,16 @@ public class Booking {
     public Booking(){
     }
 
+    public Booking(Date booking_date, Date booking_time, int duration, User assigned_employee, @NotBlank String notes, User customer, Services bookedService) {
+        this.booking_date = booking_date;
+        this.booking_time = booking_time;
+        this.duration = duration;
+        this.assigned_employee = assigned_employee;
+        this.notes = notes;
+        this.customer = customer;
+        this.bookedService = bookedService;
+    }
+
     public long getId() {
         return id;
     }

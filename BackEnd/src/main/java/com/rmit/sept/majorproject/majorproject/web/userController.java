@@ -21,6 +21,11 @@ public class userController {
     @Autowired
     private UserService userService;
 
+    /*
+     * Post request to create a new user
+     * Takes a user json
+     * Returns the saved user
+     */
     @PostMapping("")
     public ResponseEntity<?> createNewUser(@Valid @RequestBody User user, BindingResult result){
         if (result.hasErrors()) {
@@ -44,6 +49,11 @@ public class userController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
+    /*
+     * Get request to get users with a specific role
+     * Takes a role as a path variable
+     * Returns a list of users with a specific role
+     */
     @GetMapping("/getRole/{role}")
     public ResponseEntity<?> getUserType(@PathVariable String role){
 
@@ -54,6 +64,11 @@ public class userController {
         return new ResponseEntity<Iterable<User>>(userService.getUserType(role), HttpStatus.OK);
     }
 
+    /*
+     * Delete request to delete a user
+     * Takes a username
+     * Returns a string to confirm the deletion
+     */
     @DeleteMapping("/{userName}")
     public ResponseEntity<?> deleteUser(@PathVariable String userName){
         userService.deleteUserByUsername(userName);

@@ -23,6 +23,11 @@ public class ServicesController {
     @Autowired
     private ServiceService serviceService;
 
+    /*
+     * Post request to create a service
+     * Takes a service json
+     * Returns the saved json
+     */
     @PostMapping("")
     public ResponseEntity<?> createNewService(@Valid @RequestBody Services service, BindingResult result){
         if (result.hasErrors()) {
@@ -39,6 +44,11 @@ public class ServicesController {
         return new ResponseEntity<Services>(services, HttpStatus.CREATED);
     }
 
+    /*
+     * Get request to get services belonging to a worker
+     * Takes a workers username as a path variable
+     * Returns a list of services as a json
+     */
     @GetMapping("/findService/{employeeUsername}")
     public ResponseEntity<?> getServiceEmployees(@PathVariable String employeeUsername){
         Iterable<Services> services = serviceService.findEmployeeServices(employeeUsername);
@@ -46,6 +56,11 @@ public class ServicesController {
         return new ResponseEntity<Iterable<Services>>(services, HttpStatus.OK);
     }
 
+    /*
+     * Get request to get employees belonging to a service
+     * Takes a service name as a path variable
+     * Returns a list of workers as a json
+     */
     @GetMapping("/findEmployees/{service}")
     public ResponseEntity<?> getEmployeeServices(@PathVariable String service){
         Iterable<User> employees = serviceService.findServicesEmployee(service);

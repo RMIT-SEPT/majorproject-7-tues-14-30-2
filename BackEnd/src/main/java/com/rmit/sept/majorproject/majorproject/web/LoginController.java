@@ -29,6 +29,11 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
+    /*
+     * Get request to get user details
+     * Takes a username as a path variable
+     * Returns the user as a json
+     */
     @GetMapping("/find/{userName}")
     public ResponseEntity<?> findUser(@Valid @PathVariable String userName){
 
@@ -41,6 +46,11 @@ public class LoginController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    /*
+     * Post request for authenticate a username and password
+     * Takes a json containing username and password
+     * Returns a jwt token used to login
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
         try {
