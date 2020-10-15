@@ -138,7 +138,7 @@ handleTimeChange = (time) => {
     //add the day index by 1 to match with backend
     var day_index = selectedDate.day() + 1;
 
-    var service_index = this.state.selectedService - 1;
+    var service_index = this.state.selectedService;
 
     var start_time = this.state.services[service_index].start_time || '00:00'
     var end_time = this.state.services[service_index].end_time || '00:00'
