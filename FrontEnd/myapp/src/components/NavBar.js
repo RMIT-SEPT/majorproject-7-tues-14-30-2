@@ -21,7 +21,7 @@ import{Link} from "react-router-dom"
         if(role===''){
             return(
               <div className="navbar">
-              <div className="brand-title">SEPT Project</div>
+              <Link to="/"><div className="brand-title">SEPT Project</div></Link>
               <div className="navbar-links">
                 <ul>
                    <li><Link to="/Login" >Login</Link></li>
