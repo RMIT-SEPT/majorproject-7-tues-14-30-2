@@ -38,8 +38,8 @@
     outline:none;
     text-decoration: none;
     font-weight: bold;
-    -webkit-text-fill-color: #ffffff;
-    background-color: rgb(89, 183, 245);
+    -webkit-text-fill-color: black;
+    background-color: #e6e6e6;
     border-style: none;
     width: 200px;
   }

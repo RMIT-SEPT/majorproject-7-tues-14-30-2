@@ -1,5 +1,10 @@
 package com.rmit.sept.majorproject.majorproject;
 
+import com.rmit.sept.majorproject.majorproject.model.User;
+import com.rmit.sept.majorproject.majorproject.service.BookingService;
+import com.rmit.sept.majorproject.majorproject.service.ServiceService;
+import com.rmit.sept.majorproject.majorproject.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -25,6 +25,8 @@ class Registration extends Component{
     OnSubmit(e){
         
         e.preventDefault();
+        
+
         const newUser = {
             name:this.state.name,
             username:this.state.username,
@@ -36,13 +38,16 @@ class Registration extends Component{
         if(newUser.name==='' || newUser.username === '' || newUser.password ==='' || newUser.address === '' || newUser.contact === ''){
             alert('Please fill in the information');
         }
+        else if(newUser.contact.length != 10){
+            alert('Phone length must be 10')
+        }
+        else{
+            axios.post('http://localhost:8080/api/user', newUser);
+            this.props.history.push('/')
+            alert('Account Created!');
+        }
+   
         console.log(newUser);
-      
-        axios.post('http://localhost:8080/api/user', newUser);
-        this.props.history.push('/')
-
-        alert('Account Created!');
-              
     };
 
 handleNameChange = (event) =>{
@@ -71,13 +76,12 @@ handleAddressChange = (event) =>{
 
 handleContactChange = (event) =>{
     let phone = event.target.value;
-    //only accepts number
-    if(!Number(phone)){
-        return;
+
+    if(event.target.value.match("^[0-9]*$") != null){
+        this.setState(
+            {contact:phone}
+        );
     }
-    this.setState({
-        contact: phone
-    })
 }
 
     render(){
@@ -88,32 +92,32 @@ handleContactChange = (event) =>{
         <div classname="form"> 
 
         <label>Name</label><br></br>
-        <input type='text' value={this.state.name} onChange={this.handleNameChange} required/>
+        <input type='text' value={this.state.name} onChange={this.handleNameChange}/>
         <br></br>
 
         <label>Username</label><br></br>
         <input type='text'
          value={this.state.username}
         onChange={this.handleUsernameChange}
-        required/>
+        />
         <br></br>
         <label>Password</label><br></br>
         <input type='password'
         value={this.state.password}
         onChange={this.handlePasswordChange}
-        required/>
+        />
         <br></br>
         <label>Address</label><br></br>
         <input type='text'
          value={this.state.address}
         onChange={this.handleAddressChange}
-        required/>
+        />
         <br></br>
         <label>Phone</label><br></br>
         <input type='text'
          value={this.state.contact}
         onChange={this.handleContactChange}
-        required/>
+        />
 
         </div>
         <br></br> 
