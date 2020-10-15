@@ -24,7 +24,11 @@ class Booking extends Component{
             services: [{}],
             headings: [{service: '', worker: '', days: '', start_time: '', end_time: ''}],
             selectedService:'',
-            selectedWorker:''   
+            selectedWorker:'',
+            workerUsername:'',
+            start_time:'',
+            end_time:'',
+            availableDays:''   
     };
     }
     
@@ -111,8 +115,20 @@ handleTimeChange = (time) => {
       axios.get(`http://localhost:8080/api/services/findEmployees/${this.state.selectedService}`)
       .then(response => {
           const worker = response.data.map(({name}) => name)[0];
+          const uname = response.data.map(({username}) => username)[0];
           this.setState({selectedWorker : worker})
-//          console.log(this.state.selectedWorker);
+          this.setState({workerUsername : uname})
+        //  console.log(this.state.selectedWorker);
+      })
+      //get start time, end time and available days
+      axios.get(`http://localhost:8080/api/services/findService/${this.state.workerUsername}`)
+      .then(response => {
+          const start = response.data.map(({start_time}) => start_time)[0];
+          const end = response.data.map(({end_time}) => end_time)[0];
+          const days = response.data.map(({available_days}) => available_days)[0];
+          this.setState({start_time : start})
+          this.setState({end_time : end})
+          this.setState({availableDays: days})
       })
       
 //prevent page to refresh 
@@ -134,16 +150,14 @@ handleTimeChange = (time) => {
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
     //get the day from the date(Sunday = 0, Saturday = 6)
-    // var selectedDate = moment(this.state.date); 
+    var selectedDate = moment(this.state.date); 
     //add the day index by 1 to match with backend
-    // var day_index = selectedDate.day() + 1;
-
-    // var service_index = this.state.selectedService;
-
-    // var start_time = this.state.services[service_index].start_time || '00:00'
-    // var end_time = this.state.services[service_index].end_time || '00:00'
+    var day_index = selectedDate.day() + 1;
+    console.log(day_index)
     
     // var available_day = this.state.services[service_index].available_days
+    var availDays = this.state.availableDays;
+    
     //booking validation
     if(this.state.services.length === 0) {
         alert('Sorry no available services!');
@@ -164,13 +178,15 @@ handleTimeChange = (time) => {
         alert('Please fill in the notes');
     }
     //time range validation
-    // else if(Number(time.substring(0,1)) < Number(start_time.substring(0,1)) || Number(time.substring(0,1)) > Number(end_time.substring(0,1))){
-    //     alert('select time in range' + start_time + '-' + end_time)
-    // }
+    else if(this.state.start_time != '' && this.state.end_time != ''){
+        if(Number(time.substring(0,1)) < Number(this.state.start_time.substring(0,1)) || 
+            Number(time.substring(0,1)) > Number(this.state.end_time.substring(0,1))){
+            alert('select time in range' + this.state.start_time + '-' + this.state.end_time)
+    }}
     //day validation
-    // else if(available_day.includes(day_index) === false){
-    //     alert('Please select date within the available day range')
-    // }
+    else if(availDays != '' && availDays.includes(day_index) === false){
+        alert('Please select date within the available day range')
+    }
     else {       
     //pass workername and servicename to api 
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
