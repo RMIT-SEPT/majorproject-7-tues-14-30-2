@@ -134,16 +134,16 @@ handleTimeChange = (time) => {
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
     //get the day from the date(Sunday = 0, Saturday = 6)
-    var selectedDate = moment(this.state.date); 
+    // var selectedDate = moment(this.state.date); 
     //add the day index by 1 to match with backend
-    var day_index = selectedDate.day() + 1;
+    // var day_index = selectedDate.day() + 1;
 
-    var service_index = this.state.selectedService;
+    // var service_index = this.state.selectedService;
 
-    var start_time = this.state.services[service_index].start_time || '00:00'
-    var end_time = this.state.services[service_index].end_time || '00:00'
+    // var start_time = this.state.services[service_index].start_time || '00:00'
+    // var end_time = this.state.services[service_index].end_time || '00:00'
     
-    var available_day = this.state.services[service_index].available_days
+    // var available_day = this.state.services[service_index].available_days
     //booking validation
     if(this.state.services.length === 0) {
         alert('Sorry no available services!');
@@ -164,13 +164,13 @@ handleTimeChange = (time) => {
         alert('Please fill in the notes');
     }
     //time range validation
-    else if(Number(time.substring(0,1)) < Number(start_time.substring(0,1)) || Number(time.substring(0,1)) > Number(end_time.substring(0,1))){
-        alert('select time in range' + start_time + '-' + end_time)
-    }
+    // else if(Number(time.substring(0,1)) < Number(start_time.substring(0,1)) || Number(time.substring(0,1)) > Number(end_time.substring(0,1))){
+    //     alert('select time in range' + start_time + '-' + end_time)
+    // }
     //day validation
-    else if(available_day.includes(day_index) === false){
-        alert('Please select date within the available day range')
-    }
+    // else if(available_day.includes(day_index) === false){
+    //     alert('Please select date within the available day range')
+    // }
     else {       
     //pass workername and servicename to api 
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
