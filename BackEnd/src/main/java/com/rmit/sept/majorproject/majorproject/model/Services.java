@@ -35,6 +35,17 @@ public class Services {
     @JsonFormat(pattern ="yyyy-MM-dd")
     private Date updated_At;
 
+    public Services() {
+    }
+
+    public Services(@NotBlank String service, User assigned_employee, Date start_time, Date end_time, String available_days) {
+        this.service = service;
+        this.assigned_employee = assigned_employee;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.available_days = available_days;
+    }
+
     public long getId() {
         return id;
     }

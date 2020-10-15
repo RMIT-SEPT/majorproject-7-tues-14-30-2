@@ -6,15 +6,15 @@
     padding-right:25px;
     outline:none;
     text-decoration: none;
+    -webkit-text-fill-color: white;
     width: 392px;
-    background-color:#e6e6e6;
+    background-color: rgb(89, 183, 245);
     border-style: none;
 
 }
 
 .add_btn:hover {
-    background-color: #e6e6e6;
-    -webkit-text-fill-color: #000000;
+    background-color: #333;
     transition-duration:0.3s;
 }
 

@@ -12,6 +12,7 @@ class Booking extends Component{
     constructor(props){
         super(props)
     
+        //set props to it assign value
     this.state={
             date: new Date(),
             time:'',
@@ -19,13 +20,57 @@ class Booking extends Component{
             service:'',
             duration:'',
             notes:'',
-            services: [
-                { service: 'Dental Clinic', opening: '8:00am - 4:00pm', days: 'Monday - Friday', worker: 'Anthony'  },
-                { service: 'Hair Salon', opening: '9:00am - 5:30pm', days: 'Monday - Saturday', worker: 'Stephanie' },
-                { service: 'Accounting Firm', opening: '10:00am - 4:00pm', days: 'Tuesday - Sunday', worker: 'Catherine' },
-            ]
+            isDataFetched: false,
+            services: [{}],
+            headings: [{service: '', worker: '', days: '', start_time: '', end_time: ''}],
+            selectedService:'',
+            selectedWorker:'',
+            workerUsername:'',
+            start_time:'',
+            end_time:'',
+            availableDays:''   
     };
     }
+    
+    componentDidMount() {   
+        const role = 'WORKER'; 
+        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
+            .then((response) => {
+                const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
+                var i;
+                var j =0;  
+               let urlArray = [];
+               
+               for(i=0; i < employee.length; i++) {
+                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                }
+                 
+               let promiseArray = urlArray.map(url => axios.get(url)); 
+                axios.all(promiseArray) // performs the GET request(s)
+                .then(results => {
+                    let newResults = [];
+                    for(i=0; i < results.length; i++) {
+                        if(results[i].data[0] !== undefined) {
+                            newResults[j] = results[i];
+                            j++;
+                        }
+                    }
+                    this.setState({services : newResults.map(r => r.data)[0]}); // adds results into services array
+                    this.setState({isDataFetched : true})
+                })
+                .catch(err => {
+                    if (err.response) {
+                        console.log(err)
+                    } else if (err.request) {
+                        console.log(err)
+                    } else {
+                        console.log(err)
+                    }
+                })    
+        })
+                        
+    }
+
 
 handleNotesChange = (event) =>{
     this.setState({
@@ -35,13 +80,13 @@ handleNotesChange = (event) =>{
 
 handleServiceChange = (event) =>{
     this.setState({
-        service: event.target.value 
+        selectedService: event.target.value, 
     })
 }
 
 handleWorkerChange = (event) =>{
     this.setState({
-        worker: event.target.value 
+        selectedWorker: event.target.value 
     })
 }
 
@@ -64,17 +109,39 @@ handleTimeChange = (time) => {
     this.setState({
       time: time
     })
-  }
+  } 
 
   onSubmit = (event) =>{
-    event.preventDefault() 
+    event.preventDefault()
+      axios.get(`http://localhost:8080/api/services/findEmployees/${this.state.selectedService}`)
+      .then(response => {
+          const worker = response.data.map(({name}) => name)[0];
+          const uname = response.data.map(({username}) => username)[0];
+          this.setState({selectedWorker : worker})
+          this.setState({workerUsername : uname})
+        //  console.log(this.state.selectedWorker);
+      //})
+      //get start time, end time and available days
+      axios.get(`http://localhost:8080/api/services/findService/${this.state.workerUsername}`)
+      .then(response => {
+          const start = response.data.map(({start_time}) => start_time)[0];
+          const end = response.data.map(({end_time}) => end_time)[0];
+          const days = response.data.map(({available_days}) => available_days)[0];
+          this.setState({start_time : start})
+          this.setState({end_time : end})
+          this.setState({availableDays: days})
+      })
+      
+//prevent page to refresh 
+//    event.preventDefault() 
     var info={
-        workername:this.state.worker,
-        servicename:this.state.service
+        workername:this.state.selectedWorker,
+        servicename:this.state.selectedService
     }
+    //assign user selected workername and service into variable
     var workername = info.workername;
     var servicename = info.servicename;
-    
+    //retrieve customer information from localstorage
     var username = localStorage.getItem("username");
     var password = localStorage.getItem("user_password");
     var name = localStorage.getItem("user_name");
@@ -83,21 +150,46 @@ handleTimeChange = (time) => {
     var role = localStorage.getItem("user_role");
     //convert timestamp to hh-mm-ss
     var time =moment(this.state.time).format('HH:mm:ss');
-
-
-    if(this.state.date == null) {
+    //get the day from the date(Sunday = 0, Saturday = 6)
+    var selectedDate = moment(this.state.date); 
+    //add the day index by 1 to match with backend
+    var day_index = selectedDate.day() + 1;
+    console.log(day_index)
+    
+    // var available_day = this.state.services[service_index].available_days
+    var availDays = this.state.availableDays;
+    
+    //booking validation
+    if(this.state.services.length === 0) {
+        alert('Sorry no available services!');
+    }
+    else if(this.state.selectedService === null || this.state.selectedService === '' || this.state.selectedService === 'default') {
+        alert('Please select a service');
+    }
+    else if(this.state.date === null) {
         alert('Please select a date');
     } 
-    else if(this.state.time == null || this.state.time == '') {
+    else if(this.state.time === null || this.state.time === '') {
         alert('Please select a time');
     }
-    else if(this.state.duration == null || this.state.duration == '') {
+    else if(this.state.duration === null || this.state.duration === '') {
         alert('Please fill in the duration');
     }
-    else if(this.state.notes == null || this.state.notes == '') {
+    else if(this.state.notes === null || this.state.notes === '') {
         alert('Please fill in the notes');
     }
-    else {        
+    //time range validation
+    else if(this.state.start_time != '' && this.state.end_time != ''){
+        if(Number(time.substring(0,1)) < Number(this.state.start_time.substring(0,1)) || 
+            Number(time.substring(0,1)) > Number(this.state.end_time.substring(0,1))){
+            alert('select time in range' + this.state.start_time + '-' + this.state.end_time)
+    }}
+    //day validation
+    else if(availDays != '' && availDays.includes(day_index) === false){
+        alert('Please select date within the available day range')
+    }
+    else {       
+    //pass workername and servicename to api 
     axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
@@ -117,70 +209,128 @@ handleTimeChange = (time) => {
           .then((res)=>{
             console.log(res);
             alert('Your booking has been confirmed!');
+            //page refresh after worker has been created
             window.location.reload(false);
          })
 
         
+
         .catch((error)=>{
+            //display error for debug
             console.log(error)
         })   
     }
+    })
   }    
 
+
+/* 
+*  method to return available days as string
+*/
+getAvailableDays(available_days) { 
+    var days;
+    var i;
+    for(i = 0; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days = "Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days = "Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days = "Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days = "Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days = "Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days = "Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days = "Saturday";
+            break;
+        }
+    }
+    
+    for(i = 2; i < available_days.length;) {
+        if(available_days[i] === "1") {
+            days += ", Sunday";
+            break;
+        } else if(available_days[i] === "2") {
+            days += ", Monday";
+            break;
+        } else if(available_days[i] === "3") {
+            days += ", Tuesday";
+            break;
+        } else if(available_days[i] === "4") {
+            days += ", Wednesday";
+            break;
+        } else if(available_days[i] === "5") {
+            days += ", Thursday";
+            break;
+        } else if(available_days[i] === "6") {
+            days += ", Friday";
+            break;
+        } else if(available_days[i] === "7") {
+            days += ", Saturday";
+            break;
+        }
+    }
+    return days;      
+}
+
 renderTableData() {
-    return this.state.services.map((schedule, index) => {
-       const { service, opening, days, worker } = schedule //destructuring
-       return (
-          <tr>
-             <td>{service}</td>
-             <td>{opening}</td>
-             <td>{days}</td>
-             <td>{worker}</td>
-          </tr>
-        )
+    return this.state.services.map((schedule) => {
+        const { service, available_days, start_time, end_time } = schedule
+        let id = schedule.id
+        let assigned_employee = schedule.assigned_employee.name
+        let avail_days = this.getAvailableDays(available_days)
+    
+        return (
+            <tr key={id}>
+                <td>{service}</td>
+                <td>{assigned_employee}</td>
+                <td>{avail_days}</td>
+                <td>{start_time}</td>
+                <td>{end_time}</td>
+            </tr>
+        )    
     })
 }
 
 renderTableHeader() {
-    let header = Object.keys(this.state.services[0])
+    let header = Object.keys(this.state.headings[0])
     return header.map((key, index) => {
-       return <th key={index}>{key.toUpperCase()}</th>
+        return <th key={index}>{key.toUpperCase().replace("_", " ")}</th>
     })
 }
 
-
 render(){
+if(!this.state.isDataFetched) return null;    
 return(
     <div> 
         <h1 class='title'>Book an Appointment</h1>
         <br></br>
 
         <h2 id='heading'>Available Services</h2>
-              <table id='services'>
+              <table id='services'> 
                  <tbody>
-                    <tr>{this.renderTableHeader()}</tr>
-                    {this.renderTableData()}
+                  <tr>{this.renderTableHeader()}</tr>   
+                  {this.renderTableData()}
                  </tbody>
               </table>
-
+              
          <form onSubmit={this.onSubmit}>
         <div class = "inputField">
             <label>Service</label> 
             <br/>
-            <select name = 'service' value={this.state.service} onChange={this.handleServiceChange}> 
-                  <option name="service1">Service1</option>
-                  <option name="service2">Hair Salon</option>
-                  <option name="service3">Accounting Firm</option>
+            <select name = 'service' value={this.state.selectedService} onChange={this.handleServiceChange}>
+                <option value="default">-- Select a service --</option>
+                {this.state.services.map((service) => <option key={service.id} value={service.service}>{service.service}</option>)}   
             </select>
-            <br/>
-            <br/>
-            <label>Worker</label> 
-            <br/>
-            <select name = 'worker' value={this.state.worker} onChange={this.handleWorkerChange}> 
-                  <option name="worker1">Worker1</option>
-                  <option name="worker2">Stephanie</option>
-                  <option name="worker3">Catherine</option>
-                  </select>
             <br/>
             <br/>
             <label>Date</label> 
@@ -203,14 +353,13 @@ return(
             <input type = 'text' name = 'notes' value={this.state.notes} onChange={this.handleNotesChange}/>
             <br/>
             
-       
+        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>        
         </div>
-        <button type = 'submit' className="book_btn" onClick={this.onSubmit}>Book</button>   
 
         </form>
 
     </div>
-     )       
+    )       
     }
   }
 

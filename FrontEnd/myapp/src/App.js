@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Home from './components/Home';
 import Login from './components/Login';
 import Booking from './components/Booking';
 import Registration from './components/Registration';
@@ -29,8 +30,9 @@ class App extends Component {
       <Route path='/Booking' component={Booking}/>
       <Route path='/Business_Contact' component={Business_Contact}/>
       <Route path='/Registration' component={Registration}/>
+        <Route path='/Login' component={Login}/>
+      <Route path='/' component={Home} exact/>
       <Route path = '/Add_Availability' component={Add_Availability}/>
-       <Route path='/' component={Login} exact/>
       </Switch>
       </div>
       </BrowserRouter>

@@ -25,7 +25,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color: #333;
+    background-color:  rgb(89, 183, 245);
     color: white;
   }
   
@@ -38,15 +38,14 @@
     outline:none;
     text-decoration: none;
     font-weight: bold;
-    -webkit-text-fill-color: #ffffff;
-    background-color: rgb(89, 183, 245);
+    -webkit-text-fill-color: white;
+    background-color:  rgb(89, 183, 245);
     border-style: none;
     width: 200px;
   }
 
   .customer_btn:hover {
-      background-color: #e6e6e6;
-      -webkit-text-fill-color: #000000;
+      background-color: #333;
       transition-duration:0.3s;
   }
 

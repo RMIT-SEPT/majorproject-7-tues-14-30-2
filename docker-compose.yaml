@@ -1,6 +1,7 @@
 version: '2'
 
 services:
+  # sets up to build backend and frontend 
   backend:
     build:
       context: './BackEnd'
@@ -15,6 +16,7 @@ services:
     container_name: frontend
     ports:
       - "3000:3000"
+    # connects frontend to backend 
     links:
       - "backend"
     tty: true
