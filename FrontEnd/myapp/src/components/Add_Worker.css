@@ -22,10 +22,13 @@ input{
     outline:none;
     text-decoration: none;
     width: 392px;
-    background-color:#e6e6e6;
+    background-color:rgb(89, 183, 245);
     border-style: none;
 
 }
 
-
+.create_btn:hover {
+    background-color: #333;
+    transition-duration:0.3s;
+}
 

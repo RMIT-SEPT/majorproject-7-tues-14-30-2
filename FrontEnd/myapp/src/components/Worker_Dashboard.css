@@ -43,8 +43,7 @@
   }
 
   .worker_button:hover {
-      background-color: #e6e6e6;
-      -webkit-text-fill-color: #000000;
+      background-color: #333;
       transition-duration:0.3s;
   }
 
