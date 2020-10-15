@@ -5,7 +5,7 @@ import"./Add_Worker.css";
 class Add_Worker extends Component{
     constructor(props){
         super(props)
-    
+    //set all props to null as default
     this.state={
            name:'',
            username:'',
@@ -22,7 +22,7 @@ class Add_Worker extends Component{
     OnChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
              }
-
+    //this function will get call when vreate button has been click
     OnSubmit(e){
         //prevent page to refresh
         e.preventDefault();

@@ -8,10 +8,12 @@ class Admin_Dashboard extends Component{
     
       }
 
+      //Function to redirect to the add worker page
       redirectToTarget = () => {
          this.props.history.push(`/Add_Worker`)
         }
 
+    // Should render aa greetings message and a button
      render() {
         return (
            <div>
