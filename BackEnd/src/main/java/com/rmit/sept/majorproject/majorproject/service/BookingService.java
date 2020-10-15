@@ -17,24 +17,30 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    /*
+     * Saves or Updates a Booking. Validates the booking beforehand,
+     * and will return null if the booking is invalid.
+     */
     public Booking saveOrUpdateBooking(Booking booking){
 
         if (checkDate(booking.getBooking_date()) < 0){
             System.out.println(1);
             return null;
-        } else if (checkDate(booking.getBooking_date()) == 0 && !checkTime(booking.getBooking_time())){
+        } else if (checkDate(booking.getBooking_date()) == 0 && !checkTime(booking.getBooking_time())) {
             System.out.println(2);
             return null;
-        } //else if(!verifyBookingTime(booking)){
+        //}
+//        } else if(!verifyBookingTime(booking)){
 //            System.out.println(3);
 //            return null;
-//        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
-//            return null;
-//        }
+        } else if (booking.getBookedService() == null || booking.getAssigned_employee() == null){
+            return null;
+        }
 
         return bookingRepository.save(booking);
     }
 
+    // Verifies that the date provided is not in the past
     public int checkDate(Date date){
         Calendar currentDate = Calendar.getInstance();
 
@@ -54,6 +60,7 @@ public class BookingService {
         return 0;
     }
 
+    // Checks that the time provided is not in the past
     public boolean checkTime(Date date){
         Date currentDate = new Date();
 
@@ -71,6 +78,10 @@ public class BookingService {
         return true;
     }
 
+    /*
+     * Returns a list of bookings belonging to the customer
+     * with the username that matches the username provided
+     */
     public Iterable<Booking> findCustBooking(String username){
         Iterable<Booking> bookings = bookingRepository.findAll();
         List<Booking> returnBookings = new ArrayList<>();
@@ -84,19 +95,29 @@ public class BookingService {
         return returnBookings;
     }
 
+    /*
+     * Returns a list of bookings with the worker with the corresponding
+     * username as the argument.
+     */
     public Iterable<Booking> findWorkerBooking(String username){
         Iterable<Booking> bookings = bookingRepository.findAll();
         List<Booking> returnBookings = new ArrayList<>();
 
         for(Booking booking: bookings){
-            if(booking.getAssigned_employee().getUsername().equals(username)){
-                returnBookings.add(booking);
+            if(booking.getAssigned_employee() != null) {
+                if(booking.getAssigned_employee().getUsername().equals(username)){
+                    returnBookings.add(booking);
+                }
             }
         }
 
         return returnBookings;
     }
 
+    /*
+     * Verifies that the booking time is within the bounds of
+     * assigned working times of the service
+     */
     public boolean verifyBookingTime(Booking booking) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getBooking_date());
@@ -120,6 +141,7 @@ public class BookingService {
 
         Date bookingTime = booking.getBooking_time();
         bookingTime.setHours(bookingTime.getHours() - 10);
+        //System.out.println(bookingTime);
         bookingTime.setYear(2020);
         bookingTime.setMonth(1);
         bookingTime.setDate(1);

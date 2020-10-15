@@ -5,7 +5,7 @@ import"./Add_Worker.css";
 class Add_Worker extends Component{
     constructor(props){
         super(props)
-    
+    //set all props to null as default
     this.state={
            name:'',
            username:'',
@@ -22,9 +22,12 @@ class Add_Worker extends Component{
     OnChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
              }
-
+    //this function will get call when vreate button has been click
     OnSubmit(e){
+        //prevent page to refresh
         e.preventDefault();
+        //pass worker to api
+        user2.setRole("CUSTOMER");
         axios.post(`http://ec2-54-208-156-197.compute-1.amazonaws.com:8080/api/user`,{
             username: this.state.username,
             password: this.state.password,
@@ -35,10 +38,12 @@ class Add_Worker extends Component{
         })
         .then((res) => {
             console.log(res)
+            //display pop up once worker account has been created
             alert("A worker account has been created");
             window.location.reload(false);
         })
         .catch((err) =>{
+            //pop up if worker account has not been created
             alert("A worker account has not been created");
         })           
     }      

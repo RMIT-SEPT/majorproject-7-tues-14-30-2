@@ -21,10 +21,10 @@ import{Link} from "react-router-dom"
         if(role===''){
             return(
               <div className="navbar">
-              <div className="brand-title">SEPT Project</div>
+              <Link to="/"><div className="brand-title">SEPT Project</div></Link>
               <div className="navbar-links">
                 <ul>
-                   <li><Link to="/" >Login</Link></li>
+                   <li><Link to="/Login" >Login</Link></li>
                    <li><Link to="/Registration">Signup</Link></li>
                    <li><Link to="/Business_Contact">Contact Us</Link></li>
                 </ul>
@@ -88,4 +88,5 @@ import{Link} from "react-router-dom"
       )}
   
   }
-  export default NavBar
+
+export default NavBar

@@ -30,6 +30,12 @@ public class BookingController {
     @Autowired
     private ServiceService serviceService;
 
+    /*
+     * Post request to create a booking.
+     * Takes a booking json, as well as a worker name and service name
+     * as path variables.
+     * Returns the saved booking json
+     */
     @PostMapping("/{workerName}/{servicename}")
     public ResponseEntity<?> createNewBooking(@Valid @RequestBody Booking booking, BindingResult result,
                                               @PathVariable String workerName, @PathVariable String servicename){
@@ -66,11 +72,21 @@ public class BookingController {
         return new ResponseEntity<Booking>(booking, HttpStatus.CREATED);
     }
 
+    /*
+     * Get request to get customer bookings
+     * Takes a customers username as the path variable
+     * Returns a list of bookings as a json.
+     */
     @GetMapping("/findCustBooking/{username}")
     public ResponseEntity<?> getCustomerBookings(@PathVariable String username){
         return new ResponseEntity<Iterable<Booking>>(bookingService.findCustBooking(username), HttpStatus.OK);
     }
 
+    /*
+     * Get request to get worker bookings
+     * Takes a workers username as the path variable
+     * Returns a list of bookings as a json.
+     */
     @GetMapping("/findWorkerBooking/{username}")
     public ResponseEntity<?> getWorkerBookings(@PathVariable String username){
         return new ResponseEntity<Iterable<Booking>>(bookingService.findWorkerBooking(username), HttpStatus.OK);

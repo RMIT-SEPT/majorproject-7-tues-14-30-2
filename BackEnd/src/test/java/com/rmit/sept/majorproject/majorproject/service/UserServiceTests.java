@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,14 +35,14 @@ public class UserServiceTests {
         user1.setPassword("Test");
         user1.setName("Test");
         user1.setContact("Test");
+        user1.setRole("CUSTOMER");
         user2.setUsername("user2");
         user2.setPassword("Test");
         user2.setName("Test");
+        user2.setRole("CUSTOMER");
         user3.setUsername("user3");
         user3.setPassword("Test");
         user3.setName("Test");
-        user1.setRole("CUSTOMER");
-        user2.setRole("CUSTOMER");
         user3.setRole("CUSTOMER");
         Mockito.when(userRepository.save(user1)).thenReturn(user1);
         Mockito.when(userRepository.save(user2)).thenReturn(user2);
@@ -170,5 +171,52 @@ public class UserServiceTests {
         assertTrue(mockUserService.verifyRole(validRole1));
         assertTrue(mockUserService.verifyRole(validRole2));
         assertTrue(mockUserService.verifyRole(validRole3));
+    }
+
+    @Test
+    public void testFindDuplicate_NoUsers_False(){
+        Iterable<User> emptyList = new ArrayList<>();
+        Mockito.when(userRepository.findAll()).thenReturn(emptyList);
+
+        assertFalse(mockUserService.findDuplicate("user1"));
+        assertFalse(mockUserService.findDuplicate("user2"));
+        assertFalse(mockUserService.findDuplicate("user3"));
+    }
+
+    @Test
+    public void testFindDuplicate_UsersPresent_True(){
+        List<User> filledList = new ArrayList<>();
+        filledList.add(user1);
+        filledList.add(user2);
+        filledList.add(user3);
+        Mockito.when(userRepository.findAll()).thenReturn(filledList);
+
+        assertTrue(mockUserService.findDuplicate("user1"));
+        assertTrue(mockUserService.findDuplicate("user2"));
+        assertTrue(mockUserService.findDuplicate("user3"));
+    }
+
+    @Test
+    public void testFindWorker_UsersNotFound_Null(){
+        List<User> filledList = new ArrayList<>();
+        filledList.add(user1);
+        filledList.add(user2);
+        filledList.add(user3);
+        Mockito.when(userRepository.findAll()).thenReturn(filledList);
+
+        assertNull(mockUserService.findWorkerFromName("John"));
+    }
+
+    @Test
+    public void testFindWorker_UsersFound_User2(){
+        List<User> filledList = new ArrayList<>();
+        filledList.add(user1);
+        user2.setName("John");
+        user2.setRole("WORKER");
+        filledList.add(user2);
+        filledList.add(user3);
+        Mockito.when(userRepository.findAll()).thenReturn(filledList);
+
+        assertEquals(user2, mockUserService.findWorkerFromName("John"));
     }
 }
