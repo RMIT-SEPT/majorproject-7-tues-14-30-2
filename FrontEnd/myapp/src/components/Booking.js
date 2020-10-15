@@ -76,7 +76,7 @@ handleNotesChange = (event) =>{
 
 handleServiceChange = (event) =>{
     this.setState({
-        selectedService: event.target.value 
+        selectedService: event.target.value, 
     })
 }
 
@@ -108,10 +108,17 @@ handleTimeChange = (time) => {
   } 
 
   onSubmit = (event) =>{
+      axios.get(`http://localhost:8080/api/services/findEmployees/${this.state.selectedService}`)
+      .then(response => {
+          const worker = response.data.map(({name}) => name)[0];
+          this.setState({selectedWorker : worker})
+//          console.log(this.state.selectedWorker);
+      })
+      
 //prevent page to refresh 
     event.preventDefault() 
     var info={
-        workername:this.state.worker,
+        workername:this.state.selectedWorker,
         servicename:this.state.selectedService
     }
     //assign user selected workername and service into variable
@@ -304,7 +311,7 @@ return(
             <br/>
             <select name = 'service' value={this.state.selectedService} onChange={this.handleServiceChange}>
                 <option value="default">-- Select a service --</option>
-                {this.state.services.map((service) => <option key={service.id} value={service.id}>{service.service}</option>)}   
+                {this.state.services.map((service) => <option key={service.id} value={service.service}>{service.service}</option>)}   
             </select>
             <br/>
             <br/>
