@@ -120,7 +120,7 @@ handleTimeChange = (time) => {
           this.setState({selectedWorker : worker})
           this.setState({workerUsername : uname})
         //  console.log(this.state.selectedWorker);
-      })
+      //})
       //get start time, end time and available days
       axios.get(`http://localhost:8080/api/services/findService/${this.state.workerUsername}`)
       .then(response => {
