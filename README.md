@@ -19,6 +19,8 @@
 ## Running the App
 * To build and run the application, ensure you are in the root folder containing the docker-compose.yaml file and run 'docker-compose up'
 
+The app is fully deployed at http://ec2-54-243-12-36.compute-1.amazonaws.com:3000/
+
 ## Code documentation
 
 [Quick Start](/docs/README.md) in `docs` folder
