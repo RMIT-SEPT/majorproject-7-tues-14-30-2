@@ -42,7 +42,7 @@ class Registration extends Component{
             alert('Phone length must be 10')
         }
         else{
-            axios.post('http://localhost:8080/api/user', newUser);
+            axios.post('http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/user', newUser);
             this.props.history.push('/')
             alert('Account Created!');
         }

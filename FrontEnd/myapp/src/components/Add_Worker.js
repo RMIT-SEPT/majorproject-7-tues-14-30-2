@@ -27,7 +27,7 @@ class Add_Worker extends Component{
         //prevent page to refresh
         e.preventDefault();
         //pass worker to api
-        axios.post(`http://localhost:8080/api/user`,{
+        axios.post(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/user`,{
             username: this.state.username,
             password: this.state.password,
             name: this.state.name,

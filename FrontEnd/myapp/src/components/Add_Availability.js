@@ -138,7 +138,7 @@ handleCheckboxChange = (event) =>{
     
     else{ 
         alert('New Working Time Added!');
-        axios.post('http://localhost:8080/api/services', newAvailability);
+        axios.post('http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/services', newAvailability);
         this.props.history.push('/Worker_Dashboard')
     }
     

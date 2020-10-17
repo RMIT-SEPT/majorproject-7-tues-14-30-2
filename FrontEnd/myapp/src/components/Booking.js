@@ -34,7 +34,7 @@ class Booking extends Component{
     
     componentDidMount() {   
         const role = 'WORKER'; 
-        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
+        axios.get(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
                 const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
                 var i;
@@ -42,7 +42,7 @@ class Booking extends Component{
                let urlArray = [];
                
                for(i=0; i < employee.length; i++) {
-                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                urlArray[i] = `http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
                 }
                  
                let promiseArray = urlArray.map(url => axios.get(url)); 
@@ -113,7 +113,7 @@ handleTimeChange = (time) => {
 
   onSubmit = (event) =>{
     event.preventDefault()
-      axios.get(`http://localhost:8080/api/services/findEmployees/${this.state.selectedService}`)
+      axios.get(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/services/findEmployees/${this.state.selectedService}`)
       .then(response => {
           const worker = response.data.map(({name}) => name)[0];
           const uname = response.data.map(({username}) => username)[0];
@@ -122,7 +122,7 @@ handleTimeChange = (time) => {
         //  console.log(this.state.selectedWorker);
       //})
       //get start time, end time and available days
-      axios.get(`http://localhost:8080/api/services/findService/${this.state.workerUsername}`)
+      axios.get(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/services/findService/${this.state.workerUsername}`)
       .then(response => {
           const start = response.data.map(({start_time}) => start_time)[0];
           const end = response.data.map(({end_time}) => end_time)[0];
@@ -190,7 +190,7 @@ handleTimeChange = (time) => {
     }
     else {       
     //pass workername and servicename to api 
-    axios.post(`http://localhost:8080/api/booking/${workername}/${servicename}`,{
+    axios.post(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/booking/${workername}/${servicename}`,{
         booking_date: this.state.date,
         booking_time:time,
         notes: this.state.notes,

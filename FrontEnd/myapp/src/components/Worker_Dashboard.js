@@ -26,7 +26,7 @@ class Worker_Dashboard extends Component{
         };
         const username = localStorage.getItem("username")
         // console.log("username", localStorage.getItem("username"))
-        const apiUrl = `http://localhost:8080/api/booking/findWorkerBooking/${username}`;
+        const apiUrl = `http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/booking/findWorkerBooking/${username}`;
         axios.get(apiUrl) //fetching data 
           .then(res => {
             const bookings = res.data;

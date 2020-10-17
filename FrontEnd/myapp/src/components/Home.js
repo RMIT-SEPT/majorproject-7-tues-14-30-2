@@ -35,7 +35,7 @@ class Home extends Component{
     
     componentDidMount() {   
         const role = 'WORKER'; 
-        axios.get(`http://localhost:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
+        axios.get(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/user/getRole/${role}`) // returns all users with role 'WORKER'
             .then((response) => {
                 const employee = response.data.map(({username}) => username); // adds all usernames of workers into an array
                 var i;
@@ -43,7 +43,7 @@ class Home extends Component{
                let urlArray = [];
                
                for(i=0; i < employee.length; i++) {
-                urlArray[i] = `http://localhost:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
+                urlArray[i] = `http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/api/services/findService/${employee[i]}`; // adds GET URL for each worker into an array
                 }
                  
                let promiseArray = urlArray.map(url => axios.get(url)); 

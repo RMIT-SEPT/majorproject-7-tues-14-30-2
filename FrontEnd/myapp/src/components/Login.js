@@ -52,7 +52,7 @@ class Login extends Component{
         var password=login.password;
         localStorage.setItem("user_password",password);
         //pass user credentials to api 
-        axios.post('http://localhost:8080/authenticate',{
+        axios.post('http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/authenticate',{
             username:this.state.username,
             password:this.state.password
             })
@@ -64,7 +64,7 @@ class Login extends Component{
            //assign username into username variable 
             var username =login.username;
             //pass username name into api for authorization
-          axios.get(`http://localhost:8080/find/${username}`,{
+          axios.get(`http://ec2-54-243-12-36.compute-1.amazonaws.com:8080/find/${username}`,{
           headers: {
             'Authorization': `Bearer ${token}`
           
